@@ -30,12 +30,14 @@ nav:
   - FAQ.md
   - Notebooks:
     - Basics:
-      - First Steps: https://github.com/SynaLinks/Synalinks
-      - First Programs: https://github.com/SynaLinks/Synalinks
-      - Control Flow: https://github.com/SynaLinks/Synalinks
-      - Rewards, Metrics & Optimizers: https://github.com/SynaLinks/Synalinks
-      - Training Programs: https://github.com/SynaLinks/Synalinks
-      - Conversational Applications: https://github.com/SynaLinks/Synalinks
+      - First steps: https://github.com/SynaLinks/synalinks
+      - First programs: https://github.com/SynaLinks/synalinks
+      - Control flow: https://github.com/SynaLinks/synalinks
+      - Rewards, metrics & optimizers: https://github.com/SynaLinks/synalinks
+      - Training programs: https://github.com/SynaLinks/synalinks
+      - Conversational applications: https://github.com/SynaLinks/synalinks
+    - Advanced:
+      - Implementing custom modules and programs via subclassing: https://github.com/SynaLinks/synalinks
   - Synalinks API:
     - Synalinks API/Language Models API.md
     - Synalinks API/Embedding Models API.md
@@ -51,7 +53,9 @@ nav:
       - Synalinks API/Programs API/The Program class.md
       - Synalinks API/Programs API/The Sequential class.md
       - Synalinks API/Programs API/Program training API.md
-      - Synalinks API/Programs API/Saving and serialization.md
+      - Program Saving API:
+        - Synalinks API/Programs API/Program Saving API/Program saving and loading.md
+        - Synalinks API/Programs API/Program Saving API/Variable saving and loading.md
     - Modules API:
       - Synalinks API/Modules API/index.md
       - Synalinks API/Modules API/Base Module class.md
