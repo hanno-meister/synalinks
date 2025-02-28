@@ -1,6 +1,6 @@
 
 <div align="center">
-<img height=200 src="./img/synalinks_logo_square.png">
+<img height=200 src="https://github.com/SynaLinks/synalinks/blob/main/img/synalinks_logo_square.png?raw=true">
 </div>
 
 <p align="center">
@@ -13,7 +13,6 @@
 [![Discord](https://img.shields.io/discord/1118241178723291219)](https://discord.gg/82nt97uXcM)
 [![Python package](https://github.com/SynaLinks/Synalinks/actions/workflows/tests.yml/badge.svg)](https://github.com/SynaLinks/SynaLinks/actions/workflows/tests.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-green.svg)](https://opensource.org/license/apache-2-0)
-
 
 </div>
 
@@ -294,7 +293,7 @@ if __name__ == "__main__":
 
 ### Learn more
 
-You can learn more by reading our [documentation](docs/index.md). If you have questions, the [FAQ](docs/FAQ.md) might help you.
+You can learn more by reading our [documentation](https://synalinks.github.io/synalinks/). If you have questions, the [FAQ](https://synalinks.github.io/synalinks/FAQ/) might help you.
 
 ### Contributions
 
