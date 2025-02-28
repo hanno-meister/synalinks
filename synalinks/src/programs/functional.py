@@ -1,3 +1,7 @@
+# Modified from: keras/src/models/functional.py
+# Original authors: François Chollet et al. (Keras Team)
+# License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
+
 import copy
 import inspect
 import typing
@@ -323,7 +327,7 @@ def functional_from_config(cls, config, custom_objects=None):
         args, kwargs = deserialize_node(node_data, created_modules)
         # Call module on its inputs, thus creating the node
         # and building the module if needed.
-        module(*args, **kwargs)
+        asyncio.get_event_loop().run_until_complete(module(*args, **kwargs))
 
     def process_module(module_data):
         """Deserializes a module and index its inbound nodes.

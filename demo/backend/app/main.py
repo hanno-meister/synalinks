@@ -44,7 +44,7 @@ program = synalinks.Program.load("checkpoint.program.json")
 
 @app.post("/v1/chat_completion")
 async def chat_completion(messages: synalinks.ChatMessages):
-    result = program(messages)
+    result = await program(messages)
     return result.json() if result else None
 
 

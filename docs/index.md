@@ -182,7 +182,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## Getting summary of your program
+## Getting a summary of your program
 
 To print a tabular summary of your program:
 
