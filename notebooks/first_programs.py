@@ -17,14 +17,14 @@ def _():
 def _(mo):
     mo.md(
         r"""
-        # Introduction: Your first programs
+        # Your first programs
 
         The main concept of Synalinks, is that an application (we call it a `Program`)
         is a computation graph with JSON data (called `JsonDataModel`) as edges and
         `Operation`s as nodes. What set apart Synalinks from other similar frameworks
         like DSPy or AdalFlow is that we focus on graph-based systems but also that
         it allow users to declare the computation graph using a Functional API inherited
-        from Keras.
+        from [Keras](https://keras.io/).
 
         About modules, similar to layers in deep learning applications, modules are
         composable blocks that you can assemble in multiple ways. Providing a modular
@@ -44,7 +44,7 @@ def _(mo):
 
 @app.cell
 def _(synalinks):
-    # Now we can define the data models that we are going to use thought the notebook.
+    # Now we can define the data models that we are going to use in the notebook.
     # Note that Synalinks use Pydantic as default data backend, which is compatible with FastAPI and structured output.
 
     class Query(synalinks.DataModel):

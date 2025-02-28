@@ -34,6 +34,7 @@ dependencies = [
     "matplotlib",
     "docstring-parser",
     "nest-asyncio",
+    "graphviz",
 ]
 
 [project.urls]

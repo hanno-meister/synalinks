@@ -80,6 +80,7 @@ def print_summary(
     line_length=None,
     positions=None,
     print_fn=None,
+    return_string=False,
     expand_nested=False,
     show_trainable=False,
     module_range=None,
@@ -98,6 +99,7 @@ def print_summary(
             You can set it to a custom function
             in order to capture the string summary.
             It defaults to `print` (prints to stdout).
+        return_string: If True, return the summary string instead of printing.
         expand_nested: Whether to expand the nested programs.
             If not provided, defaults to `False`.
         show_trainable: Whether to show if a module is trainable.
@@ -284,9 +286,20 @@ def print_summary(
         console = rich.console.Console(highlight=False)
 
     # Print the to the console.
-    console.print(bold_text(f"Program: {rich.markup.escape(program.name)}"))
-    console.print(f"description: '{rich.markup.escape(program.description)}'")
-    console.print(table)
+    if not return_string:
+        console.print(bold_text(f"Program: {rich.markup.escape(program.name)}"))
+        console.print(f"description: '{rich.markup.escape(program.description)}'")
+        console.print(table)
+    else:
+        summary_string = "\n".join(
+            [
+                bold_text(f"Program: {rich.markup.escape(program.name)}"),
+                f"description: '{rich.markup.escape(program.description)}'",
+                table,
+            ]
+        )
+        return summary_string
+    
 
 
 def get_module_index_bound_by_module_name(modules, module_range=None):

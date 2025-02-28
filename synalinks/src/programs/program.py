@@ -231,6 +231,7 @@ class Program(Trainer, Module):
         line_length=None,
         positions=None,
         print_fn=None,
+        return_string=False,
         expand_nested=False,
         show_trainable=False,
         module_range=None,
@@ -249,6 +250,7 @@ class Program(Trainer, Module):
                 It will be called on each line of the summary.
                 You can set it to a custom function
                 in order to capture the string summary.
+            return_string: If True, return the summary string instead of printing.
             expand_nested: Whether to expand the nested models.
                 Defaults to `False`.
             show_trainable: Whether to show if a module is trainable.
@@ -266,11 +268,12 @@ class Program(Trainer, Module):
         Raises:
             ValueError: if `summary()` is called before the model is built.
         """
-        summary_utils.print_summary(
+        return summary_utils.print_summary(
             self,
             line_length=line_length,
             positions=positions,
             print_fn=print_fn,
+            return_string=return_string,
             expand_nested=expand_nested,
             show_trainable=show_trainable,
             module_range=module_range,

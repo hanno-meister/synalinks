@@ -136,7 +136,6 @@ class LanguageModel(SynalinksSaveable):
                         "response_format": {
                             "type": "json_schema",
                             "json_schema": {"schema": schema},
-                            "strict": True,
                         },
                     }
                 )
