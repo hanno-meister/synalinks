@@ -30,7 +30,7 @@ nav:
   - FAQ.md
   - Notebooks:
     - Basics:
-      - First steps: https://github.com/SynaLinks/synalinks
+      - First steps: https://huggingface.co/spaces/YoanSallami/synalinks-first-steps
       - First programs: https://github.com/SynaLinks/synalinks
       - Control flow: https://github.com/SynaLinks/synalinks
       - Rewards, metrics & optimizers: https://github.com/SynaLinks/synalinks
