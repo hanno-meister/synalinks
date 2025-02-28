@@ -8,7 +8,7 @@ app = marimo.App()
 def _():
     import marimo as mo
     import synalinks
-
+    
     synalinks.backend.clear_session()
     return mo, synalinks
 
@@ -57,7 +57,7 @@ async def _(synalinks):
     _x1 = await synalinks.Generator(
         language_model=language_model,
         prompt_template=synalinks.chat_prompt_template(),
-        streaming=False,  # Marimo chat don't handle streaming yet
+        streaming=False, # Marimo chat don't handle streaming yet
     )(_x0)
 
     program = synalinks.Program(

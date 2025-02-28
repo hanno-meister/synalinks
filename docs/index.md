@@ -193,9 +193,9 @@ program.summary()
 Or a plot (usefull to document your system):
 
 ```python
-filepath = synalinks.utils.plot_program(
+synalinks.utils.plot_program(
     program,
-    show_modules_names=True,
+    show_module_names=True,
     show_trainable=True,
     show_schemas=True,
 )

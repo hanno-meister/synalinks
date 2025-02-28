@@ -1,3 +1,5 @@
+# License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
+
 from synalinks.src import testing
 from synalinks.src.backend import DataModel
 from synalinks.src.modules.core.input_module import Input

@@ -1,3 +1,7 @@
+# Modified from: keras/src/models/model.py
+# Original authors: François Chollet et al. (Keras Team)
+# License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
+
 import inspect
 import json
 import typing

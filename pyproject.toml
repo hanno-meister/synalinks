@@ -5,11 +5,13 @@ readme = "README.md"
 requires-python = ">=3.9"
 dynamic = ["version"]
 classifiers = [
-    "Development Status :: 1 - Beta",
+    "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3 :: Only",
     "Operating System :: Unix",
     "Operating System :: MacOS",
@@ -37,6 +39,13 @@ dependencies = [
     "docstring-parser>=0.16",
     "nest-asyncio>=1.6.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/SynaLinks/synalinks"
+Issues = "https://github.com/SynaLinks/synalinks/issues"
+
+[tool.setuptools]
+license-files = []
 
 [tool.setuptools.dynamic]
 version = {attr = "synalinks.src.version.__version__"}

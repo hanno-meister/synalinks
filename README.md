@@ -9,7 +9,7 @@
 
 <div align="center">
 
-![Alpha](https://img.shields.io/badge/Release-Alpha-orange.svg)
+![Beta](https://img.shields.io/badge/Release-Beta-blue.svg)
 [![Discord](https://img.shields.io/discord/1118241178723291219)](https://discord.gg/82nt97uXcM)
 [![Python package](https://github.com/SynaLinks/Synalinks/actions/workflows/tests.yml/badge.svg)](https://github.com/SynaLinks/SynaLinks/actions/workflows/tests.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-green.svg)](https://opensource.org/license/apache-2-0)
@@ -236,9 +236,9 @@ program.summary()
 Or a plot (usefull to document your system):
 
 ```python
-filepath = synalinks.utils.plot_program(
+synalinks.utils.plot_program(
     program,
-    show_modules_names=True,
+    show_module_names=True,
     show_trainable=True,
     show_schemas=True,
 )

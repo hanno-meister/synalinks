@@ -1,4 +1,4 @@
-# Modified from: keras/src/callbacks/callback_list.py
+# Modified from: keras/src/callbacks/callback_test.py
 # Original authors: François Chollet et al. (Keras Team)
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
