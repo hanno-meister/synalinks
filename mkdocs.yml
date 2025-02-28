@@ -1,5 +1,5 @@
 site_name: Synalinks
-site_url: https://synalinks.github.io/Synalinks
+site_url: https://synalinks.github.io/synalinks
 theme:
   name: material
   logo: assets/synalinks_logo.png

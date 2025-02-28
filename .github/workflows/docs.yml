@@ -10,10 +10,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Project Manager
-        run: ./shell/uv.sh
-      - name: Install mkdocs & plugins
-        run: ./shell/install_doc.sh
       - uses: actions/checkout@v4
       - name: Configure Git Credentials
         run: |
@@ -29,4 +25,5 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
-      - run: uv run mkdocs gh-deploy --force
+      - run: pip install mkdocs-material mkdocstrings[python] mkdocs-glightbox
+      - run: mkdocs gh-deploy --force
