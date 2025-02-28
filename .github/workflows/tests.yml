@@ -27,5 +27,7 @@ jobs:
         run: ./shell/uv.sh
       - name: Install Synalinks
         run: ./shell/install.sh
+      - name: Install pytest
+        run: uv pip install pytest pytest-cov
       - name: Run the tests
         run: ./shell/test.sh
