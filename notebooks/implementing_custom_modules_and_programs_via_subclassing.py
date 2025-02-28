@@ -62,14 +62,10 @@ def _(synalinks):
     from synalinks import ops
 
     class Thinking(synalinks.DataModel):
-        thinking: str = synalinks.Field(
-            description="Your step by step thinking process"
-        )
+        thinking: str = synalinks.Field(description="Your step by step thinking process")
 
     class CritiqueWithReward(synalinks.DataModel):
-        critique: str = synalinks.Field(
-            description="The step by step critique"
-        )
+        critique: str = synalinks.Field(description="The step by step critique")
         reward: float = synalinks.Field(
             description="The reward corresponding to the critique between [0.0, 1.0]",
             le=1.0,
@@ -108,7 +104,7 @@ def _(synalinks):
             self.stop_threshold = stop_threshold
             self.max_iterations = max_iterations
             self.critique_program = critique_program
-            self.prompt_template= prompt_template
+            self.prompt_template = prompt_template
             self.examples = examples
             self.hints = hints
             self.use_inputs_schema = use_inputs_schema
@@ -116,17 +112,15 @@ def _(synalinks):
             if not self.critique_program:
                 # If no critique program is provided
                 # We compute the reward in the thinking step
-                thinking_data_model = \
-                    Thinking \
-                    + synalinks.SymbolicDataModel(
-                        schema=self.schema
-                    ) + CritiqueWithReward
+                thinking_data_model = (
+                    Thinking
+                    + synalinks.SymbolicDataModel(schema=self.schema)
+                    + CritiqueWithReward
+                )
             else:
-                thinking_data_model = \
-                    Thinking \
-                    + synalinks.SymbolicDataModel(
-                        schema=self.schema
-                    )
+                thinking_data_model = Thinking + synalinks.SymbolicDataModel(
+                    schema=self.schema
+                )
             # This is for generating the intermediary steps
             self.thinking = synalinks.Generator(
                 data_model=thinking_data_model,
@@ -136,7 +130,7 @@ def _(synalinks):
                 hints=self.hints,
                 use_inputs_schema=self.use_inputs_schema,
                 use_outputs_schema=self.use_outputs_schema,
-                name=self.name+"_thinking_generator",
+                name=self.name + "_thinking_generator",
             )
             # This is going to be the final generator
             self.generator = synalinks.Generator(
@@ -147,7 +141,7 @@ def _(synalinks):
                 hints=self.hints,
                 use_inputs_schema=self.use_inputs_schema,
                 use_outputs_schema=self.use_outputs_schema,
-                name=self.name+"_generator",
+                name=self.name + "_generator",
             )
 
         async def call(self, inputs, training=False):
@@ -167,9 +161,7 @@ def _(synalinks):
                     if reward > self.stop_threshold:
                         break
                     inputs = await ops.concat(
-                        inputs,
-                        thinking,
-                        name=self.name+f"_thinking_{i}"
+                        inputs, thinking, name=self.name + f"_thinking_{i}"
                     )
             return await self.generator(inputs)
 
@@ -190,7 +182,7 @@ def _(synalinks):
                 "name": self.name,
                 "description": self.description,
                 "trainable": self.trainable,
-            }        
+            }
             language_model_config = {
                 "language_model": synalinks.saving.serialize_synalinks_object(
                     self.language_model,
@@ -224,6 +216,7 @@ def _(synalinks):
                 critique_program=critique_program,
                 **config,
             )
+
     return BacktrackingOfThought, CritiqueWithReward, Thinking, ops
 
 

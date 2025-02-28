@@ -8,9 +8,9 @@ app = marimo.App()
 def _():
     import marimo as mo
     import synalinks
-    
+
     synalinks.backend.clear_session()
-    
+
     return mo, synalinks
 
 

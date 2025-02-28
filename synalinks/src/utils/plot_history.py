@@ -78,7 +78,7 @@ def plot_history(
         pass
     try:
         import marimo as mo
-        
+
         if mo.running_in_notebook():
             return mo.image(src=to_file).center()
     except ImportError:

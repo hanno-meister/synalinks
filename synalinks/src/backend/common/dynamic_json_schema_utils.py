@@ -1,5 +1,6 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
+
 def dynamic_enum(schema, prop_to_update, labels):
     """Update a schema with dynamic Enum string
 

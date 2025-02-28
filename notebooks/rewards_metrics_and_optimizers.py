@@ -8,9 +8,9 @@ app = marimo.App()
 def _():
     import marimo as mo
     import synalinks
-    
+
     synalinks.backend.clear_session()
-    
+
     return mo, synalinks
 
 
@@ -101,7 +101,6 @@ def _(mo):
 
 @app.cell
 async def _(synalinks):
-
     synalinks.backend.clear_session()
 
     class Query(synalinks.DataModel):

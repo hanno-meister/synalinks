@@ -46,7 +46,7 @@ class ProgramTest(testing.TestCase):
                     "variable": {
                         "prompt_template": default_prompt_template(),
                         "examples": [],
-                        "hints": default_hints(),
+                        "hints": [],
                         "predictions": [],
                     }
                 }
