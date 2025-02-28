@@ -10,7 +10,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Install uv
       - name: Install Project Manager
         run: ./shell/uv.sh
       - name: Install mkdocs & plugins
