@@ -1,0 +1,110 @@
+site_name: Synalinks
+site_url: https://synalinks.github.io/Synalinks
+theme:
+  name: material
+  logo: assets/synalinks_logo.png
+  favicon: assets/synalinks_favicon.png
+  features:
+    - content.code.copy
+  palette:
+    primary: black
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - glightbox
+  - search
+  - mkdocstrings:
+      default_handler: python
+
+nav:
+  - index.md
+  - Introduction.md
+  - FAQ.md
+  - Notebooks:
+    - Basics:
+      - First Steps: https://github.com/SynaLinks/Synalinks
+      - First Programs: https://github.com/SynaLinks/Synalinks
+      - Control Flow: https://github.com/SynaLinks/Synalinks
+      - Rewards, Metrics & Optimizers: https://github.com/SynaLinks/Synalinks
+      - Training Programs: https://github.com/SynaLinks/Synalinks
+      - Conversational Applications: https://github.com/SynaLinks/Synalinks
+  - Synalinks API:
+    - Synalinks API/Language Models API.md
+    - Synalinks API/Embedding Models API.md
+    - Data Models API:
+      - Synalinks API/Data Models API/index.md
+      - Synalinks API/Data Models API/The DataModel class.md
+      - Synalinks API/Data Models API/The JsonDataModel class.md
+      - Synalinks API/Data Models API/The SymbolicDataModel class.md
+      - Synalinks API/Data Models API/The Variable class.md
+      - Synalinks API/Data Models API/The Base DataModels.md
+    - Programs API:
+      - Synalinks API/Programs API/index.md
+      - Synalinks API/Programs API/The Program class.md
+      - Synalinks API/Programs API/The Sequential class.md
+      - Synalinks API/Programs API/Program training API.md
+      - Synalinks API/Programs API/Saving and serialization.md
+    - Modules API:
+      - Synalinks API/Modules API/index.md
+      - Synalinks API/Modules API/Base Module class.md
+      - Core Modules:
+        - Synalinks API/Modules API/Core Modules/index.md
+        - Synalinks API/Modules API/Core Modules/Input module.md
+        - Synalinks API/Modules API/Core Modules/Generator module.md
+        - Synalinks API/Modules API/Core Modules/Decision module.md
+        - Synalinks API/Modules API/Core Modules/Action module.md
+        - Synalinks API/Modules API/Core Modules/Branch module.md
+      - Merging Modules:
+        - Synalinks API/Modules API/Merging Modules/index.md
+        - Synalinks API/Modules API/Merging Modules/Concat module.md
+        - Synalinks API/Modules API/Merging Modules/And module.md
+        - Synalinks API/Modules API/Merging Modules/Or module.md
+      - Agents Modules:
+        - Synalinks API/Modules API/Agents Modules/index.md
+        - Synalinks API/Modules API/Agents Modules/ReACT Agent module.md
+    - Callbacks API:
+      - Synalinks API/Callbacks API/index.md
+      - Synalinks API/Callbacks API/Base Callback class.md
+      - Synalinks API/Callbacks API/ProgramCheckpoint.md
+      - Synalinks API/Callbacks API/CSVLogger.md
+    - Ops API:
+      - Synalinks API/Ops API/index.md
+      - Synalinks API/Ops API/JSON Ops.md
+      - Synalinks API/Ops API/Language Models Ops.md
+      - Synalinks API/Ops API/Embedding Models Ops.md
+    - Optimizers API:
+      - Synalinks API/Optimizers API/index.md
+      - Synalinks API/Optimizers API/Base Optimizer class.md
+      - Synalinks API/Optimizers API/RandomFewShot.md
+    - Metrics:
+      - Synalinks API/Metrics/index.md
+      - Synalinks API/Metrics/Base Metric class.md
+      - Synalinks API/Metrics/Metric wrappers and reduction metrics.md
+      - Synalinks API/Metrics/Regression metrics.md
+      - Synalinks API/Metrics/FScore metrics.md
+    - Rewards:
+      - Synalinks API/Rewards/index.md
+      - Synalinks API/Rewards/ExactMatch reward.md
+      - Synalinks API/Rewards/CosineSimilarity reward.md
+      - Synalinks API/Rewards/LMAsJudge reward.md
+      - Synalinks API/Rewards/Reward wrappers.md
+    - Built-in Datasets:
+      - Synalinks API/Built-in Datasets/index.md
+      - Synalinks API/Built-in Datasets/GSM8K.md
+      - Synalinks API/Built-in Datasets/ARC-AGI.md
+    - Utilities:
+      - Synalinks API/Utilities/Program plotting utilities.md
+      - Synalinks API/Utilities/More plotting utilities.md
+      - Synalinks API/Utilities/NLP utilities.md
+    - Synalinks API/Config.md
+  - Deployment:
+    - Deployment/Building a REST API.md
+    - Deployment/Enabling LM Tracing.md

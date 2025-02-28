@@ -1,0 +1,98 @@
+from synalinks.src.backend.config import api_key
+from synalinks.src.backend.config import backend
+from synalinks.src.backend.config import epsilon
+from synalinks.src.backend.config import floatx
+
+if backend() == "pydantic":
+    import pydantic
+
+from synalinks.src.api_export import synalinks_export
+from synalinks.src.backend.common import name_scope
+from synalinks.src.backend.common.dynamic_json_schema_utils import dynamic_enum
+from synalinks.src.backend.common.json_schema_utils import concatenate_schema
+from synalinks.src.backend.common.json_schema_utils import contains_schema
+from synalinks.src.backend.common.json_schema_utils import factorize_schema
+from synalinks.src.backend.common.json_schema_utils import in_mask_schema
+from synalinks.src.backend.common.json_schema_utils import is_schema_equal
+from synalinks.src.backend.common.json_schema_utils import out_mask_schema
+from synalinks.src.backend.common.json_schema_utils import prefix_schema
+from synalinks.src.backend.common.json_schema_utils import standardize_schema
+from synalinks.src.backend.common.json_schema_utils import suffix_schema
+from synalinks.src.backend.common.json_utils import concatenate_json
+from synalinks.src.backend.common.json_utils import factorize_json
+from synalinks.src.backend.common.json_utils import in_mask_json
+from synalinks.src.backend.common.json_utils import out_mask_json
+from synalinks.src.backend.common.json_utils import prefix_json
+from synalinks.src.backend.common.json_utils import suffix_json
+from synalinks.src.backend.common.stateless_scope import get_stateless_scope
+from synalinks.src.backend.common.stateless_scope import in_stateless_scope
+from synalinks.src.backend.common.symbolic_data_model import any_symbolic_data_models
+from synalinks.src.backend.common.symbolic_data_model import is_symbolic_data_model
+
+if backend() == "pydantic":
+    from pydantic import Field
+
+    from synalinks.src.backend.pydantic.base import ChatMessage
+    from synalinks.src.backend.pydantic.base import ChatMessages
+    from synalinks.src.backend.pydantic.base import ChatRole
+    from synalinks.src.backend.pydantic.base import Edge
+    from synalinks.src.backend.pydantic.base import Embedding
+    from synalinks.src.backend.pydantic.base import Embeddings
+    from synalinks.src.backend.pydantic.base import Entities
+    from synalinks.src.backend.pydantic.base import Entity
+    from synalinks.src.backend.pydantic.base import GenericInputs
+    from synalinks.src.backend.pydantic.base import GenericIO
+    from synalinks.src.backend.pydantic.base import GenericOutputs
+    from synalinks.src.backend.pydantic.base import KnowledgeGraph
+    from synalinks.src.backend.pydantic.base import KnowledgeGraphs
+    from synalinks.src.backend.pydantic.base import Label
+    from synalinks.src.backend.pydantic.base import Reward
+    from synalinks.src.backend.pydantic.base import Stamp
+    from synalinks.src.backend.pydantic.base import Unique
+    from synalinks.src.backend.pydantic.base import Weight
+    from synalinks.src.backend.pydantic.base import is_chat_message
+    from synalinks.src.backend.pydantic.base import is_chat_messages
+    from synalinks.src.backend.pydantic.base import is_edge
+    from synalinks.src.backend.pydantic.base import is_embedding
+    from synalinks.src.backend.pydantic.base import is_embeddings
+    from synalinks.src.backend.pydantic.base import is_entities
+    from synalinks.src.backend.pydantic.base import is_knowledge_graph
+    from synalinks.src.backend.pydantic.base import is_knowledge_graphs
+    from synalinks.src.backend.pydantic.core import IS_THREAD_SAFE
+    from synalinks.src.backend.pydantic.core import DataModel as BackendDataModel
+    from synalinks.src.backend.pydantic.core import any_data_model
+    from synalinks.src.backend.pydantic.core import any_meta_class
+    from synalinks.src.backend.pydantic.core import compute_output_spec
+    from synalinks.src.backend.pydantic.core import is_data_model
+    from synalinks.src.backend.pydantic.core import is_meta_class
+    from synalinks.src.backend.pydantic.module import PydanticModule
+else:
+    raise ValueError(f"Unable to import backend : {backend()}")
+
+from synalinks.src.backend.common.json_data_model import JsonDataModel
+from synalinks.src.backend.common.json_data_model import is_json_data_model
+from synalinks.src.backend.common.symbolic_data_model import SymbolicDataModel
+from synalinks.src.backend.common.variables import Variable
+
+
+@synalinks_export(["synalinks.DataModel", "synalinks.backend.DataModel"])
+class DataModel(BackendDataModel):  # noqa: F811
+    pass
+
+
+backend_name_scope = name_scope  # noqa: F405
+
+
+@synalinks_export("synalinks.name_scope")
+class name_scope(backend_name_scope):
+    pass
+
+
+@synalinks_export("synalinks.ops.convert_to_json_data_model")
+def convert_to_json_data_model(x):
+    return JsonDataModel(schema=x.schema(), value=x.value()) if x else x
+
+
+@synalinks_export("synalinks.ops.convert_to_symbolic_data_model")
+def convert_to_symbolic_data_model(x):
+    return SymbolicDataModel(schema=x.schema()) if x else x

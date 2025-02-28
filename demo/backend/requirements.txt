@@ -1,0 +1,5 @@
+fastapi[standard]
+uvicorn
+lancedb
+synalinks
+mlflow

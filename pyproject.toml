@@ -1,0 +1,105 @@
+[project]
+name = "synalinks"
+description = "Graph-Based Programmable Neuro-Symbolic LM Framework"
+readme = "README.md"
+requires-python = ">=3.9"
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 1 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: Unix",
+    "Operating System :: MacOS",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development",
+]
+dependencies = [
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
+    "absl-py",
+    "asyncio",
+    "datasets",
+    "jinja2",
+    "jsonschema",
+    "litellm",
+    "namex",
+    "numpy",
+    "optree",
+    "pydantic",
+    "pydotplus",
+    "rich",
+    "mkdocstrings-python",
+    "matplotlib>=3.9.4",
+    "docstring-parser>=0.16",
+    "nest-asyncio>=1.6.0",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "synalinks.src.version.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["synalinks", "synalinks.*"]
+
+[tool.ruff]
+line-length = 90
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle error
+    "F",  # Pyflakes
+    "I",  # isort
+]
+ignore = [
+    "E722",  # do not use bare 'except'
+    "E741",  # ambiguous variable name
+    "E731",  # do not assign a `lambda` expression, use a `def`
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = ["E501", "F401"]  # lines too long; imported but unused
+"**/random.py" = ["F401"]  # imported but unused
+"examples/*" = ["I", "E"]
+"notebooks/*" = ["I", "E", "F"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+known-first-party = ["synalinks"]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning",
+    "ignore::ImportWarning",
+    "ignore::RuntimeWarning",
+    "ignore::PendingDeprecationWarning",
+    "ignore::FutureWarning",
+    "ignore::UserWarning",
+]
+addopts = "--cov=synalinks -v"
+
+# Do not run tests in the `build` folders
+norecursedirs = ["build"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "@abstract",
+    "raise NotImplementedError",
+]
+omit = [
+    "*/__init__.py",
+    "*/*_test.py",
+    "*/utils/*.py",
+]
+
+[tool.coverage.run]
+branch = true
+omit = [
+    "*/__init__.py",
+    "*/*_test.py",
+    "*/utils/*.py",
+]
