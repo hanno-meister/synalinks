@@ -181,7 +181,7 @@ class LanguageModel(SynalinksSaveable):
                         },
                     }
                 )
-            elif self.model.startwith("openai"):
+            elif self.model.startswith("openai"):
                 # Use constrained structured output for openai
                 kwargs.update(
                     {
