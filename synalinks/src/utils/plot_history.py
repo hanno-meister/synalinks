@@ -1,5 +1,6 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
+import os
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 
@@ -11,6 +12,7 @@ from synalinks.src.utils.plot_utils import generate_distinct_colors
 def plot_history(
     history,
     to_file="training_history.png",
+    to_folder=None,
     xlabel="Epochs",
     ylabel="Scores",
     title="Training history",
@@ -47,8 +49,10 @@ def plot_history(
         ValueError: If there are unrecognized keyword arguments.
 
     Returns:
-        (IPython.display.Image): If running in a Jupyter notebook,
-            returns an IPython Image object for inline display.
+        (IPython.display.Image | marimo.Image | str): 
+            If running in a Jupyter notebook, returns an IPython Image object
+            for inline display. If running in a Marimo notebook returns a marimo image.
+            Otherwise returns the filepath where the image have been saved.
     """
 
     colors = generate_distinct_colors(len(history.history))
@@ -68,6 +72,8 @@ def plot_history(
     plt.ylim(0.0, 1.0)
     plt.legend()
     plt.grid(grid)
+    if to_folder:
+        to_file = os.path.join(to_folder, to_file)
     plt.savefig(to_file)
     plt.close()
     try:

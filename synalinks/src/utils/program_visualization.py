@@ -331,6 +331,7 @@ def program_to_dot(
 def plot_program(
     program,
     to_file=None,
+    to_folder=None,
     show_schemas=False,
     show_module_names=False,
     rankdir="TB",
@@ -351,10 +352,10 @@ def plot_program(
         outputs=outputs,
     )
 
-    dot_img_file = '/tmp/program_1.png'
     synalinks.utils.plot_program(
         program,
-        to_file=dot_img_file,
+        to_file="program_1.png",
+        to_folder="/tmp",
         show_schemas=True,
         show_trainable=True,
     )
@@ -378,8 +379,10 @@ def plot_program(
         show_trainable (bool): whether to display if a module is trainable.
 
     Returns:
-        (IPython.display.Image): A Jupyter notebook Image object if Jupyter is installed.
-            This enables in-line display of the program plots in notebooks.
+        (IPython.display.Image | marimo.Image | str): 
+            If running in a Jupyter notebook, returns an IPython Image object
+            for inline display. If running in a Marimo notebook returns a marimo image.
+            Otherwise returns the filepath where the image have been saved.
     """
 
     if not to_file:
@@ -433,15 +436,17 @@ def plot_program(
         return
     dot = remove_unused_edges(dot)
     _, extension = os.path.splitext(to_file)
+    if to_folder:
+        to_file = os.path.join(to_folder, to_file)
     if not extension:
         extension = "png"
     else:
         extension = extension[1:]
     # Save image to disk.
     dot.write(to_file, format=extension)
-    # Return the image as a Jupyter Image object, to be displayed in-line.
+    # Return the image as a Jupyter Image object or Marimo Image object, to be displayed in-line.
     # Note that we cannot easily detect whether the code is running in a
-    # notebook, and thus we always return the Image if Jupyter is available.
+    # Jupyter notebook, and thus we always return the Image if Jupyter is available.
     if extension != "pdf":
         try:
             from IPython import display

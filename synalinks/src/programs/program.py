@@ -231,7 +231,6 @@ class Program(Trainer, Module):
         line_length=None,
         positions=None,
         print_fn=None,
-        return_string=False,
         expand_nested=False,
         show_trainable=False,
         module_range=None,
@@ -250,7 +249,6 @@ class Program(Trainer, Module):
                 It will be called on each line of the summary.
                 You can set it to a custom function
                 in order to capture the string summary.
-            return_string: If True, return the summary string instead of printing.
             expand_nested: Whether to expand the nested models.
                 Defaults to `False`.
             show_trainable: Whether to show if a module is trainable.
@@ -277,7 +275,6 @@ class Program(Trainer, Module):
             show_trainable=show_trainable,
             module_range=module_range,
         )
-        # TODO capture stdout and return the string
 
     def save(self, filepath, overwrite=True, **kwargs):
         """Saves a program as a `.json` file.

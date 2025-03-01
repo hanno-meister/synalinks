@@ -282,7 +282,7 @@ async def main():
         epochs=epochs,
     )
 
-    filepath = synalinks.utils.plot_history(history)
+    synalinks.utils.plot_history(history)
 
 if __name__ == "__main__":
     asyncio.run(main())

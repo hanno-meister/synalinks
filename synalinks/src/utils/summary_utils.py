@@ -286,7 +286,7 @@ def print_summary(
         console = rich.console.Console(highlight=False)
 
     # Print the to the console.
-    console.print(bold_text(f"Program: {rich.markup.escape(program.name)}"))
+    console.print(f"Program: {rich.markup.escape(program.name)}")
     console.print(f"description: '{rich.markup.escape(program.description)}'")
     console.print(table)
 
