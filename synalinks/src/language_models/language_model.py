@@ -19,7 +19,9 @@ class LanguageModel(SynalinksSaveable):
     structures in language. Language models can perform various tasks such as text
     generation, translation, summarization, and answering questions.
 
-    Many providers are available like OpenAI, Anthropic, Groq, or Ollama.
+    We support providers that implement *constrained structured output* 
+    like OpenAI, Ollama or Mistral. In addition we support providers that otherwise
+    allow to constrain the use of a specific tool like Groq or Anthropic.
 
     For the complete list of models, please refer to the providers documentation.
 
@@ -31,19 +33,8 @@ class LanguageModel(SynalinksSaveable):
 
     os.environ["OPENAI_API_KEY"] = "your-api-key"
 
-    language_model = synalinks.LanguageModel(model="openai/gpt-4o-mini")
-    ```
-
-    **Using Anthropic models**
-
-    ```python
-    import synalinks
-    import os
-
-    os.environ["ANTHROPIC_API_KEY"] = "your-api-key"
-
     language_model = synalinks.LanguageModel(
-        model="anthropic/claude-3-sonnet-20240229",
+        model="openai/gpt-4o-mini",
     )
     ```
 
@@ -57,6 +48,32 @@ class LanguageModel(SynalinksSaveable):
 
     language_model = synalinks.LanguageModel(
         model="groq/llama3-8b-8192",
+    )
+    ```
+    
+    **Using Anthropic models**
+
+    ```python
+    import synalinks
+    import os
+
+    os.environ["ANTHROPIC_API_KEY"] = "your-api-key"
+
+    language_model = synalinks.LanguageModel(
+        model="anthropic/claude-3-sonnet-20240229",
+    )
+    ```
+    
+    **Using Mistral models**
+
+    ```python
+    import synalinks
+    import os
+
+    os.environ["MISTRAL_API_KEY"] = "your-api-key"
+
+    language_model = synalinks.LanguageModel(
+        model="mistral/codestral-latest",
     )
     ```
 
@@ -111,7 +128,7 @@ class LanguageModel(SynalinksSaveable):
         json_instance = {}
         if schema:
             if self.model.startswith("groq"):
-                # Use a tool created on the fly for Groq
+                # Use a tool created on the fly for groq
                 kwargs.update(
                     {
                         "tools": [
@@ -130,14 +147,59 @@ class LanguageModel(SynalinksSaveable):
                         },
                     }
                 )
-            else:
+            elif self.model.startswith("anthropic"):
+                # Use a tool created on the fly for anthropic
+                kwargs.update(
+                    {
+                        "tools": [
+                            {
+                                "name": "structured_output",
+                                "description": "Generate a valid JSON output",
+                                "input_schema": {
+                                    "type": "object",
+                                    "properties": schema.get("properties"),
+                                    "required": schema.get("required"),
+                                }
+                            }
+                        ],
+                        "tool_choice": {
+                            "type": "tool",
+                            "name": "structured_output",
+                        }
+                    }
+                )
+            elif self.model.startswith("ollama") or self.model.startswith("mistral"):
+                # Use constrained structured output for ollama/mistral
                 kwargs.update(
                     {
                         "response_format": {
                             "type": "json_schema",
-                            "json_schema": {"schema": schema},
+                            "json_schema": {
+                                "schema": schema
+                            },
+                            "strict": True,
                         },
                     }
+                )
+            elif self.model.startwith("openai"):
+                # Use constrained structured output for openai
+                kwargs.update(
+                    {
+                        "response_format": {
+                            "type": "json_schema",
+                            "json_schema": {
+                                "name": "structured_output",
+                                "strict": True,
+                                "schema": schema,
+                            }
+                        }
+                    }
+                )
+            else:
+                provider = self.model.split("/")[0]
+                raise ValueError(
+                    f"LM provider '{provider}' not supported yet, please ensure that"
+                    " they support constrained structured output and fill an issue."
                 )
 
         if self.api_base:
@@ -165,6 +227,11 @@ class LanguageModel(SynalinksSaveable):
                     response_str = response["choices"][0]["message"]["tool_calls"][0][
                         "function"
                     ]["arguments"]
+                elif self.model.startswith("anthropic") and schema:
+                    for content_block in response["content"]:
+                        if content_block["type"] == "tool_use":
+                            response_str = json.dumps(content_block["input"])
+                            break
                 else:
                     response_str = response["choices"][0]["message"]["content"].strip()
                 if schema:
@@ -174,7 +241,6 @@ class LanguageModel(SynalinksSaveable):
                 return json_instance
             except Exception as e:
                 warnings.warn(str(e))
-                raise e
         return None
 
     def _obj_type(self):
