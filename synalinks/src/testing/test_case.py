@@ -11,7 +11,7 @@ from absl.testing import parameterized
 from synalinks.src.backend.common.global_state import clear_session
 
 
-class TestCase(parameterized.TestCase, unittest.TestCase):
+class TestCase(unittest.IsolatedAsyncioTestCase, parameterized.TestCase, unittest.TestCase):
     maxDiff = None
 
     def __init__(self, *args, **kwargs):

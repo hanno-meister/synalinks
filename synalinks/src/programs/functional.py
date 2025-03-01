@@ -81,7 +81,7 @@ class Functional(Function, Program):
             self.trainable = trainable
 
         self._modules = self.modules
-        self.build(None)
+        self.built = True
         self._convert_input_args = False
         self._allow_non_data_model_positional_args = True
         output_modules = [x._synalinks_history[0] for x in self.outputs]

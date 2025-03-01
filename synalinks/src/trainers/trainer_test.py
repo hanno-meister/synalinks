@@ -165,7 +165,7 @@ class TestTrainer(testing.TestCase):
 
         (x_train, _), _ = load_test_data()
 
-        y_data = program.predict(x=x_train)
+        y_data = await program.predict(x=x_train)
 
         self.assertEqual(len(y_data), 2)
         self.assertIsInstance(y_data[0], JsonDataModel)

@@ -17,14 +17,12 @@ class ModuleTest(testing.TestCase):
             async def call(self, x):
                 assert False  # Should never be called.
 
-            async def compute_output_spec(self, input_schema):
-                return input_schema
+            async def compute_output_spec(self, inputs):
+                return backend.SymbolicDataModel(data_model=inputs)
 
         module = TestModule()
         self.assertEqual(
-            await module.compute_output_spec(
-                backend.SymbolicDataModel(data_model=Query)
-            ).schema(),
+            (await module(backend.SymbolicDataModel(data_model=Query))).schema(),
             backend.standardize_schema(Query.schema()),
         )
 
@@ -33,11 +31,14 @@ class ModuleTest(testing.TestCase):
             async def call(self, x):
                 assert False  # Should never be called.
 
-            async def compute_output_spec(self, input_schema):
-                return (input_schema, input_schema)
+            async def compute_output_spec(self, inputs):
+                return (
+                    backend.SymbolicDataModel(data_model=inputs),
+                    backend.SymbolicDataModel(data_model=inputs),
+                )
 
         module = TestModule()
-        out = await module.compute_output_spec(
+        out = await module(
             backend.SymbolicDataModel(data_model=Query)
         )
         self.assertIsInstance(out, tuple)
@@ -50,11 +51,14 @@ class ModuleTest(testing.TestCase):
             async def call(self, x):
                 assert False  # Should never be called.
 
-            async def compute_output_spec(self, input_schema):
-                return [input_schema, input_schema]
+            async def compute_output_spec(self, inputs):
+                return [
+                    backend.SymbolicDataModel(data_model=inputs),
+                    backend.SymbolicDataModel(data_model=inputs),
+                ]
 
         module = TestModule()
-        out = await module.compute_output_spec(
+        out = await module(
             backend.SymbolicDataModel(data_model=Query)
         )
 
@@ -68,11 +72,14 @@ class ModuleTest(testing.TestCase):
             async def call(self, x):
                 assert False  # Should never be called.
 
-            async def compute_output_spec(self, input_schema):
-                return {"1": input_schema, "2": input_schema}
+            async def compute_output_spec(self, inputs):
+                return {
+                    "1": backend.SymbolicDataModel(data_model=inputs),
+                    "2": backend.SymbolicDataModel(data_model=inputs),
+                }
 
         module = TestModule()
-        out = await module.compute_output_spec(
+        out = await module(
             backend.SymbolicDataModel(data_model=Query)
         )
 

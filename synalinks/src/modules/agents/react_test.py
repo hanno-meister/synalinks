@@ -5,6 +5,8 @@ from unittest.mock import patch
 from synalinks.src import testing
 from synalinks.src.backend import DataModel
 from synalinks.src.language_models import LanguageModel
+from synalinks.src.modules import Input
+from synalinks.src.programs import Program
 from synalinks.src.modules.agents.react import ReACTAgent
 
 
@@ -45,14 +47,6 @@ class ReACTAgentTest(testing.TestCase):
 
         language_model = LanguageModel(model="ollama_chat/deepseek-r1")
 
-        agent = ReACTAgent(
-            input_data_model=Query,
-            output_data_model=FinalAnswer,
-            language_model=language_model,
-            functions=[calculate],
-            max_iterations=3,
-        )
-
         decision_response = (
             """{"thinking": "I need to calculate the total number of apples by adding """
             """the initial amount to the additional apples given by my friend.", """
@@ -77,8 +71,21 @@ class ReACTAgentTest(testing.TestCase):
         ]
 
         mock_completion.side_effect = mock_responses
+        
+        x0 = Input(data_model=Query)
+        x1 = await ReACTAgent(
+            data_model=FinalAnswer,
+            language_model=language_model,
+            functions=[calculate],
+            max_iterations=3,
+        )(x0)
+        
+        program = Program(
+            inputs=x0,
+            outputs=x1,
+        )
 
-        result = await agent(
+        result = await program(
             Query(
                 query=(
                     "You have a basket with 12 apples. "

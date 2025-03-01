@@ -20,7 +20,7 @@ class FunctionTest(testing.TestCase):
 
         input_1 = SymbolicDataModel(data_model=Query)
         input_2 = SymbolicDataModel(data_model=Answer)
-        output = concat(input_1, input_2)
+        output = await concat(input_1, input_2)
         fn = function.Function(
             inputs=[input_1, input_2],
             outputs=output,
@@ -57,12 +57,12 @@ class FunctionTest(testing.TestCase):
         # Symbolic call
         x1_alt = SymbolicDataModel(data_model=Query)
         x2_alt = SymbolicDataModel(data_model=Answer)
-        y_val = fn([x1_alt, x2_alt])
+        y_val = await fn([x1_alt, x2_alt])
         self.assertIsInstance(y_val, SymbolicDataModel)
 
         # Recursion
         fn = function.Function(inputs=[x1_alt, x2_alt], outputs=y_val)
-        y_val = fn(
+        y_val = await fn(
             [
                 JsonDataModel(data_model=Query(query="What is the capital of France?")),
                 JsonDataModel(data_model=Answer(answer="Paris")),
@@ -87,7 +87,7 @@ class FunctionTest(testing.TestCase):
         input_2 = SymbolicDataModel(data_model=Answer)
         input_3 = SymbolicDataModel(data_model=Question)
 
-        output = concat(input_1, input_2)
+        output = await concat(input_1, input_2)
         fn = function.Function(
             inputs=[input_1, input_2],
             outputs=output,

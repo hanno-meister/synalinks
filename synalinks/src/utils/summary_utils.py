@@ -2,10 +2,11 @@
 # Original authors: François Chollet et al. (Keras Team)
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
+import sys
 import json
 import re
 import shutil
-
+import io
 import rich
 import rich.table
 
@@ -80,7 +81,6 @@ def print_summary(
     line_length=None,
     positions=None,
     print_fn=None,
-    return_string=False,
     expand_nested=False,
     show_trainable=False,
     module_range=None,
@@ -286,20 +286,9 @@ def print_summary(
         console = rich.console.Console(highlight=False)
 
     # Print the to the console.
-    if not return_string:
-        console.print(bold_text(f"Program: {rich.markup.escape(program.name)}"))
-        console.print(f"description: '{rich.markup.escape(program.description)}'")
-        console.print(table)
-    else:
-        summary_string = "\n".join(
-            [
-                bold_text(f"Program: {rich.markup.escape(program.name)}"),
-                f"description: '{rich.markup.escape(program.description)}'",
-                table,
-            ]
-        )
-        return summary_string
-    
+    console.print(bold_text(f"Program: {rich.markup.escape(program.name)}"))
+    console.print(f"description: '{rich.markup.escape(program.description)}'")
+    console.print(table)
 
 
 def get_module_index_bound_by_module_name(modules, module_range=None):

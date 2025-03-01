@@ -52,7 +52,7 @@ class CoreTest(testing.TestCase):
             foo: str
             bar: str
 
-        x = await (Foo + Bar)
+        x = Foo + Bar
 
         schema = x.schema()
         expected_schema = standardize_schema(Result.schema())

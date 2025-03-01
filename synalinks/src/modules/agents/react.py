@@ -35,6 +35,7 @@ class ReACTAgent(Program):
     ```python
 
     async def main():
+    
         class Query(DataModel):
             query: str
 
@@ -69,12 +70,17 @@ class ReACTAgent(Program):
 
         language_model = LanguageModel(model="ollama_chat/deepseek-r1")
 
-        agent = ReACTAgent(
-            input_data_model=Query,
-            output_data_model=FinalAnswer,
+        x0 = Input(data_model=Query)
+        x1 = await ReACTAgent(
+            data_model=FinalAnswer,
             language_model=language_model,
             functions=[calculate],
             max_iterations=3,
+        )(x0)
+        
+        program = Program(
+            inputs=x0,
+            outputs=x1,
         )
 
     if __name__ == "__main__":
@@ -140,10 +146,12 @@ class ReACTAgent(Program):
         self.prompt_template = prompt_template
 
         if decision_examples:
-            self.decision_examples = []
+            decision_examples = []
+        self.decision_examples = decision_examples
 
-        if decision_hints:
-            self.decision_hints = get_decision_hints()
+        if not decision_hints:
+           decision_hints = get_decision_hints()
+        self.decision_hints = decision_hints
 
         self.use_inputs_schema = use_inputs_schema
         self.use_outputs_schema = use_outputs_schema
@@ -162,13 +170,17 @@ class ReACTAgent(Program):
 
         self.labels.append("finish")
 
-        self.name = name
-        self.description = description
-        self.trainable = trainable
+        super().__init__(
+            name=name,
+            description=description,
+            trainable=trainable,
+        )
 
-    def build(self, input_schema):
-        inputs = Input(schema=input_schema)
+    def build(self, inputs_schema):
+        print(f"call build with: {inputs_schema}")
+        inputs = Input(schema=inputs_schema)
         asyncio.get_event_loop().run_until_complete(self.initialize(inputs))
+        self.built=True
 
     async def initialize(self, inputs):
         current_steps = [inputs]
@@ -189,7 +201,7 @@ class ReACTAgent(Program):
                     ]
                     actions.append(
                         Generator(
-                            schema=self.output_schema,
+                            schema=self.schema,
                             language_model=self.action_language_model,
                             prompt_template=self.prompt_template,
                             use_inputs_schema=self.use_inputs_schema,

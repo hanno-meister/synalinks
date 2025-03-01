@@ -61,7 +61,7 @@ class SequentialTest(testing.TestCase):
 
         # Test symbolic call
         x = SymbolicDataModel(data_model=Query)
-        y = program(x)
+        y = await program(x)
         self.assertIsInstance(y, SymbolicDataModel)
         self.assertEqual(y.schema(), standardize_schema(AnswerWithRationale.schema()))
 

@@ -56,7 +56,10 @@ class GeneratorModuleTest(testing.TestCase):
         }
 
         x0 = Input(data_model=Query)
-        x1 = Generator(data_model=AnswerWithRationale, language_model=language_model)(x0)
+        x1 = await Generator(
+            data_model=AnswerWithRationale,
+            language_model=language_model,
+        )(x0)
         program = Program(
             inputs=x0,
             outputs=x1,
@@ -94,8 +97,9 @@ class GeneratorModuleTest(testing.TestCase):
         }
 
         x0 = Input(data_model=Query)
-        x1 = Generator(
-            schema=AnswerWithRationale.schema(), language_model=language_model
+        x1 = await Generator(
+            schema=AnswerWithRationale.schema(),
+            language_model=language_model,
         )(x0)
         program = Program(
             inputs=x0,

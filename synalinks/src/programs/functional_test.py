@@ -20,7 +20,7 @@ class FunctionalTest(testing.TestCase):
 
         input_a = Input(data_model=Query, name="input_a")
         input_b = Input(data_model=Answer, name="input_b")
-        outputs = await (input_a + input_b)
+        outputs = input_a + input_b
         program = Functional([input_a, input_b], outputs, name="basic")
 
         self.assertEqual(program.name, "basic")
@@ -80,7 +80,7 @@ class FunctionalTest(testing.TestCase):
         input_a = Input(data_model=Query, name="input_a")
         input_b = Input(data_model=Answer, name="input_b")
         output_a = input_a
-        output_b = await (input_a + input_b)
+        output_b = input_a + input_b
 
         program = Functional([input_a, input_b], [output_a, output_b])
 
@@ -147,7 +147,7 @@ class FunctionalTest(testing.TestCase):
         input_a = Input(data_model=Query, name="a")
         input_b = Input(data_model=Answer, name="b")
 
-        outputs = await (input_a + input_b)
+        outputs = input_a + input_b
 
         with self.assertRaisesRegex(
             ValueError, "All `inputs` values must be SymbolicDataModels"
@@ -188,7 +188,7 @@ class FunctionalTest(testing.TestCase):
 
         input_a = Input(data_model=Query, name="a")
         input_b = Input(data_model=Answer, name="b")
-        outputs = await (input_a + input_b)
+        outputs = input_a + input_b
 
         program = Functional(
             [input_a, input_b],

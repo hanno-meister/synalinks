@@ -43,7 +43,7 @@ class ProgramTest(testing.TestCase):
         expected_tree = {
             "trainable_variables": {
                 "generator": {
-                    "variable": {
+                    "generator_state": {
                         "prompt_template": default_prompt_template(),
                         "examples": [],
                         "hints": [],
@@ -81,7 +81,7 @@ class ProgramTest(testing.TestCase):
         )
 
         state_tree = program.get_state_tree()
-        state_tree["trainable_variables"]["generator"]["variable"]["prompt_template"] = (
+        state_tree["trainable_variables"]["generator"]["generator_state"]["prompt_template"] = (
             "Dummy prompt template"
         )
         program.set_state_tree(state_tree)
@@ -120,7 +120,7 @@ class ProgramTest(testing.TestCase):
         expected_tree = {
             "trainable_variables": {
                 "generator": {
-                    "variable": {
+                    "generator_state": {
                         "prompt_template": default_prompt_template(),
                         "examples": [],
                         "hints": [],
@@ -166,7 +166,7 @@ class ProgramTest(testing.TestCase):
         )
 
         state_tree = program.get_state_tree()
-        state_tree["trainable_variables"]["generator"]["variable"]["prompt_template"] = (
+        state_tree["trainable_variables"]["generator"]["generator_state"]["prompt_template"] = (
             "Dummy prompt template"
         )
         program.set_state_tree(state_tree)

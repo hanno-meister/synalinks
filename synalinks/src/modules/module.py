@@ -691,7 +691,7 @@ class Module(BackendModule, Operation, SynalinksSaveable):
     async def _maybe_build(self, call_spec):
         if self.built:
             return
-
+        
         schemas_dict = get_schemas_dict(call_spec)
         first_schema = next(iter(schemas_dict.values()), None)
 
@@ -817,7 +817,7 @@ def get_schemas_dict(call_spec):
     schemas_dict = {}
     for k, v in call_spec.data_arguments_dict.items():
         if k == "kwargs" or k == "args":
-            # Do not include catch-alls in schemas dict
+            # Do not include catch-alls in shapes dict
             continue
         if k in call_spec.nested_data_argument_names:
             schemas_dict[f"{k}_schema"] = tree.map_structure(
@@ -878,7 +878,7 @@ def update_schemas_dict_for_target_fn(
         if values:
             input_schema = values[0]
         else:
-            input_schema = None
+            input_schema = call_spec.first_arg[0].schema()
         return {key: input_schema}
 
     # Multiple args: check that all names line up.

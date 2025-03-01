@@ -152,12 +152,6 @@ class Function(Operation):
         depth_keys.sort(reverse=True)
 
         async def compute_node(node, operation_fn, call_fn):
-            if not node.operation or node.is_input:
-                return  # Input data_models already exist.
-
-            if any(id(x) not in data_model_dict for x in node.input_data_models):
-                return  # Node is not computable, try skipping.
-
             args, kwargs = node.arguments.fill_in(data_model_dict)
             op = operation_fn(node.operation)
             if call_fn is not None:
@@ -169,16 +163,28 @@ class Function(Operation):
         for depth in depth_keys:
             nodes = nodes_by_depth[depth]
             tasks = []
+            
             for node in nodes:
+                if not node.operation or node.is_input:
+                    continue  # Input data_models already exist.
+
+                if any(id(x) not in data_model_dict for x in node.input_data_models):
+                    continue  # Node is not computable, try skipping.
+            
                 tasks.append(compute_node(node, operation_fn, call_fn))
 
             results = await asyncio.gather(*tasks)
 
             for i, node in enumerate(nodes):
+                if not node.operation or node.is_input:
+                    continue  # Input data_models already exist.
+
+                if any(id(x) not in data_model_dict for x in node.input_data_models):
+                    continue  # Node is not computable, try skipping.
+                
                 # Update data_model_dict.
                 for x, y in zip(node.outputs, tree.flatten(results[i])):
-                    if y is not None:
-                        data_model_dict[id(x)] = y
+                    data_model_dict[id(x)] = y
 
         output_data_models = []
         for x in self.outputs:

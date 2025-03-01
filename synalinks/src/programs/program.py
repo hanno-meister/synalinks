@@ -268,16 +268,16 @@ class Program(Trainer, Module):
         Raises:
             ValueError: if `summary()` is called before the model is built.
         """
-        return summary_utils.print_summary(
+        summary_utils.print_summary(
             self,
             line_length=line_length,
             positions=positions,
             print_fn=print_fn,
-            return_string=return_string,
             expand_nested=expand_nested,
             show_trainable=show_trainable,
             module_range=module_range,
         )
+        # TODO capture stdout and return the string
 
     def save(self, filepath, overwrite=True, **kwargs):
         """Saves a program as a `.json` file.
