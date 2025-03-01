@@ -85,7 +85,7 @@ filterwarnings = [
     "ignore::FutureWarning",
     "ignore::UserWarning",
 ]
-addopts = "--cov=synalinks -v"
+addopts = "--cov-report xml --cov=synalinks -v"
 
 # Do not run tests in the `build` folders
 norecursedirs = ["build"]
@@ -98,14 +98,10 @@ exclude_lines = [
 ]
 omit = [
     "*/__init__.py",
-    "*/*_test.py",
-    "*/utils/*.py",
 ]
 
 [tool.coverage.run]
 branch = true
 omit = [
     "*/__init__.py",
-    "*/*_test.py",
-    "*/utils/*.py",
 ]
