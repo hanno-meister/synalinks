@@ -31,7 +31,7 @@ class ExactMatchTest(testing.TestCase):
             answer: str
 
         y_true = Answer(answer="Paris")
-        y_pred = Answer(text="The french capital is Toulouse", answer="Toulouse")
+        y_pred = AnswerWithText(text="The french capital is Toulouse", answer="Toulouse")
         exact_match = ExactMatch(in_mask=["answer"])
         reward = await exact_match(y_true, y_pred)
         self.assertEqual(reward, 0.0)
@@ -41,7 +41,7 @@ class ExactMatchTest(testing.TestCase):
         self.assertEqual(reward, 0.0)
 
         y_true = Answer(answer="Paris")
-        y_pred = Answer(text="The french capital is Paris", answer="Paris")
+        y_pred = AnswerWithText(text="The french capital is Paris", answer="Paris")
         exact_match = ExactMatch(in_mask=["answer"])
         reward = await exact_match(y_true, y_pred)
         self.assertEqual(reward, 1.0)

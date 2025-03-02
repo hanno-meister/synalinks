@@ -4,6 +4,7 @@ import asyncio
 import inspect
 import json
 
+from typing_extensions import ClassVar
 import pydantic
 
 from synalinks.src import tree
@@ -14,6 +15,8 @@ from synalinks.src.backend.common.symbolic_data_model import SymbolicDataModel
 from synalinks.src.backend.common.symbolic_scope import SymbolicScope
 
 IS_THREAD_SAFE = True
+
+
 
 
 class MetaDataModel(type(pydantic.BaseModel)):
@@ -102,9 +105,15 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
 
     ```python
     class AnswerWithReflection(synalinks.DataModel):
-        rationale: str
-        reflection: str
-        answer: str
+        thinking: str = synalinks.Field(
+            description="Your step by step thinking",
+        )
+        reflection: str = synalinks.Field(
+            description="The reflection about your thinking",
+        )
+        answer: str = synalinks.Field(
+            description="The correct answer",
+        )
 
     language_model = synalinks.LanguageModel("ollama/mistral")
 
@@ -114,6 +123,8 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
     )
     ```
     """
+    model_config: ClassVar[pydantic.ConfigDict] = \
+        pydantic.ConfigDict(extra="forbid")
 
     def json(self):
         """Alias for the JSON value of the data model.

@@ -44,6 +44,7 @@ class FunctionalTest(testing.TestCase):
             "required": ["query", "answer"],
             "title": "SymbolicDataModel",
             "type": "object",
+            "additionalProperties": False,
         }
         expected_value = {
             "query": "What is the capital of France?",
@@ -101,6 +102,7 @@ class FunctionalTest(testing.TestCase):
             "required": ["query"],
             "title": "SymbolicDataModel",
             "type": "object",
+            "additionalProperties": False,
         }
 
         expected_schema_b = {
@@ -111,6 +113,7 @@ class FunctionalTest(testing.TestCase):
             "required": ["query", "answer"],
             "title": "SymbolicDataModel",
             "type": "object",
+            "additionalProperties": False,
         }
         self.assertIsInstance(out_val, list)
         self.assertEqual(len(out_val), 2)
@@ -175,6 +178,7 @@ class FunctionalTest(testing.TestCase):
             "required": ["query", "answer"],
             "title": "SymbolicDataModel",
             "type": "object",
+            "additionalProperties": False,
         }
         self.assertIsInstance(out_val, JsonDataModel)
         self.assertEqual(out_val.schema(), expected_schema)

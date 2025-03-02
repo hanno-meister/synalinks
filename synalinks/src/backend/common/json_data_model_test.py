@@ -19,6 +19,7 @@ class JsonDataModelTest(testing.TestCase):
             "required": ["query"],
             "title": "SymbolicDataModel",
             "type": "object",
+            "additionalProperties": False,
         }
         expected_value = {"query": "What is the capital of France?"}
 
@@ -41,6 +42,7 @@ class JsonDataModelTest(testing.TestCase):
             "required": ["query"],
             "title": "SymbolicDataModel",
             "type": "object",
+            "additionalProperties": False,
         }
         expected_value = {"query": "What is the capital of France?"}
 
@@ -58,6 +60,7 @@ class JsonDataModelTest(testing.TestCase):
             "required": ["query"],
             "title": "SymbolicDataModel",
             "type": "object",
+            "additionalProperties": False,
         }
         value = {"query": "What is the capital of France?"}
 
@@ -75,6 +78,7 @@ class JsonDataModelTest(testing.TestCase):
         )
 
         expected_schema = {
+            "additionalProperties": False,
             "properties": {"query": {"title": "Query", "type": "string"}},
             "required": ["query"],
             "title": "SymbolicDataModel",

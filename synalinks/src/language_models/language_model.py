@@ -183,6 +183,7 @@ class LanguageModel(SynalinksSaveable):
                 )
             elif self.model.startswith("openai"):
                 # Use constrained structured output for openai
+                # OpenAI require the field  "additionalProperties"
                 kwargs.update(
                     {
                         "response_format": {

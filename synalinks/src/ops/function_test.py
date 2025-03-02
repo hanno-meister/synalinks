@@ -48,6 +48,7 @@ class FunctionTest(testing.TestCase):
             "required": ["query", "answer"],
             "title": "SymbolicDataModel",
             "type": "object",
+            "additionalProperties": False,
         }
 
         self.assertIsInstance(output_val, JsonDataModel)

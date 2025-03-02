@@ -16,6 +16,7 @@ class CoreTest(testing.TestCase):
             "required": ["foo"],
             "title": "TestDataModel",
             "type": "object",
+            "additionalProperties": False,
         }
 
         self.assertEqual(TestDataModel.schema(), expected_schema)
@@ -29,6 +30,7 @@ class CoreTest(testing.TestCase):
             "required": ["foo"],
             "title": "TestDataModel",
             "type": "object",
+            "additionalProperties": False,
         }
 
         self.assertEqual(TestDataModel(foo="bar").schema(), expected_schema)

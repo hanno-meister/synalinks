@@ -98,6 +98,7 @@ def concatenate_schema(schema1, schema2):
         "required": [],
         "title": "SymbolicDataModel",
         "type": "object",
+        "additionalProperties": False,
     }
 
     if schema1.get("$defs") and not schema2.get("$defs"):
@@ -179,6 +180,7 @@ def factorize_schema(schema):
         "required": [],
         "title": "SymbolicDataModel",
         "type": "object",
+        "additionalProperties": False,
     }
 
     if schema.get("$defs"):
@@ -314,6 +316,7 @@ def in_mask_schema(schema, mask=None, recursive=True):
             "properties": {},
             "title": "SymbolicDataModel",
             "type": "object",
+            "additionalProperties": False,
         }
 
     result_schema = standardize_schema(copy.deepcopy(schema))
