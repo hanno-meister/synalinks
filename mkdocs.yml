@@ -28,16 +28,7 @@ nav:
   - index.md
   - Introduction.md
   - FAQ.md
-  - Notebooks:
-    - Basics:
-      - First steps: https://huggingface.co/spaces/YoanSallami/synalinks-first-steps
-      - First programs: https://github.com/SynaLinks/synalinks
-      - Control flow: https://github.com/SynaLinks/synalinks
-      - Rewards, metrics & optimizers: https://github.com/SynaLinks/synalinks
-      - Training programs: https://github.com/SynaLinks/synalinks
-      - Conversational applications: https://github.com/SynaLinks/synalinks
-    - Advanced:
-      - Implementing custom modules and programs via subclassing: https://github.com/SynaLinks/synalinks
+  - Code Examples: https://huggingface.co/spaces/YoanSallami/synalinks-noteboooks
   - Synalinks API:
     - Synalinks API/Language Models API.md
     - Synalinks API/Embedding Models API.md
