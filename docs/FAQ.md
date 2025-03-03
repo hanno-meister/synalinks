@@ -18,6 +18,7 @@
 - [What's the difference between the `training` argument in `call()` and the `trainable` attribute?](#whats-the-difference-between-the-training-argument-in-call-and-the-trainable-attribute)
 - [In `fit()`, how is the validation split computed?](#in-fit-how-is-the-validation-split-computed)
 - [In `fit()`, is the data shuffled during training?](#in-fit-is-the-data-shuffled-during-training)
+- [What's the difference between Program methods `predict()` and `__call__()`?](#whats-the-difference-between-program-methods-predict-and-__call__)
 
 ---
 
