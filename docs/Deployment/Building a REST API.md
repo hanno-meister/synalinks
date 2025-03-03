@@ -114,9 +114,11 @@ if __name__ == "__main__":
     uvicorn.run(app, host=args.host, port=args.port)
 ```
 
-### Creating your training script
+### Checkpoint migration
 
 For obvious reasons, you will need to have a separate logic to train your application. This script will specify the program architecture, training and evaluation procedure and will end up saving your program into a serializable JSON format.
+
+Please refer to the code examples and [Training API](https://synalinks.github.io/synalinks/Synalinks%20API/Programs%20API/Program%20training%20API/) to learn how to train your programs.
 
 To ease the migration, we'll also make a small script that export the trained program into our backend folder.
 
