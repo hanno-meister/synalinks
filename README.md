@@ -3,9 +3,18 @@
 <img height=200 src="https://github.com/SynaLinks/synalinks/blob/main/img/synalinks_logo_square.png?raw=true">
 </div>
 
+<div align="center">
+
+
 <p align="center">
-<b>Synalinks:</b> <em>A production-first LM framework built with decade old Deep Learning best practices</em>
+  <a href="https://github.com/SynaLinks/synalinks" target="_blank"><strong>Documentation</strong></a> ·
+  <a href="https://discord.gg/82nt97uXcM" target="_blank"><strong>Discord</strong></a> ·
+  <a href="https://huggingface.co/spaces/YoanSallami/synalinks-noteboooks" target="_blank"><strong>Code Examples</strong></a>
 </p>
+
+<b>Synalinks:</b> <em>A production-first LM framework built with decade old Deep Learning best practices</em>
+
+</div>
 
 <div align="center">
 
@@ -307,8 +316,6 @@ For more information, or help for implementing your ideas (or ones from a paper)
 Beware that every additional metric/module/optimizer should be approved by the core team, we want to keep the library minimal and clean as possible to avoid an uncontrolled growth leading to bad software practices like in most current leading LM frameworks.
 
 ### Community
-
-[![Discord Channel](https://dcbadge.vercel.app/api/server/82nt97uXcM)](https://discord.gg/82nt97uXcM)
 
 Join our community to learn more about neuro-symbolic systems and the future of AI. We welcome the participation of people from very different backgrounds or education levels.
 

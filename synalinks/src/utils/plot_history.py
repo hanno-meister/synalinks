@@ -25,7 +25,7 @@ def plot_history(
 
     ```python
     program.compile(...)
-    history = program.fit(...)
+    history = await program.fit(...)
 
     synalinks.utils.plot_history(history)
     ```

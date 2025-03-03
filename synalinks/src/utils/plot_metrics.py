@@ -24,7 +24,7 @@ def plot_metrics(
 
     ```python
     program.compile(...)
-    metrics = program.evaluate(...)
+    metrics = await program.evaluate(...)
 
     synalinks.utils.plot_metrics(metrics)
     ```

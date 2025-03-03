@@ -94,6 +94,7 @@ class FBetaScore(Metric):
             )
         self.state = self.add_variable(
             data_model=FBetaState,
+            name=self.name+"_state",
         )
         self.average = average
         self.beta = beta
@@ -152,7 +153,7 @@ class FBetaScore(Metric):
                 current_intermediate_weights, intermediate_weights
             )
 
-        self.state.json().update(
+        self.state.update(
             {
                 "true_positives": true_positives.tolist(),
                 "false_positives": false_positives.tolist(),
@@ -419,7 +420,7 @@ class BinaryFBetaScore(FBetaScore):
                 current_intermediate_weights, intermediate_weights
             )
 
-        self.state.json().update(
+        self.state.update(
             {
                 "true_positives": true_positives.tolist(),
                 "false_positives": false_positives.tolist(),

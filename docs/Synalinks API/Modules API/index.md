@@ -1,10 +1,10 @@
 # Modules API
 
-Modules are the basic building blocks of programs in Synalinks. A Module consists of data model-in & data model-out computation function (the module's `call()` method) and some state (held in `Variable`).
+Modules are the basic building blocks of programs in Synalinks. A `Module` consists of data model-in & data model-out computation function (the module's `call()` method) and some state (held in `Variable`).
 
-A module instance is callable, much like a function:
+A module instance is a callable, much like a function:
 
-``` py
+```python
 import synalinks
 import asyncio
 
@@ -45,22 +45,22 @@ if __name__ == "__main__":
 
 ### Core Modules
 
-- [Input Module](Core Modules/Input module.md)
-- [Generator Module](Core Modules/Generator module.md)
-- [Decision Module](Core Modules/Decision module.md)
-- [Action Module](Core Modules/Action module.md)
-- [Branch Module](Core Modules/Branch module.md)
+- [Input module](Core Modules/Input module.md)
+- [Generator module](Core Modules/Generator module.md)
+- [Decision module](Core Modules/Decision module.md)
+- [Action module](Core Modules/Action module.md)
+- [Branch module](Core Modules/Branch module.md)
 
 ---
 
 ### Merging Modules
 
-- [Concat Module](Merging Modules/Concat module.md)
-- [Logical And](Merging Modules/And module.md)
-- [Logical Or](Merging Modules/Or module.md)
+- [Concat module](Merging Modules/Concat module.md)
+- [And module](Merging Modules/And module.md)
+- [Or module](Merging Modules/Or module.md)
 
 ---
 
 ### Agents Modules
 
-- [ReACT Agent Module](Agents Modules/ReACT Agent module.md)
+- [ReACT Agent module](Agents Modules/ReACT Agent module.md)
