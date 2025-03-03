@@ -683,7 +683,7 @@ class Module(BackendModule, Operation, SynalinksSaveable):
     async def _maybe_build(self, call_spec):
         if self.built:
             return
-        
+
         schemas_dict = get_schemas_dict(call_spec)
         first_schema = next(iter(schemas_dict.values()), None)
 

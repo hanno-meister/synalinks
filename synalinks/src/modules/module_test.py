@@ -38,9 +38,7 @@ class ModuleTest(testing.TestCase):
                 )
 
         module = TestModule()
-        out = await module(
-            backend.SymbolicDataModel(data_model=Query)
-        )
+        out = await module(backend.SymbolicDataModel(data_model=Query))
         self.assertIsInstance(out, tuple)
         self.assertEqual(len(out), 2)
         self.assertEqual(out[0].schema(), backend.standardize_schema(Query.schema()))
@@ -58,9 +56,7 @@ class ModuleTest(testing.TestCase):
                 ]
 
         module = TestModule()
-        out = await module(
-            backend.SymbolicDataModel(data_model=Query)
-        )
+        out = await module(backend.SymbolicDataModel(data_model=Query))
 
         self.assertIsInstance(out, list)
         self.assertEqual(len(out), 2)
@@ -79,9 +75,7 @@ class ModuleTest(testing.TestCase):
                 }
 
         module = TestModule()
-        out = await module(
-            backend.SymbolicDataModel(data_model=Query)
-        )
+        out = await module(backend.SymbolicDataModel(data_model=Query))
 
         self.assertIsInstance(out, dict)
         self.assertEqual(len(out), 2)

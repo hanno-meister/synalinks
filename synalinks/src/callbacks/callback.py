@@ -23,7 +23,7 @@ class Callback:
        so they can all be called together.
     2. You will need to manually call all the `on_*` methods at the appropriate
        locations in your loop.
-       
+
     The `logs` dictionary that callback methods
     take as argument will contain keys for quantities relevant to
     the current batch or epoch (see method-specific docstrings).

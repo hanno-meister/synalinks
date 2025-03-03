@@ -36,8 +36,10 @@ class Node:
     Args:
         operation (Operation): The Operation that was called in the `op.__call__()`
             event that this node represents.
-        call_arg (positional arguments): The positional arguments the operation was called with.
-        call_kwargs (keyword arguments): The keyword arguments the operation was called with.
+        call_arg (positional arguments): The positional arguments the operation was
+            called with.
+        call_kwargs (keyword arguments): The keyword arguments the operation was
+            called with.
         outputs (list): The output data models of the `op.__call__()` call.
     """
 

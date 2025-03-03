@@ -58,7 +58,8 @@ def set_floatx(value):
     Instead, use `float64` or `float32`.
 
     Args:
-        value (str): The float type `'bfloat16'`, `'float16'`, `'float32'`, or `'float64'`.
+        value (str): The float type between `'bfloat16'`, `'float16'`, `'float32'`,
+            or `'float64'`.
 
     Examples:
 

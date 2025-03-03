@@ -77,7 +77,7 @@ async def concat(x1, x2, name=None, description=None):
         x1 (JsonDataModel | SymbolicDataModel): the first input data model.
         x2 (JsonDataModel | SymbolicDataModel): the second input data model.
         name (str): Optional. The name of the operation.
-        description (str): Optional. The description of the operation. 
+        description (str): Optional. The description of the operation.
 
     Returns:
         (JsonDataModel | SymbolicDataModel): The resulting data model
@@ -148,7 +148,7 @@ async def logical_and(x1, x2, name=None, description=None):
         x1 (JsonDataModel | SymbolicDataModel): The first input data model.
         x2 (JsonDataModel | SymbolicDataModel): The second input data model.
         name (str): Optional. The name of the operation.
-        description (str): Optional. The description of the operation. 
+        description (str): Optional. The description of the operation.
 
     Returns:
         (JsonDataModel | SymbolicDataModel | None): The resulting data model or
@@ -219,7 +219,7 @@ async def logical_or(x1, x2, name=None, description=None):
         x1 (JsonDataModel | SymbolicDataModel): The first input data model.
         x2 (JsonDataModel | SymbolicDataModel): The second input data model.
         name (str): Optional. The name of the operation.
-        description (str): Optional. The description of the operation. 
+        description (str): Optional. The description of the operation.
 
     Returns:
         (JsonDataModel | SymbolicDataModel | None): The resulting data model or
@@ -335,7 +335,7 @@ async def out_mask(x, mask=None, recursive=True, name=None, description=None):
         recursive (bool): Whether or not to remove
             recursively for nested objects (default True).
         name (str): Optional. The name of the operation.
-        description (str): Optional. The description of the operation. 
+        description (str): Optional. The description of the operation.
 
     Returns:
         (JsonDataModel | SymbolicDataModel): The resulting data model.
@@ -403,7 +403,7 @@ async def in_mask(x, mask=None, recursive=True, name=None, description=None):
         recursive (bool): Whether or not to keep
             recursively for nested objects (default True).
         name (str): Optional. The name of the operation.
-        description (str): Optional. The description of the operation. 
+        description (str): Optional. The description of the operation.
 
     Returns:
         (JsonDataModel | SymbolicDataModel): The resulting data model.

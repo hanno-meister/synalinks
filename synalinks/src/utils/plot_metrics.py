@@ -1,6 +1,7 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
 import os
+
 import matplotlib.pyplot as plt
 
 from synalinks.src.api_export import synalinks_export
@@ -44,7 +45,7 @@ def plot_metrics(
         ValueError: If there are unrecognized keyword arguments.
 
     Returns:
-        (IPython.display.Image | marimo.Image | str): 
+        (IPython.display.Image | marimo.Image | str):
             If running in a Jupyter notebook, returns an IPython Image object
             for inline display. If running in a Marimo notebook returns a marimo image.
             Otherwise returns the filepath where the image have been saved.

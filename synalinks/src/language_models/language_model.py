@@ -19,7 +19,7 @@ class LanguageModel(SynalinksSaveable):
     structures in language. Language models can perform various tasks such as text
     generation, translation, summarization, and answering questions.
 
-    We support providers that implement *constrained structured output* 
+    We support providers that implement *constrained structured output*
     like OpenAI, Ollama or Mistral. In addition we support providers that otherwise
     allow to constrain the use of a specific tool like Groq or Anthropic.
 
@@ -50,7 +50,7 @@ class LanguageModel(SynalinksSaveable):
         model="groq/llama3-8b-8192",
     )
     ```
-    
+
     **Using Anthropic models**
 
     ```python
@@ -63,7 +63,7 @@ class LanguageModel(SynalinksSaveable):
         model="anthropic/claude-3-sonnet-20240229",
     )
     ```
-    
+
     **Using Mistral models**
 
     ```python
@@ -119,7 +119,8 @@ class LanguageModel(SynalinksSaveable):
                 If None, output a ChatMessage-like answer.
             streaming (bool): Enable streaming (optional). Default to False.
                 Can be enabled only if schema is None.
-            **kwargs (keyword arguments): The additional keywords arguments for the LLM call.
+            **kwargs (keyword arguments): The additional keywords arguments
+                forwarded to the LLM call.
 
         Returns:
             (dict): The generated structured response.
@@ -159,13 +160,13 @@ class LanguageModel(SynalinksSaveable):
                                     "type": "object",
                                     "properties": schema.get("properties"),
                                     "required": schema.get("required"),
-                                }
+                                },
                             }
                         ],
                         "tool_choice": {
                             "type": "tool",
                             "name": "structured_output",
-                        }
+                        },
                     }
                 )
             elif self.model.startswith("ollama") or self.model.startswith("mistral"):
@@ -174,9 +175,7 @@ class LanguageModel(SynalinksSaveable):
                     {
                         "response_format": {
                             "type": "json_schema",
-                            "json_schema": {
-                                "schema": schema
-                            },
+                            "json_schema": {"schema": schema},
                             "strict": True,
                         },
                     }
@@ -192,7 +191,7 @@ class LanguageModel(SynalinksSaveable):
                                 "name": "structured_output",
                                 "strict": True,
                                 "schema": schema,
-                            }
+                            },
                         }
                     }
                 )

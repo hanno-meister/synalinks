@@ -48,10 +48,10 @@ class Function(Operation):
     ```
 
     Args:
-        inputs (SymbolicDataModel | tuple | list | dict): `SymbolicDataModel` 
+        inputs (SymbolicDataModel | tuple | list | dict): `SymbolicDataModel`
             instance or nested structured of `SymbolicDataModel` instances.
         outputs (SymbolicDataModel | tuple | list | dict): `SymbolicDataModel`
-            instance or nested structured of `SymbolicDataModel` instances. 
+            instance or nested structured of `SymbolicDataModel` instances.
             They should be computable given only the values of `inputs`.
         name (str): Optional. The name of the function operation.
         description (str): Optional. The description of the function operation.
@@ -164,14 +164,14 @@ class Function(Operation):
         for depth in depth_keys:
             nodes = nodes_by_depth[depth]
             tasks = []
-            
+
             for node in nodes:
                 if not node.operation or node.is_input:
                     continue  # Input data_models already exist.
 
                 if any(id(x) not in data_model_dict for x in node.input_data_models):
                     continue  # Node is not computable, try skipping.
-            
+
                 tasks.append(compute_node(node, operation_fn, call_fn))
 
             results = await asyncio.gather(*tasks)
@@ -182,7 +182,7 @@ class Function(Operation):
 
                 if any(id(x) not in data_model_dict for x in node.input_data_models):
                     continue  # Node is not computable, try skipping.
-                
+
                 # Update data_model_dict.
                 for x, y in zip(node.outputs, tree.flatten(results[i])):
                     data_model_dict[id(x)] = y

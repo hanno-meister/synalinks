@@ -144,7 +144,7 @@ class Sequential(Program):
 
     def pop(self, rebuild=True):
         """Removes the last module in the program.
-        
+
         Args:
             rebuild (bool): If `True` rebuild the program.
         """

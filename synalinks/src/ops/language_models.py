@@ -103,8 +103,8 @@ async def predict(
         language_model (LanguageModel): The language model to use
         streaming (bool): Enable streaming if True (Default to False)
         name (str): Optional. The name of the operation.
-        description (str): Optional. The description of the operation. 
-        **kwargs (keyword arguments): Additional keywords forwarded to the 
+        description (str): Optional. The description of the operation.
+        **kwargs (keyword arguments): Additional keywords forwarded to the
             LanguageModel call.
 
     Returns:

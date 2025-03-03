@@ -379,7 +379,7 @@ def plot_program(
         show_trainable (bool): whether to display if a module is trainable.
 
     Returns:
-        (IPython.display.Image | marimo.Image | str): 
+        (IPython.display.Image | marimo.Image | str):
             If running in a Jupyter notebook, returns an IPython Image object
             for inline display. If running in a Marimo notebook returns a marimo image.
             Otherwise returns the filepath where the image have been saved.
@@ -444,9 +444,10 @@ def plot_program(
         extension = extension[1:]
     # Save image to disk.
     dot.write(to_file, format=extension)
-    # Return the image as a Jupyter Image object or Marimo Image object, to be displayed in-line.
-    # Note that we cannot easily detect whether the code is running in a
-    # Jupyter notebook, and thus we always return the Image if Jupyter is available.
+    # Return the image as a Jupyter Image object or Marimo Image object, to be
+    # displayed in-line. Note that we cannot easily detect whether the code is
+    # running in a Jupyter notebook, and thus we always return the Image if
+    # Jupyter is available.
     if extension != "pdf":
         try:
             from IPython import display

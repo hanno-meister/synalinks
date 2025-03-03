@@ -4,8 +4,8 @@ import asyncio
 import inspect
 import json
 
-from typing_extensions import ClassVar
 import pydantic
+from typing_extensions import ClassVar
 
 from synalinks.src import tree
 from synalinks.src.api_export import synalinks_export
@@ -15,8 +15,6 @@ from synalinks.src.backend.common.symbolic_data_model import SymbolicDataModel
 from synalinks.src.backend.common.symbolic_scope import SymbolicScope
 
 IS_THREAD_SAFE = True
-
-
 
 
 class MetaDataModel(type(pydantic.BaseModel)):
@@ -89,7 +87,8 @@ class MetaDataModel(type(pydantic.BaseModel)):
         then concatenates this data model with the other.
 
         Args:
-            other (SymbolicDataModel | DataModel): The other data model to concatenate with.
+            other (SymbolicDataModel | DataModel): The other data model to concatenate
+                with.
 
         Returns:
             (SymbolicDataModel | None): The concatenated data model or None
@@ -108,7 +107,8 @@ class MetaDataModel(type(pydantic.BaseModel)):
         then concatenates the other data model with this one.
 
         Args:
-            other (SymbolicDataModel | DataModel): The other data model to concatenate with.
+            other (SymbolicDataModel | DataModel): The other data model to concatenate
+                with.
 
         Returns:
             (SymbolicDataModel | None): The concatenated data model or None
@@ -130,8 +130,9 @@ class MetaDataModel(type(pydantic.BaseModel)):
             other (SymbolicDataModel): The other data model to concatenate with.
 
         Returns:
-            (SymbolicDataModel | None): The concatenation of data model if both are provided,
-                or the non-None data model or None if none are provided. (See `logical_or` table).
+            (SymbolicDataModel | None): The concatenation of data model if both are
+                provided, or the non-None data model or None if none are provided.
+                (See `logical_or` table).
         """
         from synalinks.src import ops
 
@@ -146,11 +147,13 @@ class MetaDataModel(type(pydantic.BaseModel)):
         then concatenates the other data model with this one.
 
         Args:
-            other (SymbolicDataModel | DataModel): The other data model to concatenate with.
+            other (SymbolicDataModel | DataModel): The other data model to concatenate
+                with.
 
         Returns:
-            (SymbolicDataModel | None): The concatenation of data model if both are provided,
-                or the non-None data model or None if none are provided. (See `logical_or` table).
+            (SymbolicDataModel | None): The concatenation of data model if both are
+                provided, or the non-None data model or None if none are provided.
+                (See `logical_or` table).
         """
         from synalinks.src import ops
 
@@ -189,8 +192,8 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
     )
     ```
     """
-    model_config: ClassVar[pydantic.ConfigDict] = \
-        pydantic.ConfigDict(extra="forbid")
+
+    model_config: ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="forbid")
 
     def json(self):
         """Alias for the JSON value of the data model.
@@ -246,9 +249,7 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
                 ops.Concat().symbolic_call(self, other)
             )
         else:
-            return asyncio.get_event_loop().run_until_complete(
-                ops.Concat()(self, other)
-            )
+            return asyncio.get_event_loop().run_until_complete(ops.Concat()(self, other))
 
     def __radd__(self, other):
         """Concatenates another data model with this one.
@@ -278,11 +279,11 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
 
         If one of them is None, output None. If both are provided,
         then concatenates the other data model with this one.
-        
+
         If the other is a metaclass or symbolic data model, output a symbolic data model.
 
         Args:
-            other (JsonDataModel | SymbolicDataModel | DataModel): 
+            other (JsonDataModel | SymbolicDataModel | DataModel):
                 The other data model to concatenate with.
 
         Returns:
@@ -303,7 +304,7 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
 
         If one of them is None, output None. If both are provided,
         then concatenates the other data model with this one.
-        
+
         If the other is a metaclass or symbolic data model, output a symbolic data model.
 
         Args:
@@ -328,11 +329,11 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
 
         If one of them is None, output the other one. If both are provided,
         then concatenates this data model with the other.
-        
+
         If the other is a metaclass or symbolic data model, output a symbolic data model.
 
         Args:
-            other (JsonDataModel | SymbolicDataModel | DataModel): 
+            other (JsonDataModel | SymbolicDataModel | DataModel):
                 The other data model to concatenate with.
 
         Returns:
@@ -354,7 +355,7 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
 
         If one of them is None, output the other one. If both are provided,
         then concatenates the other data model with this one.
-        
+
         If the other is a metaclass or symbolic data model, output a symbolic data model.
 
         Args:

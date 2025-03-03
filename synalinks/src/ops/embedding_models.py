@@ -12,12 +12,12 @@ from synalinks.src.saving import serialization_lib
 
 class Embedding(Operation):
     """Extract the embedding vectors from a data model using an `EmbeddingModel`.
-    
+
     Args:
         embedding_model (EmbeddingModel): The embedding model to use.
         name (str): Optional. The name of the operation.
         description (str): Optional. Description of the operation.
-        **kwargs (keyword warguments): Additional keyword arguments send to the 
+        **kwargs (keyword warguments): Additional keyword arguments send to the
             embedding model.
     """
 
@@ -76,8 +76,8 @@ async def embedding(x, embedding_model=None, name=None, description=None, **kwar
         x (JsonDataModel | SymbolicDataModel): the input data_model
         embedding_model (EmbeddingModel): The embedding model to use
         name (str): Optional. The name of the operation.
-        description (str): Optional. The description of the operation. 
-        **kwargs (keyword arguments): Additional keywords forwarded to the 
+        description (str): Optional. The description of the operation.
+        **kwargs (keyword arguments): Additional keywords forwarded to the
             EmbeddingModel call.
 
     Returns:

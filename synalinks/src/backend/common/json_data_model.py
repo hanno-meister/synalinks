@@ -60,15 +60,15 @@ class JsonDataModel:
         data_model=query_instance,
     )
     ```
-    
+
     **Creating a `JsonDataModel` with `to_json_data_model()`:**
-    
+
     ```python
     class Query(synalinks.DataModel):
         query: str = synalinks.Field(
             description="The user query",
         )
-        
+
     data_model = Query(
         query="What is the capital of France?",
     ).to_json_data_model()
@@ -184,7 +184,7 @@ class JsonDataModel:
         """Concatenates another data model with this one.
 
         Args:
-            other (JsonDataModel | DataModel): 
+            other (JsonDataModel | DataModel):
                 The other data model to concatenate with.
 
         Returns:
@@ -195,7 +195,7 @@ class JsonDataModel:
         return asyncio.get_event_loop().run_until_complete(
             ops.Concat().call(other, self),
         )
-        
+
     def __and__(self, other):
         """Perform a `logical_and` with another data model.
 
@@ -214,7 +214,7 @@ class JsonDataModel:
         return asyncio.get_event_loop().run_until_complete(
             ops.And().call(self, other),
         )
-        
+
     def __rand__(self, other):
         """Perform a `logical_and` (reverse) with another data model.
 
@@ -233,7 +233,7 @@ class JsonDataModel:
         return asyncio.get_event_loop().run_until_complete(
             ops.And().call(other, self),
         )
-        
+
     def __or__(self, other):
         """Perform a `logical_or` with another data model
 
@@ -245,14 +245,15 @@ class JsonDataModel:
 
         Returns:
             (JsonDataModel | None): The concatenation of data model if both are provided,
-                or the non-None data model or None if none are provided. (See `logical_or` table).
+                or the non-None data model or None if none are provided.
+                (See `logical_or` table).
         """
         from synalinks.src import ops
 
         return asyncio.get_event_loop().run_until_complete(
             ops.Or().call(self, other),
         )
-        
+
     def __ror__(self, other):
         """Perform a `logical_or` (reverse) with another data model
 
@@ -264,7 +265,8 @@ class JsonDataModel:
 
         Returns:
             (JsonDataModel | None): The concatenation of data model if both are provided,
-                or the non-None data model or None if none are provided. (See `logical_or` table).
+                or the non-None data model or None if none are provided.
+                (See `logical_or` table).
         """
         from synalinks.src import ops
 
@@ -376,7 +378,7 @@ class JsonDataModel:
 )
 def is_json_data_model(x):
     """Returns whether `x` is a backend-independent data model.
-    
+
     Args:
         x (any): The object to check.
 

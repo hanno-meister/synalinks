@@ -81,9 +81,9 @@ class ProgramTest(testing.TestCase):
         )
 
         state_tree = program.get_state_tree()
-        state_tree["trainable_variables"]["generator"]["generator_state"]["prompt_template"] = (
-            "Dummy prompt template"
-        )
+        state_tree["trainable_variables"]["generator"]["generator_state"][
+            "prompt_template"
+        ] = "Dummy prompt template"
         program.set_state_tree(state_tree)
         self.assertEqual(state_tree, program.get_state_tree())
 
@@ -166,9 +166,9 @@ class ProgramTest(testing.TestCase):
         )
 
         state_tree = program.get_state_tree()
-        state_tree["trainable_variables"]["generator"]["generator_state"]["prompt_template"] = (
-            "Dummy prompt template"
-        )
+        state_tree["trainable_variables"]["generator"]["generator_state"][
+            "prompt_template"
+        ] = "Dummy prompt template"
         program.set_state_tree(state_tree)
         self.assertEqual(state_tree, program.get_state_tree())
 

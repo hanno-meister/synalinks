@@ -35,7 +35,7 @@ class ReACTAgent(Program):
     ```python
 
     async def main():
-    
+
         class Query(DataModel):
             query: str
 
@@ -77,7 +77,7 @@ class ReACTAgent(Program):
             functions=[calculate],
             max_iterations=3,
         )(x0)
-        
+
         program = Program(
             inputs=x0,
             outputs=x1,
@@ -153,7 +153,7 @@ class ReACTAgent(Program):
         self.decision_examples = decision_examples
 
         if not decision_hints:
-           decision_hints = get_decision_hints()
+            decision_hints = get_decision_hints()
         self.decision_hints = decision_hints
 
         self.use_inputs_schema = use_inputs_schema
@@ -183,7 +183,7 @@ class ReACTAgent(Program):
         print(f"call build with: {inputs_schema}")
         inputs = Input(schema=inputs_schema)
         asyncio.get_event_loop().run_until_complete(self.initialize(inputs))
-        self.built=True
+        self.built = True
 
     async def initialize(self, inputs):
         current_steps = [inputs]

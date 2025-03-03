@@ -24,7 +24,7 @@ class Variable:
 
     A Variable is different from a JsonDataModel as it can be modified by the optimizers
 
-    Note that the DataModel used for the variable declaration 
+    Note that the DataModel used for the variable declaration
     **must have a default value** for each of its field.
 
     Examples:

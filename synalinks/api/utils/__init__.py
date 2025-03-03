@@ -5,6 +5,7 @@ since your modifications would be overwritten.
 """
 
 from synalinks.src.backend.common.global_state import clear_session
+from synalinks.src.backend.common.json_data_model import is_json_data_model
 from synalinks.src.backend.common.symbolic_data_model import is_symbolic_data_model
 from synalinks.src.backend.pydantic.core import is_meta_class
 from synalinks.src.saving.object_registration import CustomObjectScope

@@ -2,11 +2,10 @@
 # Original authors: François Chollet et al. (Keras Team)
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
-import sys
 import json
 import re
 import shutil
-import io
+
 import rich
 import rich.table
 

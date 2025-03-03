@@ -6,8 +6,8 @@ from synalinks.src import testing
 from synalinks.src.backend import DataModel
 from synalinks.src.language_models import LanguageModel
 from synalinks.src.modules import Input
-from synalinks.src.programs import Program
 from synalinks.src.modules.agents.react import ReACTAgent
+from synalinks.src.programs import Program
 
 
 class ReACTAgentTest(testing.TestCase):
@@ -71,7 +71,7 @@ class ReACTAgentTest(testing.TestCase):
         ]
 
         mock_completion.side_effect = mock_responses
-        
+
         x0 = Input(data_model=Query)
         x1 = await ReACTAgent(
             data_model=FinalAnswer,
@@ -79,7 +79,7 @@ class ReACTAgentTest(testing.TestCase):
             functions=[calculate],
             max_iterations=3,
         )(x0)
-        
+
         program = Program(
             inputs=x0,
             outputs=x1,

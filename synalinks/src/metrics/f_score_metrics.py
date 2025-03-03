@@ -94,7 +94,7 @@ class FBetaScore(Metric):
             )
         self.state = self.add_variable(
             data_model=FBetaState,
-            name=self.name+"_state",
+            name=self.name + "_state",
         )
         self.average = average
         self.beta = beta
@@ -210,7 +210,7 @@ class FBetaScore(Metric):
 
     def get_config(self):
         """Return the serializable config of the metric.
-        
+
         Returns:
             (dict): The config dict.
         """
@@ -279,7 +279,7 @@ class F1Score(FBetaScore):
 
     def get_config(self):
         """Return the serializable config of the metric.
-        
+
         Returns:
             (dict): The config dict.
         """
@@ -431,7 +431,7 @@ class BinaryFBetaScore(FBetaScore):
 
     def get_config(self):
         """Return the serializable config of the metric.
-        
+
         Returns:
             (dict): The config dict.
         """
@@ -506,7 +506,7 @@ class BinaryF1Score(BinaryFBetaScore):
 
     def get_config(self):
         """Return the serializable config of the metric.
-        
+
         Returns:
             (dict): The config dict.
         """

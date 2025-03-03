@@ -56,11 +56,11 @@ class SymbolicDataModel:
 
     data_model = SymbolicDataModel(schema=Query.schema())
     ```
-    
+
     **Creating a `SymbolicDataModel` with `to_symbolic_data_model()`:**
-    
+
     using a backend data model metaclass
-    
+
     ```python
     class Query(synalinks.DataModel):
         query: str = synalinks.Field(
@@ -127,22 +127,22 @@ class SymbolicDataModel:
             (dict): The JSON schema.
         """
         return self._schema
-    
+
     def json(self, key):
         """Alias for the JSON object's value (impossible in `SymbolicDataModel`).
-        
+
         Implemented to help the user to identifying issues.
-        
+
         Raises:
             ValueError: The help message.
         """
         return self.value()
-        
+
     def value(self):
         """The current value of the JSON object (impossible in `SymbolicDataModel`).
-        
+
         Implemented to help the user to identifying issues.
-        
+
         Raises:
             ValueError: The help message.
         """
@@ -203,7 +203,8 @@ class SymbolicDataModel:
         then concatenates this data model with the other.
 
         Args:
-            other (SymbolicDataModel | DataModel): The other data model to concatenate with.
+            other (SymbolicDataModel | DataModel): The other data model to concatenate
+                with.
 
         Returns:
             (SymbolicDataModel | None): The concatenated data model or None
@@ -222,7 +223,8 @@ class SymbolicDataModel:
         then concatenates the other data model with this one.
 
         Args:
-            other (SymbolicDataModel | DataModel): The other data model to concatenate with.
+            other (SymbolicDataModel | DataModel): The other data model to concatenate
+                with.
 
         Returns:
             (SymbolicDataModel | None): The concatenated data model or None
@@ -244,8 +246,9 @@ class SymbolicDataModel:
             other (SymbolicDataModel): The other data model to concatenate with.
 
         Returns:
-            (SymbolicDataModel | None): The concatenation of data model if both are provided,
-                or the non-None data model or None if none are provided. (See `logical_or` table).
+            (SymbolicDataModel | None): The concatenation of data model if both are
+                provided, or the non-None data model or None if none are provided.
+                (See `logical_or` table).
         """
         from synalinks.src import ops
 
@@ -260,11 +263,13 @@ class SymbolicDataModel:
         then concatenates the other data model with this one.
 
         Args:
-            other (SymbolicDataModel | DataModel): The other data model to concatenate with.
+            other (SymbolicDataModel | DataModel): The other data model to concatenate
+                with.
 
         Returns:
-            (SymbolicDataModel | None): The concatenation of data model if both are provided,
-                or the non-None data model or None if none are provided. (See `logical_or` table).
+            (SymbolicDataModel | None): The concatenation of data model if both are
+                provided, or the non-None data model or None if none are provided.
+                (See `logical_or` table).
         """
         from synalinks.src import ops
 
@@ -290,7 +295,7 @@ class SymbolicDataModel:
         Args:
             mask (list): The mask to be applied (list of keys).
             recursive (bool): Optional. Whether to apply the mask recursively.
-                Defaults to True.
+                Defaults to `True`.
 
         Returns:
             (SymbolicDataModel): The data model with the mask applied.
@@ -307,7 +312,7 @@ class SymbolicDataModel:
         Args:
             mask (list): The mask to be applied (list of keys).
             recursive (bool): Optional. Whether to apply the mask recursively.
-                Defaults to True.
+                Defaults to `True`.
 
         Returns:
             (SymbolicDataModel): The data model with the mask applied.
@@ -350,12 +355,12 @@ class SymbolicDataModel:
 
     def get(self, key):
         """Get wrapper to make easier to access fields.
-        
+
         Implemented to help the user to identifying issues.
 
         Args:
             key (str): The key to access.
-            
+
         Raises:
             ValueError: The help message.
         """
@@ -368,12 +373,12 @@ class SymbolicDataModel:
 
     def update(self, kv_dict):
         """Update wrapper to make easier to modify fields.
-        
+
         Implemented to help the user to identifying issues.
 
         Args:
             kv_dict (dict): The key/value dict to update.
-            
+
         Raises:
             ValueError: The help message.
         """

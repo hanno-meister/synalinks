@@ -132,7 +132,7 @@ class Metric(SynalinksSaveable):
 
     def get_config(self):
         """Return the serializable config of the metric.
-        
+
         Returns:
             (dict): The config dict.
         """
@@ -145,12 +145,12 @@ class Metric(SynalinksSaveable):
     @classmethod
     def from_config(cls, config):
         """Returns a metric instance from config.
-        
+
         Args:
             config (dict): The config dict.
-        
+
         Returns:
-            (Metric): The metric instance.        
+            (Metric): The metric instance.
         """
         return cls(**config)
 
