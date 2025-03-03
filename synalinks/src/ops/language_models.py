@@ -98,14 +98,17 @@ async def predict(
     This function uses a backend DataModel to get the target schema.
 
     Args:
-        x (JsonDataModel | SymbolicDataModel): the input data_model
-        data_model (DataModel): The target data_model
+        x (JsonDataModel | SymbolicDataModel): the input data model.
+        data_model (DataModel): The target data model.
         language_model (LanguageModel): The language model to use
         streaming (bool): Enable streaming if True (Default to False)
-        kwargs: Additional keywords forwarded to the LLM call
+        name (str): Optional. The name of the operation.
+        description (str): Optional. The description of the operation. 
+        **kwargs (keyword arguments): Additional keywords forwarded to the 
+            LanguageModel call.
 
     Returns:
-        (JsonDataModel | SymbolicDataModel): The resulting data_model
+        (JsonDataModel | SymbolicDataModel): The resulting data model.
     """
     if language_model is None:
         raise ValueError("You should provide the `language_model` argument")

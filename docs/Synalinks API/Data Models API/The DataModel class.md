@@ -1,2 +1,2 @@
 
-::: synalinks.src.backend.pydantic.DataModel
+::: synalinks.src.backend.pydantic.core

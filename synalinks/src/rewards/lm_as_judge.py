@@ -129,9 +129,9 @@ class LMAsJudge(ProgramAsJudge):
         examples (list): The default examples to use in the prompt
             (see `Generator`).
         hints (list): The default hints to use (see `Generator`).
-        name: (Optional) string name of the reward instance.
-        in_mask (list): (Optional) list of keys to keep to compute the reward.
-        out_mask (list): (Optional) list of keys to remove to compute the reward.
+        name (str): Optional. string name of the reward instance.
+        in_mask (list): Optional. list of keys to keep to compute the reward.
+        out_mask (list): Optional. list of keys to remove to compute the reward.
     """
 
     def __init__(

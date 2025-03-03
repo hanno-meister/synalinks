@@ -74,8 +74,10 @@ async def concat(x1, x2, name=None, description=None):
     | `None` | `None` | `Exception`       |
 
     Args:
-        x1 (JsonDataModel | SymbolicDataModel): the first input data model
-        x2 (JsonDataModel | SymbolicDataModel): the second input data model
+        x1 (JsonDataModel | SymbolicDataModel): the first input data model.
+        x2 (JsonDataModel | SymbolicDataModel): the second input data model.
+        name (str): Optional. The name of the operation.
+        description (str): Optional. The description of the operation. 
 
     Returns:
         (JsonDataModel | SymbolicDataModel): The resulting data model
@@ -145,6 +147,8 @@ async def logical_and(x1, x2, name=None, description=None):
     Args:
         x1 (JsonDataModel | SymbolicDataModel): The first input data model.
         x2 (JsonDataModel | SymbolicDataModel): The second input data model.
+        name (str): Optional. The name of the operation.
+        description (str): Optional. The description of the operation. 
 
     Returns:
         (JsonDataModel | SymbolicDataModel | None): The resulting data model or
@@ -214,6 +218,8 @@ async def logical_or(x1, x2, name=None, description=None):
     Args:
         x1 (JsonDataModel | SymbolicDataModel): The first input data model.
         x2 (JsonDataModel | SymbolicDataModel): The second input data model.
+        name (str): Optional. The name of the operation.
+        description (str): Optional. The description of the operation. 
 
     Returns:
         (JsonDataModel | SymbolicDataModel | None): The resulting data model or
@@ -267,10 +273,12 @@ async def factorize(x, name=None, description=None):
     This operation is implemented in `.factorize()`
 
     Args:
-        x (JsonDataModel | SymbolicDataModel): the input data model
+        x (JsonDataModel | SymbolicDataModel): the input data model.
+        name (str): Optional. The name of the operation.
+        description (str): Optional. The description of the operation.
 
     Returns:
-        (JsonDataModel | SymbolicDataModel): The resulting data model
+        (JsonDataModel | SymbolicDataModel): The resulting data model.
     """
     if any_symbolic_data_models(x):
         return await Factorize(
@@ -322,13 +330,15 @@ async def out_mask(x, mask=None, recursive=True, name=None, description=None):
     the output is a symbolic data model.
 
     Args:
-        x (JsonDataModel | SymbolicDataModel): the input data model
-        mask (list): the input mask (list of keys)
+        x (JsonDataModel | SymbolicDataModel): the input data model.
+        mask (list): the input mask (list of keys).
         recursive (bool): Whether or not to remove
-            recursively for nested objects (default True)
+            recursively for nested objects (default True).
+        name (str): Optional. The name of the operation.
+        description (str): Optional. The description of the operation. 
 
     Returns:
-        (JsonDataModel | SymbolicDataModel): The resulting data model
+        (JsonDataModel | SymbolicDataModel): The resulting data model.
     """
     if x is None:
         return x
@@ -391,10 +401,12 @@ async def in_mask(x, mask=None, recursive=True, name=None, description=None):
         x (JsonDataModel | SymbolicDataModel): the input data model
         mask (list): the input mask (list of keys)
         recursive (bool): Whether or not to keep
-            recursively for nested objects (default True)
+            recursively for nested objects (default True).
+        name (str): Optional. The name of the operation.
+        description (str): Optional. The description of the operation. 
 
     Returns:
-        (JsonDataModel | SymbolicDataModel): The resulting data model
+        (JsonDataModel | SymbolicDataModel): The resulting data model.
     """
     if x is None:
         return x
@@ -449,10 +461,12 @@ async def prefix(x, prefix=None, name=None, description=None):
 
     Args:
         x (JsonDataModel | SymbolicDataModel): the input data model
-        prefix (str): the prefix to add
+        prefix (str): the prefix to add.
+        name (str): Optional. The name of the operation.
+        description (str): Optional. The description of the operation.
 
     Returns:
-        (JsonDataModel | SymbolicDataModel): The resulting data model
+        (JsonDataModel | SymbolicDataModel): The resulting data model.
     """
     if x is None:
         return x
@@ -505,7 +519,9 @@ async def suffix(x, suffix=None, name=None, description=None):
 
     Args:
         x (JsonDataModel | SymbolicDataModel): the input data model
-        suffix (str): the suffix to add
+        suffix (str): the suffix to add.
+        name (str): Optional. The name of the operation.
+        description (str): Optional. The description of the operation.
 
     Returns:
         (JsonDataModel | SymbolicDataModel): The resulting data model

@@ -40,9 +40,9 @@ class ExactMatch(RewardFunctionWrapper):
     ```
 
     Args:
-        name: (Optional) string name of the reward instance.
-        in_mask (list): (Optional) list of keys to keep to compute the reward.
-        out_mask (list): (Optional) list of keys to remove to compute the reward.
+        name (str): Optional. string name of the reward instance.
+        in_mask (list): Optional. list of keys to keep to compute the reward.
+        out_mask (list): Optional. list of keys to remove to compute the reward.
     """
 
     def __init__(

@@ -195,11 +195,11 @@ class Program(Trainer, Module):
         Indices are based on order of horizontal graph traversal (bottom-up).
 
         Args:
-            name: String, name of module.
-            index: Integer, index of module.
+            name (str): String, name of module.
+            index (int): Integer, index of module.
 
         Returns:
-            A module instance.
+            (Module): A module instance.
         """
         if index is not None and name is not None:
             raise ValueError(
@@ -238,22 +238,22 @@ class Program(Trainer, Module):
         """Prints a string summary of the program.
 
         Args:
-            line_length: Total length of printed lines
+            line_length (int): Total length of printed lines
                 (e.g. set this to adapt the display to different
                 terminal window sizes).
-            positions: Relative or absolute positions of log elements
+            positions (list): Relative or absolute positions of log elements
                 in each line. If not provided, becomes
                 `[0.3, 0.6, 0.70, 1.]`. Defaults to `None`.
-            print_fn: Print function to use. By default, prints to `stdout`.
+            print_fn (Callable): Print function to use. By default, prints to `stdout`.
                 If `stdout` doesn't work in your environment, change to `print`.
                 It will be called on each line of the summary.
                 You can set it to a custom function
                 in order to capture the string summary.
-            expand_nested: Whether to expand the nested models.
+            expand_nested (bool): Whether to expand the nested models.
                 Defaults to `False`.
-            show_trainable: Whether to show if a module is trainable.
+            show_trainable (bool): Whether to show if a module is trainable.
                 Defaults to `False`.
-            module_range: a list or tuple of 2 strings,
+            module_range (list | tuple): a list or tuple of 2 strings,
                 which is the starting module name and ending module name
                 (both inclusive) indicating the range of modules to be printed
                 in summary. It also accepts regex patterns instead of exact
@@ -316,11 +316,11 @@ class Program(Trainer, Module):
         Thus programs can be reinstantiated in the exact same state.
 
         Args:
-            filepath: `str` or `pathlib.Path` object.
+            filepath (str | os.PathLike): `str` or `os.PathLike` object.
                 The path where to save the model. Must end in `.json`.
-            overwrite: Whether we should overwrite any existing program at
+            overwrite (bool): Whether we should overwrite any existing program at
                 the target location, or instead ask the user via
-                an interactive prompt.
+                an interactive prompt. Default to `True`.
         """
         from synalinks.src.saving import serialization_lib
 

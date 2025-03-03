@@ -23,16 +23,16 @@ class Callback:
        so they can all be called together.
     2. You will need to manually call all the `on_*` methods at the appropriate
        locations in your loop.
-
-    Attributes:
-        params: Dict. Training parameters
-            (eg. verbosity, batch size, number of epochs...).
-        program: Instance of `Model`.
-            Reference of the program being trained.
-
+       
     The `logs` dictionary that callback methods
     take as argument will contain keys for quantities relevant to
     the current batch or epoch (see method-specific docstrings).
+
+    Attributes:
+        params (dict): Training parameters
+            (eg. verbosity, batch size, number of epochs...).
+        program (Program): Instance of `Program`.
+            Reference of the program being trained.
     """
 
     def __init__(self):
@@ -65,9 +65,9 @@ class Callback:
         only be called during TRAIN mode.
 
         Args:
-            epoch: Integer, index of epoch.
-            logs: Dict. Currently no data is passed to this argument for this
-              method but that may change in the future.
+            epoch (int): Index of epoch.
+            logs (dict): Currently no data is passed to this argument for this
+                method but that may change in the future.
         """
 
     @utils.default
@@ -78,12 +78,12 @@ class Callback:
         only be called during TRAIN mode.
 
         Args:
-            epoch: Integer, index of epoch.
-            logs: Dict, metric results for this training epoch, and for the
-              validation epoch if validation is performed. Validation result
-              keys are prefixed with `val_`. For training epoch, the values of
-              the `Model`'s metrics are returned. Example:
-              `{'loss': 0.2, 'accuracy': 0.7}`.
+            epoch (int): Index of epoch.
+            logs (dict): Metric results for this training epoch, and for the
+                validation epoch if validation is performed. Validation result
+                keys are prefixed with `val_`. For training epoch, the values of
+                the `Program`'s metrics are returned. Example:
+                `{'reward': 0.2, 'accuracy': 0.7}`.
         """
 
     @utils.default
@@ -93,13 +93,13 @@ class Callback:
         Subclasses should override for any actions to run.
 
         Note that if the `steps_per_execution` argument to `compile` in
-        `Model` is set to `N`, this method will only be called every
+        `Program` is set to `N`, this method will only be called every
         `N` batches.
 
         Args:
-            batch: Integer, index of batch within the current epoch.
-            logs: Dict. Currently no data is passed to this argument for this
-              method but that may change in the future.
+            batch (int): Index of batch within the current epoch.
+            logs (dict): Currently no data is passed to this argument for this
+                method but that may change in the future.
         """
         # For backwards compatibility.
         self.on_batch_begin(batch, logs=logs)
@@ -111,12 +111,12 @@ class Callback:
         Subclasses should override for any actions to run.
 
         Note that if the `steps_per_execution` argument to `compile` in
-        `Model` is set to `N`, this method will only be called every
+        `Program` is set to `N`, this method will only be called every
         `N` batches.
 
         Args:
-            batch: Integer, index of batch within the current epoch.
-            logs: Dict. Aggregated metric results up until this batch.
+            batch (int): Index of batch within the current epoch.
+            logs (dict): Aggregated metric results up until this batch.
         """
         # For backwards compatibility.
         self.on_batch_end(batch, logs=logs)
@@ -131,13 +131,13 @@ class Callback:
         Subclasses should override for any actions to run.
 
         Note that if the `steps_per_execution` argument to `compile` in
-        `Model` is set to `N`, this method will only be called every
+        `Program` is set to `N`, this method will only be called every
         `N` batches.
 
         Args:
-            batch: Integer, index of batch within the current epoch.
-            logs: Dict. Currently no data is passed to this argument for this
-              method but that may change in the future.
+            batch (int): Index of batch within the current epoch.
+            logs (dict): Currently no data is passed to this argument for this
+                method but that may change in the future.
         """
 
     @utils.default
@@ -150,12 +150,12 @@ class Callback:
         Subclasses should override for any actions to run.
 
         Note that if the `steps_per_execution` argument to `compile` in
-        `Model` is set to `N`, this method will only be called every
+        `Program` is set to `N`, this method will only be called every
         `N` batches.
 
         Args:
-            batch: Integer, index of batch within the current epoch.
-            logs: Dict. Aggregated metric results up until this batch.
+            batch (int): Index of batch within the current epoch.
+            logs (dict): Aggregated metric results up until this batch.
         """
 
     @utils.default
@@ -165,13 +165,13 @@ class Callback:
         Subclasses should override for any actions to run.
 
         Note that if the `steps_per_execution` argument to `compile` in
-        `Model` is set to `N`, this method will only be called every
+        `Program` is set to `N`, this method will only be called every
         `N` batches.
 
         Args:
-            batch: Integer, index of batch within the current epoch.
-            logs: Dict. Currently no data is passed to this argument for this
-              method but that may change in the future.
+            batch (int): Index of batch within the current epoch.
+            logs (dict): Currently no data is passed to this argument for this
+                method but that may change in the future.
         """
 
     @utils.default
@@ -181,12 +181,12 @@ class Callback:
         Subclasses should override for any actions to run.
 
         Note that if the `steps_per_execution` argument to `compile` in
-        `Model` is set to `N`, this method will only be called every
+        `Program` is set to `N`, this method will only be called every
         `N` batches.
 
         Args:
-            batch: Integer, index of batch within the current epoch.
-            logs: Dict. Aggregated metric results up until this batch.
+            batch (int): Index of batch within the current epoch.
+            logs (dict): Aggregated metric results up until this batch.
         """
 
     @utils.default
@@ -196,8 +196,8 @@ class Callback:
         Subclasses should override for any actions to run.
 
         Args:
-            logs: Dict. Currently no data is passed to this argument for this
-              method but that may change in the future.
+            logs (dict): Currently no data is passed to this argument for this
+                method but that may change in the future.
         """
 
     @utils.default
@@ -207,9 +207,9 @@ class Callback:
         Subclasses should override for any actions to run.
 
         Args:
-            logs: Dict. Currently the output of the last call to
-              `on_epoch_end()` is passed to this argument for this method but
-              that may change in the future.
+            logs (dict): Currently the output of the last call to
+                `on_epoch_end()` is passed to this argument for this method but
+                that may change in the future.
         """
 
     @utils.default
@@ -219,8 +219,8 @@ class Callback:
         Subclasses should override for any actions to run.
 
         Args:
-            logs: Dict. Currently no data is passed to this argument for this
-              method but that may change in the future.
+            logs (dict): Currently no data is passed to this argument for this
+                method but that may change in the future.
         """
 
     @utils.default
@@ -230,9 +230,9 @@ class Callback:
         Subclasses should override for any actions to run.
 
         Args:
-            logs: Dict. Currently the output of the last call to
-              `on_test_batch_end()` is passed to this argument for this method
-              but that may change in the future.
+            logs (dict): Currently the output of the last call to
+                `on_test_batch_end()` is passed to this argument for this method
+                but that may change in the future.
         """
 
     @utils.default
@@ -242,8 +242,8 @@ class Callback:
         Subclasses should override for any actions to run.
 
         Args:
-            logs: Dict. Currently no data is passed to this argument for this
-              method but that may change in the future.
+            logs (dict): Currently no data is passed to this argument for this
+                method but that may change in the future.
         """
 
     @utils.default
@@ -253,6 +253,6 @@ class Callback:
         Subclasses should override for any actions to run.
 
         Args:
-            logs: Dict. Currently no data is passed to this argument for this
-              method but that may change in the future.
+            logs (dict): Currently no data is passed to this argument for this
+                method but that may change in the future.
         """

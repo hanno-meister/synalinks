@@ -31,10 +31,10 @@ class RewardFunctionWrapper(Reward):
     Args:
         fn (callable): The reward function to wrap, with signature
             `fn(y_true, y_pred, **kwargs)`.
-        name: (Optional) string name of the reward instance.
-        in_mask (list): (Optional) list of keys to keep to compute the reward.
-        out_mask (list): (Optional) list of keys to remove to compute the reward.
-        **kwargs: Keyword arguments to pass on to `fn`.
+        name (str): Optional. string name of the reward instance.
+        in_mask (list): Optional. list of keys to keep to compute the reward.
+        out_mask (list): Optional. list of keys to remove to compute the reward.
+        **kwargs (keyword arguments): Keyword arguments to pass on to `fn`.
     """
 
     def __init__(
@@ -101,9 +101,9 @@ class ProgramAsJudge(Reward):
 
     Args:
         program (Program): The reward program to wrap.
-        name: (Optional) string name of the reward instance.
-        in_mask (list): (Optional) list of keys to keep to compute the reward.
-        out_mask (list): (Optional) list of keys to remove to compute the reward.
+        name (str): Optional. string name of the reward instance.
+        in_mask (list): Optional. list of keys to keep to compute the reward.
+        out_mask (list): Optional. list of keys to remove to compute the reward.
     """
 
     def __init__(

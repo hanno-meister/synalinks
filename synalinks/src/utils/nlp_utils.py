@@ -201,7 +201,7 @@ def to_plural(word):
         word (str): The singular word to convert.
 
     Returns:
-        str: The plural form of the word.
+        (str): The plural form of the word.
     """
     if word in IRREGULAR_PLURALS:
         return IRREGULAR_PLURALS.get(word)
@@ -223,7 +223,7 @@ def to_singular(word):
         word (str): The plural word to convert.
 
     Returns:
-        str: The singular form of the word.
+        (str): The singular form of the word.
     """
     if word in IRREGULAR_SINGULARS:
         return IRREGULAR_SINGULARS.get(word)
@@ -250,7 +250,7 @@ def to_plural_property(property_key):
         property_key (str): The property key to convert.
 
     Returns:
-        str: The property key with the last word in plural form.
+        (str): The property key with the last word in plural form.
     """
     words = property_key.split("_")
     if len(words) > 1:
@@ -269,7 +269,7 @@ def to_singular_property(property_key):
         property_key (str): The property key to convert.
 
     Returns:
-        str: The property key with the last word in singular form.
+        (str): The property key with the last word in singular form.
     """
     words = property_key.split("_")
     if len(words) > 1:
@@ -288,7 +288,7 @@ def remove_numerical_suffix(property_key):
         property_key (str): The property key to process.
 
     Returns:
-        str: The property key with the suffix removed.
+        (str): The property key with the suffix removed.
     """
     return re.sub(SUFFIX_PATTERN, "", property_key)
 
@@ -302,7 +302,7 @@ def add_suffix(property_key, suffix):
         suffix (int): The suffix to add.
 
     Returns:
-        str: The property key with the suffix added.
+        (str): The property key with the suffix added.
     """
     return f"{property_key}_{suffix}"
 
@@ -316,7 +316,7 @@ def to_singular_without_numerical_suffix(property_key):
         property_key (str): The property key to convert.
 
     Returns:
-        str: The base (singular) form of the property key.
+        (str): The base (singular) form of the property key.
     """
     property_key = remove_numerical_suffix(property_key)
     return to_singular_property(property_key)
@@ -331,7 +331,7 @@ def to_plural_without_numerical_suffix(property_key):
         property_key (str): The property key to convert.
 
     Returns:
-        str: The list (plural) form of the property key.
+        (str): The list (plural) form of the property key.
     """
     property_key = remove_numerical_suffix(property_key)
     return to_plural_property(property_key)
@@ -345,7 +345,7 @@ def is_plural(property_key):
         property_key (str): The property key to check.
 
     Returns:
-        bool: True if the last word is plural, False otherwise.
+        (bool): True if the last word is plural, False otherwise.
     """
     words = property_key.split("_")
     if len(words) > 1:
@@ -365,7 +365,7 @@ def remove_articles(text):
         text (str): The text to process.
 
     Returns:
-        str: The text with articles removed.
+        (str): The text with articles removed.
     """
     return " ".join(re.sub(ARTICLE_REGEX, "", text).split())
 
@@ -378,7 +378,7 @@ def remove_punctuation(text):
         text (str): The text to process.
 
     Returns:
-        str: The text with punctuation removed.
+        (str): The text with punctuation removed.
     """
     return text.translate(PUNCTUATION_TRANSLATOR)
 
@@ -392,7 +392,7 @@ def normalize_text(text):
         text (str): The text to normalize.
 
     Returns:
-        str: The normalized text.
+        (str): The normalized text.
     """
     return remove_articles(remove_punctuation(text.strip().lower()))
 
@@ -405,7 +405,7 @@ def normalize_and_tokenize(text):
         text (str): The text to process.
 
     Returns:
-        list: A list of normalized words.
+        (list): A list of normalized words.
     """
     text = text.lower()
     text = remove_articles(text)

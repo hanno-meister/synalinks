@@ -33,21 +33,45 @@ class JsonDataModel:
 
     ```python
     class Query(synalinks.DataModel):
-        query: str
+        query: str = synalinks.Field(
+            description="The user query",
+        )
 
     value = {"query": "What is the capital of France?"}
 
-    data_model = JsonDataModel(schema=Query.schema(), value=value)
+    data_model = JsonDataModel(
+        schema=Query.schema(),
+        value=value,
+    )
     ```
 
     **Creating a `JsonDataModel` with a data_model:**
 
     ```python
     class Query(synalinks.DataModel):
-        query: str
+        query: str = synalinks.Field(
+            description="The user query",
+        )
 
-    query_instance = Query(query="What is the capital of France?")
-    data_model = JsonDataModel(data_model=query_instance)
+    query_instance = Query(
+        query="What is the capital of France?"
+    )
+    data_model = JsonDataModel(
+        data_model=query_instance,
+    )
+    ```
+    
+    **Creating a `JsonDataModel` with `to_json_data_model()`:**
+    
+    ```python
+    class Query(synalinks.DataModel):
+        query: str = synalinks.Field(
+            description="The user query",
+        )
+        
+    data_model = Query(
+        query="What is the capital of France?",
+    ).to_json_data_model()
     ```
     """
 
@@ -91,7 +115,7 @@ class JsonDataModel:
         """Converts the JsonDataModel to a SymbolicDataModel.
 
         Returns:
-            SymbolicDataModel: The symbolic data model.
+            (SymbolicDataModel): The symbolic data model.
         """
         return SymbolicDataModel(schema=self._schema)
 
@@ -99,7 +123,7 @@ class JsonDataModel:
         """Alias for the JSON object's value.
 
         Returns:
-            dict: The current value of the JSON object.
+            (dict): The current value of the JSON object.
         """
         return self.value()
 
@@ -107,7 +131,7 @@ class JsonDataModel:
         """The current value of the JSON object.
 
         Returns:
-            dict: The current value of the JSON object.
+            (dict): The current value of the JSON object.
         """
         return self._value
 
@@ -115,7 +139,7 @@ class JsonDataModel:
         """Gets the schema of the JSON object.
 
         Returns:
-            dict: The JSON schema.
+            (dict): The JSON schema.
         """
         return self._schema
 
@@ -123,7 +147,7 @@ class JsonDataModel:
         """Get a pretty version of the JSON schema for display.
 
         Returns:
-            dict: The indented JSON schema.
+            (dict): The indented JSON schema.
         """
         return json.dumps(self.schema(), indent=2)
 
@@ -131,7 +155,7 @@ class JsonDataModel:
         """Get a pretty version of the JSON object for display.
 
         Returns:
-            dict: The indented JSON object.
+            (str): The indented JSON object.
         """
         return json.dumps(self.json(), indent=2)
 
@@ -144,37 +168,121 @@ class JsonDataModel:
         """Concatenates this data model with another.
 
         Args:
-            other (JsonDataModel): The other data model to concatenate with.
+            other (JsonDataModel | DataModel):
+                The other data model to concatenate with.
 
         Returns:
-            JsonDataModel: The concatenated data model.
+            (JsonDataModel): The concatenated data model.
         """
         from synalinks.src import ops
 
-        return asyncio.get_event_loop().run_until_complete(ops.Concat().call(self, other))
+        return asyncio.get_event_loop().run_until_complete(
+            ops.Concat().call(self, other),
+        )
 
     def __radd__(self, other):
         """Concatenates another data model with this one.
 
         Args:
-            other (JsonDataModel): The other data model to concatenate with.
+            other (JsonDataModel | DataModel): 
+                The other data model to concatenate with.
 
         Returns:
-            JsonDataModel: The concatenated data model.
+            (JsonDataModel): The concatenated data model.
         """
         from synalinks.src import ops
 
-        return asyncio.get_event_loop().run_until_complete(ops.Concat().call(other, self))
+        return asyncio.get_event_loop().run_until_complete(
+            ops.Concat().call(other, self),
+        )
+        
+    def __and__(self, other):
+        """Perform a `logical_and` with another data model.
+
+        If one of them is None, output None. If both are provided,
+        then concatenates this data model with the other.
+
+        Args:
+            other (JsonDataModel | DataModel): The other data model to concatenate with.
+
+        Returns:
+            (JsonDataModel | None): The concatenated data model or None
+                based on the `logical_and` table.
+        """
+        from synalinks.src import ops
+
+        return asyncio.get_event_loop().run_until_complete(
+            ops.And().call(self, other),
+        )
+        
+    def __rand__(self, other):
+        """Perform a `logical_and` (reverse) with another data model.
+
+        If one of them is None, output None. If both are provided,
+        then concatenates the other data model with this one.
+
+        Args:
+            other (JsonDataModel | DataModel): The other data model to concatenate with.
+
+        Returns:
+            (JsonDataModel | None): The concatenated data model or None
+                based on the `logical_and` table.
+        """
+        from synalinks.src import ops
+
+        return asyncio.get_event_loop().run_until_complete(
+            ops.And().call(other, self),
+        )
+        
+    def __or__(self, other):
+        """Perform a `logical_or` with another data model
+
+        If one of them is None, output the other one. If both are provided,
+        then concatenates this data model with the other.
+
+        Args:
+            other (JsonDataModel | DataModel): The other data model to concatenate with.
+
+        Returns:
+            (JsonDataModel | None): The concatenation of data model if both are provided,
+                or the non-None data model or None if none are provided. (See `logical_or` table).
+        """
+        from synalinks.src import ops
+
+        return asyncio.get_event_loop().run_until_complete(
+            ops.Or().call(self, other),
+        )
+        
+    def __ror__(self, other):
+        """Perform a `logical_or` (reverse) with another data model
+
+        If one of them is None, output the other one. If both are provided,
+        then concatenates the other data model with this one.
+
+        Args:
+            other (JsonDataModel | DataModel): The other data model to concatenate with.
+
+        Returns:
+            (JsonDataModel | None): The concatenation of data model if both are provided,
+                or the non-None data model or None if none are provided. (See `logical_or` table).
+        """
+        from synalinks.src import ops
+
+        return asyncio.get_event_loop().run_until_complete(
+            ops.Or().call(other, self),
+        )
 
     def factorize(self):
         """Factorizes the data model.
 
         Returns:
-            JsonDataModel: The factorized data model.
+            (JsonDataModel): The factorized data model.
         """
         from synalinks.src import ops
 
-        return asyncio.get_event_loop().run_until_complete(ops.Factorize().call(self))
+        return asyncio.get_event_loop().run_until_complete(
+            ops.Factorize().call(self),
+        )
 
     def in_mask(self, mask=None, recursive=True):
         """Applies a mask to **keep only** specified keys of the data model.
@@ -185,12 +293,12 @@ class JsonDataModel:
                 Defaults to True.
 
         Returns:
-            JsonDataModel: The data model with the mask applied.
+            (JsonDataModel): The data model with the mask applied.
         """
         from synalinks.src import ops
 
         return asyncio.get_event_loop().run_until_complete(
-            ops.InMask(mask=mask, recursive=recursive).call(self)
+            ops.InMask(mask=mask, recursive=recursive).call(self),
         )
 
     def out_mask(self, mask=None, recursive=True):
@@ -202,42 +310,42 @@ class JsonDataModel:
                 Defaults to True.
 
         Returns:
-            JsonDataModel: The data model with the mask applied.
+            (JsonDataModel): The data model with the mask applied.
         """
         from synalinks.src import ops
 
         return asyncio.get_event_loop().run_until_complete(
-            ops.OutMask(mask=mask, recursive=recursive).call(self)
+            ops.OutMask(mask=mask, recursive=recursive).call(self),
         )
 
     def prefix(self, prefix=None):
         """Add a prefix to **all** the data model fields (non-recursive).
 
         Args:
-            prefix (str): the prefix to add
+            prefix (str): the prefix to add.
 
         Returns:
-            JsonDataModel: The data model with the prefix added.
+            (JsonDataModel): The data model with the prefix added.
         """
         from synalinks.src import ops
 
         return asyncio.get_event_loop().run_until_complete(
-            ops.Prefix(prefix=prefix).call(self)
+            ops.Prefix(prefix=prefix).call(self),
         )
 
     def suffix(self, suffix=None):
         """Add a suffix to **all** the data model fields (non-recursive).
 
         Args:
-            suffix (str): the suffix to add
+            suffix (str): the suffix to add.
 
         Returns:
-            JsonDataModel: The data model with the suffix added.
+            (JsonDataModel): The data model with the suffix added.
         """
         from synalinks.src import ops
 
         return asyncio.get_event_loop().run_until_complete(
-            ops.Suffix(suffix=suffix).call(self)
+            ops.Suffix(suffix=suffix).call(self),
         )
 
     def get(self, key):
@@ -260,5 +368,19 @@ class JsonDataModel:
         return f"<JsonDataModel schema={self._schema}, value={self._value}>"
 
 
+@synalinks_export(
+    [
+        "synalinks.utils.is_json_data_model",
+        "synalinks.backend.is_json_data_model",
+    ]
+)
 def is_json_data_model(x):
+    """Returns whether `x` is a backend-independent data model.
+    
+    Args:
+        x (any): The object to check.
+
+    Returns:
+        (bool): True if `x` is a backend-independent data model, False otherwise.
+    """
     return isinstance(x, JsonDataModel)

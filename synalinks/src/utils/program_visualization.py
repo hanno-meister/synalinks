@@ -200,7 +200,7 @@ def program_to_dot(
         show_trainable (bool): whether to display if a module is trainable.
 
     Returns:
-        (pydot.Dot | pydot.Cluster) A `pydot.Dot` instance representing the
+        (pydot.Dot | pydot.Cluster): A `pydot.Dot` instance representing the
             program or a `pydot.Cluster` instance representing
             nested program if `subgraph=True`.
     """

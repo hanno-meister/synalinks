@@ -107,6 +107,8 @@ async def main():
             )
 
         async def call(self, inputs, training=False):
+            if not inputs:
+                return None
             x = await self.answer(inputs, training=training)
             return x
 

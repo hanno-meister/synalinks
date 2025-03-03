@@ -38,7 +38,7 @@ class MetaDataModel(type(pydantic.BaseModel)):
         """Get a pretty version of the JSON schema for display.
 
         Returns:
-            dict: The indented JSON schema.
+            (str): The indented JSON schema.
         """
         return json.dumps(cls.schema(), indent=2)
 
@@ -51,6 +51,15 @@ class MetaDataModel(type(pydantic.BaseModel)):
         return SymbolicDataModel(schema=cls.schema())
 
     def __add__(cls, other):
+        """Concatenates this data model with another.
+
+        Args:
+            other (SymbolicDataModel | DataModel):
+                The other data model to concatenate with.
+
+        Returns:
+            (SymbolicDataModel): The concatenated data model.
+        """
         from synalinks.src import ops
 
         return asyncio.get_event_loop().run_until_complete(
@@ -58,6 +67,15 @@ class MetaDataModel(type(pydantic.BaseModel)):
         )
 
     def __radd__(cls, other):
+        """Concatenates (reverse) another data model with this one.
+
+        Args:
+            other (SymbolicDataModel | DataModel):
+                The other data model to concatenate with.
+
+        Returns:
+            (SymbolicDataModel): The concatenated data model.
+        """
         from synalinks.src import ops
 
         return asyncio.get_event_loop().run_until_complete(
@@ -65,6 +83,18 @@ class MetaDataModel(type(pydantic.BaseModel)):
         )
 
     def __and__(cls, other):
+        """Perform a `logical_and` with another data model.
+
+        If one of them is None, output None. If both are provided,
+        then concatenates this data model with the other.
+
+        Args:
+            other (SymbolicDataModel | DataModel): The other data model to concatenate with.
+
+        Returns:
+            (SymbolicDataModel | None): The concatenated data model or None
+                based on the `logical_and` table.
+        """
         from synalinks.src import ops
 
         return asyncio.get_event_loop().run_until_complete(
@@ -72,6 +102,18 @@ class MetaDataModel(type(pydantic.BaseModel)):
         )
 
     def __rand__(cls, other):
+        """Perform a `logical_and` (reverse) with another data model.
+
+        If one of them is None, output None. If both are provided,
+        then concatenates the other data model with this one.
+
+        Args:
+            other (SymbolicDataModel | DataModel): The other data model to concatenate with.
+
+        Returns:
+            (SymbolicDataModel | None): The concatenated data model or None
+                based on the `logical_and` table.
+        """
         from synalinks.src import ops
 
         return asyncio.get_event_loop().run_until_complete(
@@ -79,6 +121,18 @@ class MetaDataModel(type(pydantic.BaseModel)):
         )
 
     def __or__(cls, other):
+        """Perform a `logical_or` with another data model
+
+        If one of them is None, output the other one. If both are provided,
+        then concatenates this data model with the other.
+
+        Args:
+            other (SymbolicDataModel): The other data model to concatenate with.
+
+        Returns:
+            (SymbolicDataModel | None): The concatenation of data model if both are provided,
+                or the non-None data model or None if none are provided. (See `logical_or` table).
+        """
         from synalinks.src import ops
 
         return asyncio.get_event_loop().run_until_complete(
@@ -86,6 +140,18 @@ class MetaDataModel(type(pydantic.BaseModel)):
         )
 
     def __ror__(cls, other):
+        """Perform a `logical_or` (reverse) with another data model
+
+        If one of them is None, output the other one. If both are provided,
+        then concatenates the other data model with this one.
+
+        Args:
+            other (SymbolicDataModel | DataModel): The other data model to concatenate with.
+
+        Returns:
+            (SymbolicDataModel | None): The concatenation of data model if both are provided,
+                or the non-None data model or None if none are provided. (See `logical_or` table).
+        """
         from synalinks.src import ops
 
         return asyncio.get_event_loop().run_until_complete(
@@ -146,7 +212,7 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
         """Get a pretty version of the JSON object for display.
 
         Returns:
-            dict: The indented JSON object.
+            (str): The indented JSON object.
         """
         return json.dumps(self.json(), indent=2)
 
@@ -162,6 +228,17 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
         return JsonDataModel(value=self.value(), schema=self.schema())
 
     def __add__(self, other):
+        """Concatenates this data model with another.
+
+        Args:
+            other (JsonDataModel | DataModel | SymbolicDataModel):
+                The other data model to concatenate with.
+
+        Returns:
+            (JsonDataModel | SymbolicDataModel): The concatenated data model.
+                If one of them is a metaclass or symbolic data model,
+                then output a `SymbolicDataModel`.
+        """
         from synalinks.src import ops
 
         if any_meta_class(self, other):
@@ -169,9 +246,22 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
                 ops.Concat().symbolic_call(self, other)
             )
         else:
-            return asyncio.get_event_loop().run_until_complete(ops.Concat()(self, other))
+            return asyncio.get_event_loop().run_until_complete(
+                ops.Concat()(self, other)
+            )
 
     def __radd__(self, other):
+        """Concatenates another data model with this one.
+
+        Args:
+            other (JsonDataModel | DataModel | SymbolicDataModel):
+                The other data model to concatenate with.
+
+        Returns:
+            (JsonDataModel | SymbolicDataModel): The concatenated data model.
+                If one of them is a metaclass or symbolic data model,
+                then output a `SymbolicDataModel`.
+        """
         from synalinks.src import ops
 
         if any_meta_class(self, other):
@@ -179,9 +269,26 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
                 ops.Concat().symbolic_call(other, self),
             )
         else:
-            return asyncio.get_event_loop().run_until_complete(ops.Concat()(other, self))
+            return asyncio.get_event_loop().run_until_complete(
+                ops.Concat()(other, self),
+            )
 
     def __and__(self, other):
+        """Perform a `logical_and` with another data model.
+
+        If one of them is None, output None. If both are provided,
+        then concatenates the other data model with this one.
+        
+        If the other is a metaclass or symbolic data model, output a symbolic data model.
+
+        Args:
+            other (JsonDataModel | SymbolicDataModel | DataModel): 
+                The other data model to concatenate with.
+
+        Returns:
+            (JsonDataModel | SymbolicDataModel | None): The concatenated data model or
+                `None` based on the `logical_and` table.
+        """
         from synalinks.src import ops
 
         if any_meta_class(self, other):
@@ -192,6 +299,21 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
             return asyncio.get_event_loop().run_until_complete(ops.Add()(self, other))
 
     def __rand__(self, other):
+        """Perform a `logical_and` (reverse) with another data model.
+
+        If one of them is None, output None. If both are provided,
+        then concatenates the other data model with this one.
+        
+        If the other is a metaclass or symbolic data model, output a symbolic data model.
+
+        Args:
+            other (JsonDataModel | SymbolicDataModel | DataModel):
+                The other data model to concatenate with.
+
+        Returns:
+            (JsonDataModel | SymbolicDataModel | None): The concatenated data model or
+                `None` based on the `logical_and` table.
+        """
         from synalinks.src import ops
 
         if any_meta_class(other, self):
@@ -202,6 +324,22 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
             return asyncio.get_event_loop().run_until_complete(ops.Add()(other, self))
 
     def __or__(self, other):
+        """Perform a `logical_or` with another data model
+
+        If one of them is None, output the other one. If both are provided,
+        then concatenates this data model with the other.
+        
+        If the other is a metaclass or symbolic data model, output a symbolic data model.
+
+        Args:
+            other (JsonDataModel | SymbolicDataModel | DataModel): 
+                The other data model to concatenate with.
+
+        Returns:
+            (JsonDataModel | SymbolicDataModel | None): The concatenation of data model
+                if both are provided, or the non-None data model or None if none are
+                provided. (See `logical_or` table).
+        """
         from synalinks.src import ops
 
         if any_meta_class(self, other):
@@ -212,6 +350,22 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
             return asyncio.get_event_loop().run_until_complete(ops.Or()(self, other))
 
     def __ror__(self, other):
+        """Perform a `logical_or` (reverse) with another data model
+
+        If one of them is None, output the other one. If both are provided,
+        then concatenates the other data model with this one.
+        
+        If the other is a metaclass or symbolic data model, output a symbolic data model.
+
+        Args:
+            other (JsonDataModel | SymbolicDataModel | DataModel):
+                The other data model to concatenate with.
+
+        Returns:
+            (JsonDataModel | SymbolicDataModel | None): The concatenation of data model
+                if both are provided, or the non-None data model or None if none are
+                provided. (See `logical_or` table).
+        """
         from synalinks.src import ops
 
         if any_meta_class(other, self):
@@ -229,7 +383,7 @@ def is_data_model(x):
         x (any): The object to check.
 
     Returns:
-        bool: True if `x` is a DataModel, False otherwise.
+        (bool): True if `x` is a DataModel, False otherwise.
     """
     return isinstance(x, DataModel)
 
@@ -242,7 +396,7 @@ def any_data_model(args=None, kwargs=None):
         kwargs (dict): Optional. The keyword arguments to check.
 
     Returns:
-        bool: True if any of the arguments are meta classes, False otherwise.
+        (bool): True if any of the arguments are meta classes, False otherwise.
     """
     args = args or ()
     kwargs = kwargs or {}
@@ -260,11 +414,11 @@ async def compute_output_spec(fn, *args, **kwargs):
 
     Args:
         fn (callable): The function to compute the output specification for.
-        *args: The positional arguments to pass to the function.
-        **kwargs: The keyword arguments to pass to the function.
+        *args (positional arguments): The positional arguments to pass to the function.
+        **kwargs (keyword arguments): The keyword arguments to pass to the function.
 
     Returns:
-        SymbolicDataModel: The output specification of the function.
+        (SymbolicDataModel): The output specification of the function.
     """
     with StatelessScope(), SymbolicScope():
         output_spec = await fn(*args, **kwargs)
@@ -282,7 +436,7 @@ def any_meta_class(args=None, kwargs=None):
         kwargs (dict): Optional. The keyword arguments to check.
 
     Returns:
-        bool: True if any of the arguments are meta classes, False otherwise.
+        (bool): True if any of the arguments are meta classes, False otherwise.
     """
     args = args or ()
     kwargs = kwargs or {}
@@ -309,6 +463,6 @@ def is_meta_class(x):
         x (any): The object to check.
 
     Returns:
-        bool: True if `x` is a meta class, False otherwise.
+        (bool): True if `x` is a meta class, False otherwise.
     """
     return inspect.isclass(x)

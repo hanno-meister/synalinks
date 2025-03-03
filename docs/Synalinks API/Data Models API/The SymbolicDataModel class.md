@@ -1,2 +1,2 @@
 
-::: synalinks.src.backend.common.symbolic_data_model.SymbolicDataModel
+::: synalinks.src.backend.common.symbolic_data_model

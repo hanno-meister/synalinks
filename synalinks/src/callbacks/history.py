@@ -11,9 +11,8 @@ class History(Callback):
     """Callback that records events into a `History` object.
 
     This callback is automatically applied to
-    every Keras program. The `History` object
+    every Synalinks program. The `History` object
     gets returned by the `fit()` method of programs.
-
     """
 
     def __init__(self):

@@ -20,23 +20,23 @@ class CSVLogger(Callback):
     including 1D iterables such as `np.ndarray`.
 
     Args:
-        filename: Filename of the CSV file, e.g. `'run/log.csv'`.
-        separator: String used to separate elements in the CSV file.
-        append: Boolean. True: append if file exists (useful for continuing
+        filepath (str | os.PathLike): Filepath of the CSV file, e.g. `'run/log.csv'`.
+        separator (str): String used to separate elements in the CSV file.
+        append (bool): True: append if file exists (useful for continuing
             training). False: overwrite existing file.
 
     Example:
 
     ```python
-    csv_logger = CSVLogger('training.log')
-    model.fit(X_train, Y_train, callbacks=[csv_logger])
+    csv_logger = CSVLogger(filepath='training.log')
+    program.fit(x_train, y_train, callbacks=[csv_logger])
     ```
     """
 
-    def __init__(self, filename, separator=",", append=False):
+    def __init__(self, filepath, separator=",", append=False):
         super().__init__()
         self.sep = separator
-        self.filename = file_utils.path_to_string(filename)
+        self.filepath = file_utils.path_to_string(filepath)
         self.append = append
         self.writer = None
         self.keys = None
@@ -44,13 +44,13 @@ class CSVLogger(Callback):
 
     def on_train_begin(self, logs=None):
         if self.append:
-            if file_utils.exists(self.filename):
-                with file_utils.File(self.filename, "r") as f:
+            if file_utils.exists(self.filepath):
+                with file_utils.File(self.filepath, "r") as f:
                     self.append_header = not bool(len(f.readline()))
             mode = "a"
         else:
             mode = "w"
-        self.csv_file = file_utils.File(self.filename, mode)
+        self.csv_file = file_utils.File(self.filepath, mode)
 
     def on_epoch_end(self, epoch, logs=None):
         logs = logs or {}

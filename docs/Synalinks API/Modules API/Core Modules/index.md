@@ -4,4 +4,4 @@
 - [Generator module](Generator module.md)
 - [Decision module](Decision module.md)
 - [Action module](Action module.md)
-- [Router module](Router module.md)
+- [Branch module](Branch module.md)

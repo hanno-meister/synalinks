@@ -12,11 +12,11 @@ class CoreTest(testing.TestCase):
             foo: str
 
         expected_schema = {
+            "additionalProperties": False,
             "properties": {"foo": {"title": "Foo", "type": "string"}},
             "required": ["foo"],
             "title": "TestDataModel",
             "type": "object",
-            "additionalProperties": False,
         }
 
         self.assertEqual(TestDataModel.schema(), expected_schema)
@@ -26,11 +26,11 @@ class CoreTest(testing.TestCase):
             foo: str
 
         expected_schema = {
+            "additionalProperties": False,
             "properties": {"foo": {"title": "Foo", "type": "string"}},
             "required": ["foo"],
             "title": "TestDataModel",
             "type": "object",
-            "additionalProperties": False,
         }
 
         self.assertEqual(TestDataModel(foo="bar").schema(), expected_schema)

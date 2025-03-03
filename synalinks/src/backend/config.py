@@ -36,7 +36,7 @@ def floatx():
     E.g. `'bfloat16'`, `'float16'`, `'float32'`, `'float64'`.
 
     Returns:
-        String, the current default float type.
+        (str): The current default float type.
 
     Example:
 
@@ -58,7 +58,7 @@ def set_floatx(value):
     Instead, use `float64` or `float32`.
 
     Args:
-        value: String; `'bfloat16'`, `'float16'`, `'float32'`, or `'float64'`.
+        value (str): The float type `'bfloat16'`, `'float16'`, `'float32'`, or `'float64'`.
 
     Examples:
 
@@ -95,7 +95,7 @@ def epsilon():
     """Return the value of the fuzz factor used in numeric expressions.
 
     Returns:
-        A float.
+        (float): The epsilon value.
 
     Example:
 
@@ -113,7 +113,7 @@ def set_epsilon(value):
     """Set the value of the fuzz factor used in numeric expressions.
 
     Args:
-        value: float. New value of epsilon.
+        value (float): The new value of epsilon.
 
     Examples:
 
@@ -148,7 +148,7 @@ def api_key():
     """Synalinks API key.
 
     Returns:
-        str: Synalinks API key.
+        (str): Synalinks API key.
 
     ```python
     >>> synalinks.config.api_key()
@@ -213,7 +213,7 @@ def backend():
     """Publicly accessible method for determining the current backend.
 
     Returns:
-        str: The name of the backend synalinks is currently using. like
+        (str): The name of the backend synalinks is currently using. like
             `"pydantic"`.
 
     Example:

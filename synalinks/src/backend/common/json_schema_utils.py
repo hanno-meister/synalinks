@@ -50,7 +50,7 @@ def is_schema_equal(schema1, schema2):
         schema2 (dict): The second JSON schema to be compared.
 
     Returns:
-        bool: `True` if the schemas are considered equal based on their properties,
+        - (bool): `True` if the schemas are considered equal based on their properties,
         `False` otherwise.
     """
     schema1_properties = schema1.get("properties", {})
@@ -87,18 +87,18 @@ def concatenate_schema(schema1, schema2):
         schema2 (dict): The second JSON schema to be concatenated.
 
     Returns:
-        dict: A new JSON schema that combines the properties of the input schemas.
+        (dict): A new JSON schema that combines the properties of the input schemas.
     """
     schema1 = copy.deepcopy(schema1)
     schema2 = copy.deepcopy(schema2)
     # Initialize the resulting schema
     result_schema = {
+        "additionalProperties": False,
         "$defs": {},
         "properties": {},
         "required": [],
         "title": "SymbolicDataModel",
         "type": "object",
-        "additionalProperties": False,
     }
 
     if schema1.get("$defs") and not schema2.get("$defs"):
@@ -170,17 +170,17 @@ def factorize_schema(schema):
         schema (dict): The input JSON schema to factorize.
 
     Returns:
-        dict: A factorized JSON schema with grouped properties.
+        (dict): A factorized JSON schema with grouped properties.
     """
     schema = copy.deepcopy(schema)
     # Initialize the resulting schema
     result_schema = {
+        "additionalProperties": False,
         "$defs": {},
         "properties": {},
         "required": [],
         "title": "SymbolicDataModel",
         "type": "object",
-        "additionalProperties": False,
     }
 
     if schema.get("$defs"):
@@ -239,7 +239,7 @@ def out_mask_schema(schema, mask=None, recursive=True):
             recursively for nested objects (default True).
 
     Returns:
-        dict: A masked JSON schema with removed properties.
+        (dict): A masked JSON schema with removed properties.
     """
     result_schema = standardize_schema(copy.deepcopy(schema))
 
@@ -303,20 +303,20 @@ def in_mask_schema(schema, mask=None, recursive=True):
     It ignores the suffixes that other operations could add.
 
     Args:
-        schema (dict): The input JSON schema to mask.
-        mask (list): The base key list to keep.
-        recursive (bool): Whether or not to keep
+        - schema (dict): The input JSON schema to mask.
+        - mask (list): The base key list to keep.
+        - recursive (bool): Whether or not to keep
             recursively for nested objects (default True).
 
     Returns:
-        dict: A masked JSON schema with only the specified properties.
+        - (dict): A masked JSON schema with only the specified properties.
     """
     if not mask:
         return {
+            "additionalProperties": False,
             "properties": {},
             "title": "SymbolicDataModel",
             "type": "object",
-            "additionalProperties": False,
         }
 
     result_schema = standardize_schema(copy.deepcopy(schema))

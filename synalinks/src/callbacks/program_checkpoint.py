@@ -99,8 +99,7 @@ class ProgramCheckpoint(Callback):
             The `filepath` name needs to end with `".variables.json"` when
             `save_variables_only=True` or should end with `".json"`
             when checkpoint saving the whole program (default).
-            For example:
-            if `filepath` is `"{epoch:02d}-{val_loss:.2f}.json"` or
+            For example, if `filepath` is `"{epoch:02d}-{val_loss:.2f}.json"` or
             "{epoch:02d}-{val_loss:.2f}.variables.json"`, then the program
             checkpoints will be saved with the epoch number and the validation
             loss in the filename. The directory of the filepath
@@ -240,10 +239,10 @@ class ProgramCheckpoint(Callback):
         """Saves the program.
 
         Args:
-            epoch: the epoch this iteration is in.
-            batch: the batch this iteration is in. `None` if the `save_freq`
+            epoch (int): the epoch this iteration is in.
+            batch (int): the batch this iteration is in. `None` if the `save_freq`
                 is set to `"epoch"`.
-            logs: the `logs` dict passed in to `on_batch_end` or `on_epoch_end`.
+            logs (dict): the `logs` dict passed in to `on_batch_end` or `on_epoch_end`.
         """
         logs = logs or {}
 
@@ -372,14 +371,14 @@ class ProgramCheckpoint(Callback):
         ```
 
         Args:
-            pattern: The file pattern that may optionally contain python
+            pattern (str): The file pattern that may optionally contain python
                 placeholder such as `{epoch:02d}`.
 
         Returns:
-            The most recently modified file's full filepath matching `pattern`.
-            If `pattern` does not contain any placeholder, this returns the
-            filepath that exactly matches `pattern`. Returns `None` if no match
-            is found.
+            (str): The most recently modified file's full filepath matching `pattern`.
+                If `pattern` does not contain any placeholder, this returns the
+                filepath that exactly matches `pattern`. Returns `None` if no match
+                is found.
         """
         dir_name = os.path.dirname(pattern)
         base_name = os.path.basename(pattern)

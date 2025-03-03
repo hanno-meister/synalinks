@@ -19,13 +19,13 @@ class Variable:
     """A backend-agnostic variable in synalinks.
 
     A `Variable` acts as a container for state.
-        It holds a JSON object value with the corresponding schema and can
-        be updated.
+    It holds a JSON object value with the corresponding schema and can
+    be updated by the optimizers.
 
     A Variable is different from a JsonDataModel as it can be modified by the optimizers
 
-    Note that the DataModel used for the variable declaration
-        **must have a default value** for each of its field.
+    Note that the DataModel used for the variable declaration 
+    **must have a default value** for each of its field.
 
     Examples:
 
@@ -193,7 +193,7 @@ class Variable:
         """Alias for the Variable's value.
 
         Returns:
-            dict: The current value of the variable.
+            (dict): The current value of the variable.
         """
         return self.value()
 
@@ -201,7 +201,7 @@ class Variable:
         """The current value of the variable.
 
         Returns:
-            dict: The current value of the variable.
+            (dict): The current value of the variable.
         """
         if in_stateless_scope():
             scope = get_stateless_scope()
@@ -220,7 +220,7 @@ class Variable:
         """Get a pretty version of the JSON schema for display.
 
         Returns:
-            dict: The indented JSON schema.
+            (dict): The indented JSON schema.
         """
         return json.dumps(self.schema(), indent=2)
 
@@ -228,7 +228,7 @@ class Variable:
         """Get a pretty version of the JSON object for display.
 
         Returns:
-            dict: The indented JSON object.
+            (dict): The indented JSON object.
         """
         return json.dumps(self.json(), indent=2)
 
@@ -240,7 +240,7 @@ class Variable:
                 The value can be an instanciated data model or JSON dict.
 
         Returns:
-            dict: The assigned value.
+            (dict): The assigned value.
 
         Raises:
             ValueError: If the schema of the target variable and
@@ -267,7 +267,7 @@ class Variable:
         """The schema of the variable.
 
         Returns:
-            dict: The JSON schema of the variable.
+            (dict): The JSON schema of the variable.
         """
         return self._schema
 

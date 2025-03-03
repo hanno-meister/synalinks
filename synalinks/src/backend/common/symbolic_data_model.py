@@ -35,22 +35,39 @@ class SymbolicDataModel:
 
     Examples:
 
-    **Creating a `SymbolicDataModel` with a data_model:**
+    **Creating a `SymbolicDataModel` with a backend data model metaclass:**
 
     ```python
     class Query(synalinks.DataModel):
-        query: str
+        query: str = synalinks.Field(
+            description="The user query",
+        )
 
     data_model = SymbolicDataModel(data_model=Query)
     ```
 
-    **Creating a `SymbolicDataModel` with a data_model's schema:**
+    **Creating a `SymbolicDataModel` with a backend data model metaclass's schema:**
 
     ```python
     class Query(synalinks.DataModel):
-        query: str
+        query: str = synalinks.Field(
+            description="The user query",
+        )
 
     data_model = SymbolicDataModel(schema=Query.schema())
+    ```
+    
+    **Creating a `SymbolicDataModel` with `to_symbolic_data_model()`:**
+    
+    using a backend data model metaclass
+    
+    ```python
+    class Query(synalinks.DataModel):
+        query: str = synalinks.Field(
+            description="The user query",
+        )
+
+    data_model = Query.to_symbolic_data_model()
     ```
     """
 
@@ -107,15 +124,40 @@ class SymbolicDataModel:
         """The JSON schema of the data model.
 
         Returns:
-            dict: The JSON schema.
+            (dict): The JSON schema.
         """
         return self._schema
+    
+    def json(self, key):
+        """Alias for the JSON object's value (impossible in `SymbolicDataModel`).
+        
+        Implemented to help the user to identifying issues.
+        
+        Raises:
+            ValueError: The help message.
+        """
+        return self.value()
+        
+    def value(self):
+        """The current value of the JSON object (impossible in `SymbolicDataModel`).
+        
+        Implemented to help the user to identifying issues.
+        
+        Raises:
+            ValueError: The help message.
+        """
+        raise ValueError(
+            "Attempting to retrieve the JSON value from a symbolic data model "
+            "this operation is not possible, make sure that your `call()` "
+            "is correctly implemented, if so then you likely need to implement "
+            " `compute_output_spec()` in your subclassed module."
+        )
 
     def pretty_schema(self):
         """Get a pretty version of the JSON schema for display.
 
         Returns:
-            dict: The indented JSON schema.
+            (dict): The indented JSON schema.
         """
         return json.dumps(self.schema(), indent=2)
 
@@ -126,10 +168,11 @@ class SymbolicDataModel:
         """Concatenates this data model with another.
 
         Args:
-            other (SymbolicDataModel): The other data model to concatenate with.
+            other (SymbolicDataModel | DataModel):
+                The other data model to concatenate with.
 
         Returns:
-            SymbolicDataModel: The concatenated data model.
+            (SymbolicDataModel): The concatenated data model.
         """
         from synalinks.src import ops
 
@@ -141,10 +184,11 @@ class SymbolicDataModel:
         """Concatenates (reverse) another data model with this one.
 
         Args:
-            other (SymbolicDataModel): The other data model to concatenate with.
+            other (SymbolicDataModel | DataModel):
+                The other data model to concatenate with.
 
         Returns:
-            SymbolicDataModel: The concatenated data model.
+            (SymbolicDataModel): The concatenated data model.
         """
         from synalinks.src import ops
 
@@ -153,16 +197,17 @@ class SymbolicDataModel:
         )
 
     def __and__(self, other):
-        """Perform a logical `And` with another data model
+        """Perform a `logical_and` with another data model.
 
         If one of them is None, output None. If both are provided,
-        then concatenates the other data model with this one.
+        then concatenates this data model with the other.
 
         Args:
-            other (SymbolicDataModel): The other data model to concatenate with.
+            other (SymbolicDataModel | DataModel): The other data model to concatenate with.
 
         Returns:
-            SymbolicDataModel | None: The concatenated data model.
+            (SymbolicDataModel | None): The concatenated data model or None
+                based on the `logical_and` table.
         """
         from synalinks.src import ops
 
@@ -171,16 +216,17 @@ class SymbolicDataModel:
         )
 
     def __rand__(self, other):
-        """Perform a logical `And` (reverse) with another data model
+        """Perform a `logical_and` (reverse) with another data model.
 
         If one of them is None, output None. If both are provided,
-        then cnoncatenates the other data model with this one.
+        then concatenates the other data model with this one.
 
         Args:
-            other (SymbolicDataModel): The other data model to concatenate with.
+            other (SymbolicDataModel | DataModel): The other data model to concatenate with.
 
         Returns:
-            SymbolicDataModel | None: The concatenated data model.
+            (SymbolicDataModel | None): The concatenated data model or None
+                based on the `logical_and` table.
         """
         from synalinks.src import ops
 
@@ -189,16 +235,17 @@ class SymbolicDataModel:
         )
 
     def __or__(self, other):
-        """Perform a logical `Or` with another data model
+        """Perform a `logical_or` with another data model
 
         If one of them is None, output the other one. If both are provided,
-        then concatenates the other data model with this one.
+        then concatenates this data model with the other.
 
         Args:
             other (SymbolicDataModel): The other data model to concatenate with.
 
         Returns:
-            SymbolicDataModel | None: The concatenated data model.
+            (SymbolicDataModel | None): The concatenation of data model if both are provided,
+                or the non-None data model or None if none are provided. (See `logical_or` table).
         """
         from synalinks.src import ops
 
@@ -207,16 +254,17 @@ class SymbolicDataModel:
         )
 
     def __ror__(self, other):
-        """Perform a logical `Or` (reverse) with another data model
+        """Perform a `logical_or` (reverse) with another data model
 
         If one of them is None, output the other one. If both are provided,
         then concatenates the other data model with this one.
 
         Args:
-            other (SymbolicDataModel): The other data model to concatenate with.
+            other (SymbolicDataModel | DataModel): The other data model to concatenate with.
 
         Returns:
-            SymbolicDataModel | None: The concatenated data model.
+            (SymbolicDataModel | None): The concatenation of data model if both are provided,
+                or the non-None data model or None if none are provided. (See `logical_or` table).
         """
         from synalinks.src import ops
 
@@ -228,7 +276,7 @@ class SymbolicDataModel:
         """Factorizes the data model.
 
         Returns:
-            SymbolicDataModel: The factorized data model.
+            (SymbolicDataModel): The factorized data model.
         """
         from synalinks.src import ops
 
@@ -245,7 +293,7 @@ class SymbolicDataModel:
                 Defaults to True.
 
         Returns:
-            SymbolicDataModel: The data model with the input mask applied.
+            (SymbolicDataModel): The data model with the mask applied.
         """
         from synalinks.src import ops
 
@@ -262,7 +310,7 @@ class SymbolicDataModel:
                 Defaults to True.
 
         Returns:
-            SymbolicDataModel: The data model with the output mask applied.
+            (SymbolicDataModel): The data model with the mask applied.
         """
         from synalinks.src import ops
 
@@ -277,7 +325,7 @@ class SymbolicDataModel:
             prefix (str): the prefix to add
 
         Returns:
-            SymbolicDataModel: The data model with the prefix added.
+            (SymbolicDataModel): The data model with the prefix added.
         """
         from synalinks.src import ops
 
@@ -292,7 +340,7 @@ class SymbolicDataModel:
             suffix (str): the suffix to add
 
         Returns:
-            SymbolicDataModel: The data model with the suffix added.
+            (SymbolicDataModel): The data model with the suffix added.
         """
         from synalinks.src import ops
 
@@ -302,9 +350,14 @@ class SymbolicDataModel:
 
     def get(self, key):
         """Get wrapper to make easier to access fields.
+        
+        Implemented to help the user to identifying issues.
 
         Args:
             key (str): The key to access.
+            
+        Raises:
+            ValueError: The help message.
         """
         raise ValueError(
             f"Attempting to get '{key}' from a symbolic data model "
@@ -315,12 +368,17 @@ class SymbolicDataModel:
 
     def update(self, kv_dict):
         """Update wrapper to make easier to modify fields.
+        
+        Implemented to help the user to identifying issues.
 
         Args:
             kv_dict (dict): The key/value dict to update.
+            
+        Raises:
+            ValueError: The help message.
         """
         raise ValueError(
-            f"Attempting to update keys '{list(kv_dict.key())}' from a symbolic "
+            f"Attempting to update keys '{list(kv_dict.keys())}' from a symbolic "
             "data model this operation is not possible, make sure that your `call()` "
             "is correctly implemented, if so then you likely need to implement "
             " `compute_output_spec()` in your subclassed module."
@@ -335,7 +393,7 @@ def any_symbolic_data_models(args=None, kwargs=None):
         kwargs (dict): Optional. The keyword arguments to check.
 
     Returns:
-        bool: True if any of the arguments are symbolic data models, False otherwise.
+        (bool): True if any of the arguments are symbolic data models, False otherwise.
     """
     args = args or ()
     kwargs = kwargs or {}
@@ -365,6 +423,6 @@ def is_symbolic_data_model(x):
         x (any): The object to check.
 
     Returns:
-        bool: True if `x` is a Synalinks data model, False otherwise.
+        (bool): True if `x` is a symbolic data model, False otherwise.
     """
     return isinstance(x, SymbolicDataModel)

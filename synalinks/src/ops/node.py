@@ -34,11 +34,11 @@ class Node:
     retrieve the entire DAG of a synalinks Function.
 
     Args:
-        operation: The Operation that was called in the `op.__call__()`
+        operation (Operation): The Operation that was called in the `op.__call__()`
             event that this node represents.
-        call_args: The positional arguments the operation was called with.
-        call_kwargs: The keyword arguments the operation was called with.
-        outputs: The output data_models of the `op.__call__()` call.
+        call_arg (positional arguments): The positional arguments the operation was called with.
+        call_kwargs (keyword arguments): The keyword arguments the operation was called with.
+        outputs (list): The output data models of the `op.__call__()` call.
     """
 
     def __init__(self, operation, call_args=None, call_kwargs=None, outputs=None):

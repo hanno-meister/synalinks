@@ -102,7 +102,8 @@ class Sequential(Program):
         """Adds a module instance on top of the module stack.
 
         Args:
-            module: module instance.
+            module (Module): Module instance.
+            rebuild (bool): If `True` rebuild the program.
         """
         # If we are passed a SymbolicDataModel created by synalinks.Input(), we
         # extract the input module from its synalinks history and use that.
@@ -142,7 +143,11 @@ class Sequential(Program):
             self._functional = None
 
     def pop(self, rebuild=True):
-        """Removes the last module in the program."""
+        """Removes the last module in the program.
+        
+        Args:
+            rebuild (bool): If `True` rebuild the program.
+        """
         module = self._modules.pop()
         self.built = False
         self._functional = None

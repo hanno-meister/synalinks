@@ -218,7 +218,7 @@ class Trainer:
             training (bool): Whether we are training or evaluating the program.
 
         Returns:
-            The total reward as a scalar, or `None` if no reward results
+            (float | None): The total reward as a scalar, or `None` if no reward results
                 (which is the case when called by `Program.test_step`).
         """
         # The default implementation does not use `x` or `training`.
@@ -315,7 +315,7 @@ class Trainer:
         each of them gets added to the top level returned dict of this method.
 
         Returns:
-            A `dict` containing values of the metrics listed in `self.metrics`.
+            (dict): A `dict` containing values of the metrics listed in `self.metrics`.
                 Example: `{'reward': 0.2, 'accuracy': 0.7}`.
         """
         return_metrics = {}
@@ -443,7 +443,7 @@ class Trainer:
                 e.g. `validation_freq=2` runs validation every 2 epochs.
 
         Returns:
-            A `History` object. Its `History.history` attribute is
+            (History): A `History` object. Its `History.history` attribute is
                 a record of training reward values and metrics values
                 at successive epochs, as well as validation reward values
                 and validation metrics values (if applicable).
@@ -859,7 +859,7 @@ class Trainer:
         (optimizer, reward, metrics, etc.) with which the program was compiled.
 
         Returns:
-            A dict containing information for compiling the program.
+            (dict): A dict containing information for compiling the program.
         """
         if self.compiled and hasattr(self, "_compile_config"):
             return self._compile_config.serialize()
@@ -871,7 +871,7 @@ class Trainer:
         metrics, etc.) to compile the program.
 
         Args:
-            config: Dict containing information for compiling the program.
+            config (dict): Dict containing information for compiling the program.
         """
         has_overridden_compile = self.__class__.compile != Trainer.compile
         if has_overridden_compile:
@@ -919,12 +919,12 @@ class Trainer:
         this function will be no-op and return the logs passed in.
 
         Args:
-            logs: A `dict` of metrics returned by train / test step function.
+            logs (dict): A `dict` of metrics returned by train / test step function.
 
         Returns:
-            A `dict` containing values of the metrics listed in `self.metrics`
-            when logs and program metrics keys match. Otherwise it returns input
-            `logs`.
+            (dict): A `dict` containing values of the metrics listed in `self.metrics`
+                when logs and program metrics keys match. Otherwise it returns input
+                `logs`.
         """
         metric_logs = self.get_metrics_result()
         # Verify that train / test step logs passed and metric logs have

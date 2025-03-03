@@ -1,5 +1,7 @@
 site_name: Synalinks
 site_url: https://synalinks.github.io/synalinks
+repo_url: https://github.com/SynaLinks/synalinks
+repo_name: SynaLinks/synalinks
 theme:
   name: material
   logo: assets/synalinks_logo.png
@@ -8,6 +10,8 @@ theme:
     - content.code.copy
   palette:
     primary: black
+  icon:
+    repo: fontawesome/brands/github
 
 markdown_extensions:
   - pymdownx.highlight:

@@ -42,7 +42,7 @@ class FBetaScore(Metric):
     computed for each one independently.
 
     Args:
-        average: Type of averaging to be performed across per-field results
+        average (str): Type of averaging to be performed across per-field results
             in the multi-field case.
             Acceptable values are `None`, `"micro"`, `"macro"` and
             `"weighted"`. Defaults to `None`.
@@ -208,7 +208,11 @@ class FBetaScore(Metric):
             return list(f1_score)
 
     def get_config(self):
-        """Returns the serializable config of the metric."""
+        """Return the serializable config of the metric.
+        
+        Returns:
+            (dict): The config dict.
+        """
         config = {
             "name": self.name,
             "beta": self.beta,
@@ -236,7 +240,7 @@ class F1Score(FBetaScore):
     computed for each one independently before being averaged.
 
     Args:
-        average: Type of averaging to be performed across per-field results
+        average (str): Type of averaging to be performed across per-field results
             in the multi-field case.
             Acceptable values are `None`, `"micro"`, `"macro"` and
             `"weighted"`. Defaults to `None`.
@@ -273,6 +277,11 @@ class F1Score(FBetaScore):
         )
 
     def get_config(self):
+        """Return the serializable config of the metric.
+        
+        Returns:
+            (dict): The config dict.
+        """
         base_config = super().get_config()
         del base_config["beta"]
         return base_config
@@ -298,7 +307,7 @@ class BinaryFBetaScore(FBetaScore):
     if the values are 0 or 1.
 
     Args:
-        average: Type of averaging to be performed across per-class results
+        average (str): Type of averaging to be performed across per-class results
             in the multi-class case.
             Acceptable values are `None`, `"micro"`, `"macro"` and
             `"weighted"`. Defaults to `None`.
@@ -420,7 +429,11 @@ class BinaryFBetaScore(FBetaScore):
         )
 
     def get_config(self):
-        """Returns the serializable config of the metric."""
+        """Return the serializable config of the metric.
+        
+        Returns:
+            (dict): The config dict.
+        """
         config = {
             "beta": self.beta,
             "threshold": self.threshold,
@@ -449,7 +462,7 @@ class BinaryF1Score(BinaryFBetaScore):
     if the values are 0 or 1.
 
     Args:
-        average: Type of averaging to be performed across per-class results
+        average (str): Type of averaging to be performed across per-class results
             in the multi-class case.
             Acceptable values are `None`, `"micro"`, `"macro"` and
             `"weighted"`. Defaults to `None`.
@@ -491,6 +504,11 @@ class BinaryF1Score(BinaryFBetaScore):
         )
 
     def get_config(self):
+        """Return the serializable config of the metric.
+        
+        Returns:
+            (dict): The config dict.
+        """
         base_config = super().get_config()
         del base_config["beta"]
         return base_config

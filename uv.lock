@@ -2404,7 +2404,7 @@ wheels = [
 
 [[package]]
 name = "synalinks"
-version = "0.1.3004"
+version = "0.1.3005"
 source = { virtual = "." }
 dependencies = [
     { name = "absl-py" },

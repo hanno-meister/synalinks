@@ -6,23 +6,35 @@ A module instance is callable, much like a function:
 
 ``` py
 import synalinks
+import asyncio
 
-class Query(synalinks.DataModel):
-    query: str
+async def main():
+    class Query(synalinks.DataModel):
+        query: str = synalinks.Field(
+            description="The user query",
+        )
 
-class ChainOfThought(synalinks.DataModel):
-    thinking: str
-    answer: str
+    class AnswerWithThinking(synalinks.DataModel):
+        thinking: str = synalinks.Field(
+            description="Your step by step thinking",
+        )
+        answer: str = synalinks.Field(
+            description="The correct answer",
+        )
 
-language_model = LanguageModel("ollama_chat/deepseek-r1")
+    language_model = LanguageModel("ollama_chat/deepseek-r1")
 
-generator = synalinks.Generator(
-    data_model=ChainOfThought,
-    language_model=language_model,
-)
+    generator = synalinks.Generator(
+        data_model=AnswerWithThinking,
+        language_model=language_model,
+    )
 
-inputs = Query(query="What is the capital of France?")
-outputs = generator(inputs)
+    inputs = Query(query="What is the capital of France?")
+    outputs = await generator(inputs)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ## Modules API overview
@@ -44,8 +56,8 @@ outputs = generator(inputs)
 ### Merging Modules
 
 - [Concat Module](Merging Modules/Concat module.md)
-- [Logical And](Merging Modules/Logical And module.md)
-- [Logical Or](Merging Modules/Logical Or module.md)
+- [Logical And](Merging Modules/And module.md)
+- [Logical Or](Merging Modules/Or module.md)
 
 ---
 

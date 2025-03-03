@@ -50,16 +50,8 @@ class Module(BackendModule, Operation, SynalinksSaveable):
     Users will just instantiate a module and then treat it as a callable.
 
     Args:
-        trainable: Boolean, whether the module's variables should be trainable.
-        name: String name of the module.
-
-    Attributes:
-        name: The name of the module (string).
-        trainable_variables: List of variables to be included in optimization.
-        non_trainable_variables: List of variables that should not
-            be included in optimization.
-        variables: The concatenation of the lists trainable_variables and
-            non_trainable_variables (in this order).
+        trainable (bool): Boolean, whether the module's variables should be trainable.
+        name (str): String name of the module.
 
     We recommend that descendants of `Module` implement the following methods:
 
@@ -239,7 +231,7 @@ class Module(BackendModule, Operation, SynalinksSaveable):
         loading.
 
         Returns:
-            A dict containing the input schema associated with the module.
+            (dict): A dict containing the input schema associated with the module.
         """
         if self._build_schemas_dict is not None:
             if len(self._build_schemas_dict) == 1:
@@ -258,7 +250,7 @@ class Module(BackendModule, Operation, SynalinksSaveable):
         module's state, you should override this method.
 
         Args:
-            config: Dict containing the input schema associated with this module.
+            config (dict): Dict containing the input schema associated with this module.
         """
         if config:
             if "input_schema" in config:
@@ -377,7 +369,7 @@ class Module(BackendModule, Operation, SynalinksSaveable):
         recompile the training graph.
 
         Args:
-            value: Boolean with the desired state for the module's trainable
+            value (bool): Boolean with the desired state for the module's trainable
                 attribute.
         """
         value = bool(value)

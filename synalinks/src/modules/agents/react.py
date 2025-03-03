@@ -110,7 +110,10 @@ class ReACTAgent(Program):
             the decision prompt (Default to False) (see `Decision`).
         use_outputs_schema (bool): Optional. Whether or not use the outputs schema in
             the decision prompt (Default to False) (see `Decision`).
-        max_iteration (int): The maximum number of steps to perform.
+        max_iterations (int): The maximum number of steps to perform.
+        name (str): Optional. The name of the module.
+        description (str): Optional. The description of the module.
+        trainable (bool): Whether the module's variables should be trainable.
     """
 
     def __init__(

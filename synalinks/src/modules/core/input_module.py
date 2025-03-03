@@ -119,7 +119,7 @@ def Input(
         data_model (DataModel): Optional existing data model to wrap into
             the `Input` layer. If set, the module will use this data_model rather
             than creating a new placeholder data model.
-        optional: Boolean, whether the input is optional or not.
+        optional (bool): Whether the input is optional or not.
             An optional input can accept `None` values.
         name (string): Optional name string for the module.
             Should be unique in a program (do not reuse the same name twice).

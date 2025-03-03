@@ -36,7 +36,7 @@ class Sum(Metric):
     Args:
         name (str): (Optional) string name of the metric instance.
         in_mask (list): (Optional) list of keys to keep to compute the metric.
-        out_mast (list): (Optional) list of keys to remove to compute the metric.
+        out_mask (list): (Optional) list of keys to remove to compute the metric.
 
     Example:
 
@@ -84,7 +84,7 @@ class Mean(Metric):
     Args:
         name (str): (Optional) string name of the metric instance.
         in_mask (list): (Optional) list of keys to keep to compute the metric.
-        out_mast (list): (Optional) list of keys to remove to compute the metric.
+        out_mask (list): (Optional) list of keys to remove to compute the metric.
 
     Example:
 
@@ -140,7 +140,7 @@ class MeanMetricWrapper(Mean):
         name (str): (Optional) string name of the metric instance.
         in_mask (list): (Optional) list of keys to keep to compute the metric.
         out_mask (list): (Optional) list of keys to remove to compute the metric.
-        **kwargs: Keyword arguments to pass on to `fn`.
+        **kwargs (keyword arguments): Keyword arguments to pass on to `fn`.
     """
 
     def __init__(self, fn, name=None, in_mask=None, out_mask=None, **kwargs):

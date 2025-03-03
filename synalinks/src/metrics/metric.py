@@ -17,7 +17,7 @@ class Metric(SynalinksSaveable):
     Args:
         name (str): (Optional) string name of the metric instance.
         in_mask (list): (Optional) list of keys to keep to compute the metric.
-        out_mast (list): (Optional) list of keys to remove to compute the metric.
+        out_mask (list): (Optional) list of keys to remove to compute the metric.
     """
 
     def __init__(self, name=None, in_mask=None, out_mask=None):
@@ -79,7 +79,7 @@ class Metric(SynalinksSaveable):
         """Compute the current metric value.
 
         Returns:
-            float | dict: A scalar, or a dictionary of scalars.
+            (float | dict): A scalar, or a dictionary of scalars.
         """
         raise NotImplementedError
 
@@ -131,7 +131,11 @@ class Metric(SynalinksSaveable):
         return self.result()
 
     def get_config(self):
-        """Return the serializable config of the metric."""
+        """Return the serializable config of the metric.
+        
+        Returns:
+            (dict): The config dict.
+        """
         return {
             "in_mask": self.in_mask,
             "out_mask": self.out_mask,
@@ -140,6 +144,14 @@ class Metric(SynalinksSaveable):
 
     @classmethod
     def from_config(cls, config):
+        """Returns a metric instance from config.
+        
+        Args:
+            config (dict): The config dict.
+        
+        Returns:
+            (Metric): The metric instance.        
+        """
         return cls(**config)
 
     def __setattr__(self, name, value):

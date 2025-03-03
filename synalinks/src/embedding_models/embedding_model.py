@@ -101,7 +101,7 @@ class EmbeddingModel(SynalinksSaveable):
             texts (list): A list of texts to embed.
 
         Returns:
-            The list of corresponding vectors.
+            (list): The list of corresponding vectors.
         """
         for i in range(self.retry):
             try:

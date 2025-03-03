@@ -119,10 +119,10 @@ class LanguageModel(SynalinksSaveable):
                 If None, output a ChatMessage-like answer.
             streaming (bool): Enable streaming (optional). Default to False.
                 Can be enabled only if schema is None.
-            **kwargs: The additional keywords arguments for the LLM call.
+            **kwargs (keyword arguments): The additional keywords arguments for the LLM call.
 
         Returns:
-            (dict) The generated structured response.
+            (dict): The generated structured response.
         """
         formatted_messages = messages.json().get("messages", [])
         json_instance = {}

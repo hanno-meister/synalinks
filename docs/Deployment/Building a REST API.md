@@ -8,7 +8,7 @@ First, let's see how a production-ready project is structured.
 
 In this tutorial, we will focus only on the backend of your application.
 
-For the purpose of this tutorial, we will skip authentification. There is different ways of handling it, but the most easy one is using JWT tokens combined with Google Oauth. But because is is higly dependent on your business usecase/frontend, we will not handle it here.
+For the purpose of this tutorial, we will skip authentification. But because is is higly dependent on your business usecase/frontend, we will not handle it here.
 
 ### Project Structure
 
@@ -25,7 +25,7 @@ demo/
 │   └── ... (your frontend code)
 ├── scripts/
 │   ├── export_program.py
-│   └── train.py
+│   └── train.py (refer to the code examples to learn how to train programs)
 ├── docker-compose.yml
 ├── .env.backend
 ├── .end.frontend
@@ -91,14 +91,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load your program
-program = synalinks.Program.load("checkpoint.program.json")
+# The dictionary mapping the name of your custom modules to the class
+custom_modules = {}
 
+# Load your program
+program = synalinks.Program.load(
+    "checkpoint.program.json",
+    custom_modules=custom_modules,
+)
 
 @app.post("/v1/chat_completion")
 async def chat_completion(messages: synalinks.ChatMessages):
     result = await program(messages)
-    return result.json() if result else None
+    return result.json()
 
 
 if __name__ == "__main__":
@@ -112,11 +117,6 @@ if __name__ == "__main__":
 ### Creating your training script
 
 For obvious reasons, you will need to have a separate logic to train your application. This script will specify the program architecture, training and evaluation procedure and will end up saving your program into a serializable JSON format.
-
-```python title="train.py"
-import synalinks
-
-```
 
 To ease the migration, we'll also make a small script that export the trained program into our backend folder.
 
@@ -187,16 +187,6 @@ services:
     image: ghcr.io/mlflow/mlflow:latest
     ports:
       - "5000:5000"
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    env_file:
-      - .env.frontend
   backend:
     build:
       context: ./backend
@@ -216,6 +206,6 @@ cd demo
 docker compose up
 ```
 
-### Testing your application
+### Testing your application backend
 
 Open you browser to `http://127.0.0.1/docs` and test your API

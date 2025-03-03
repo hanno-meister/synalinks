@@ -48,12 +48,13 @@ class Function(Operation):
     ```
 
     Args:
-        inputs: `SymbolicDataModel` instance or nested structured of
-            `SymbolicDataModel` instances.
-        outputs: `SymbolicDataModel` instance or nested structured of
-            `SymbolicDataModel` instances. They should be computable
-            given only the values of `inputs`.
-        name: String. The name of the function.
+        inputs (SymbolicDataModel | tuple | list | dict): `SymbolicDataModel` 
+            instance or nested structured of `SymbolicDataModel` instances.
+        outputs (SymbolicDataModel | tuple | list | dict): `SymbolicDataModel`
+            instance or nested structured of `SymbolicDataModel` instances. 
+            They should be computable given only the values of `inputs`.
+        name (str): Optional. The name of the function operation.
+        description (str): Optional. The description of the function operation.
     """
 
     def __init__(self, inputs, outputs, name=None, description=None):

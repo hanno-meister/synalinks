@@ -7,4 +7,4 @@ The purpose of a reward function is to compute the quantity that the program sho
 - [ExactMatch reward](ExactMatch reward.md)
 - [CosineSimilarity reward](CosineSimilarity reward.md)
 - [LMAsJudge reward](LMAsJudge reward.md)
-- [ProgramAsJudge reward](ProgramAsJudge reward.md)
+- [ProgramAsJudge reward](Reward wrappers.md)

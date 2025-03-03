@@ -36,7 +36,7 @@ def concatenate_json(json1, json2):
         json2 (dict): The second Json object to be concatenated.
 
     Returns:
-        dict: A new Json object that combines the properties of the input objects.
+        (dict): A new Json object that combines the properties of the input objects.
     """
     json1 = copy.deepcopy(json1)
     json2 = copy.deepcopy(json2)
@@ -71,7 +71,7 @@ def factorize_json(json):
         json (dict): The input Json object to factorize.
 
     Returns:
-        dict: A factorized Json object with grouped properties.
+        (dict): A factorized Json object with grouped properties.
     """
     json = copy.deepcopy(json)
     # Initialize the resulting Json object
@@ -118,7 +118,7 @@ def out_mask_json(json, mask=None, recursive=True):
             recursively for nested objects (default True)
 
     Returns:
-        dict: A masked Json object with removed properties.
+        - (dict): A masked Json object with removed properties.
     """
     json = copy.deepcopy(json)
 
@@ -164,7 +164,7 @@ def in_mask_json(json, mask=None, recursive=True):
             recursively for nested objects (default True)
 
     Returns:
-        dict: A masked Json object with only the specified properties.
+        (dict): A masked Json object with only the specified properties.
     """
     json = copy.deepcopy(json)
 
