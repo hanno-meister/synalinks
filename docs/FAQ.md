@@ -119,7 +119,7 @@ Likewise, cached dataset files, such as those downloaded with `get_file()`, are 
 
 ### How should I cite Synalinks?
 
-Please cite Synalinks if it is Useful in your research. Here is the bibtex entry to use:
+Please cite Synalinks if it is useful in your research. Here is the bibtex entry to use:
 
 ```bibtex
 @misc{sallami2025synalinks,
@@ -134,7 +134,7 @@ Please cite Synalinks if it is Useful in your research. Here is the bibtex entry
 
 ### Do you provide help or support?
 
-We provide consulting, development and technical support for companies that want to implement any neuro-symbolic systems. Using a framework is one thing, having a complete view of possible neuro-symbolic applications and the knowledge to create such complex systems is another. If you can't afford our services, you can find help in our public [Discord channel]().
+We provide consulting, development and technical support for companies that want to implement any neuro-symbolic systems. Using a framework is one thing, having a complete view of possible neuro-symbolic applications and the knowledge to create such complex systems is another. If you can't afford our services, you can find help in our public [Discord channel](https://discord.gg/82nt97uXcM).
 
 ---
 
@@ -142,7 +142,7 @@ We provide consulting, development and technical support for companies that want
 
 - **Sample**: A sample is one element of a dataset. For example, one DataModel is one sample.
 - **Batch**: A batch is a set of N samples. The samples in a batch are processed independently, in parallel. During training, a batch result in only one program update. A batch approximates the input distribution better than a single input. The larger the batch, the better the approximation; however a larger batch will take longer to process and still result in only one update.
-- **Epochs**: A epochs is an arbitrarly cutoff, generally defined as "one pass over the entire dataset", used to separate training into distinct phases, which is Useful for logging and periodic evaluation. When using `validation_split` or `validation_data` with the `fit` method of Synalinks programs, evaluation will be run at the end of every epoch.
+- **Epochs**: A epochs is an arbitrarly cutoff, generally defined as "one pass over the entire dataset", used to separate training into distinct phases, which is useful for logging and periodic evaluation. When using `validation_split` or `validation_data` with the `fit` method of Synalinks programs, evaluation will be run at the end of every epoch.
 
 ---
 
