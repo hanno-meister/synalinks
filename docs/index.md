@@ -16,7 +16,7 @@ uv pip install synalinks
 
 ### Using the `Functional` API
 
-You start from `Input`, you chain modules calls to specify the model's forward pass, and finally, you create your model from inputs and outputs:
+You start from `Input`, you chain modules calls to specify the program's structure, and finally, you create your program from inputs and outputs:
 
 ```python
 import synalinks
