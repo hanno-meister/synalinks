@@ -8,6 +8,7 @@
 
 <p align="center">
   <a href="https://synalinks.github.io/synalinks" target="_blank"><strong>Documentation</strong></a> ·
+  <a href="https://synalinks.github.io/synalinks/FAQ/" target="_blank"><strong>FAQ</strong></a> ·
   <a href="https://discord.gg/82nt97uXcM" target="_blank"><strong>Discord</strong></a> ·
   <a href="https://huggingface.co/spaces/YoanSallami/synalinks-noteboooks" target="_blank"><strong>Code Examples</strong></a>
 </p>
