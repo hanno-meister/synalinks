@@ -52,7 +52,7 @@ class Program(Trainer, Module):
             inputs=x0,
             outputs=x1,
             name="chain_of_thought",
-            description="Usefull to answer in a step by step manner.",
+            description="Useful to answer in a step by step manner.",
         )
 
     if __name__ == "__main__":
@@ -81,7 +81,7 @@ class Program(Trainer, Module):
             answer: str
 
         class ChainOfThought(synalinks.Program):
-            \"""Usefull to answer in a step by step manner.
+            \"""Useful to answer in a step by step manner.
 
             The first line of the docstring is provided as description for the program
             if not provided in the `super().__init__()`. In a similar way the name is
@@ -143,7 +143,7 @@ class Program(Trainer, Module):
                 ),
             ],
             name="chain_of_thought",
-            description="Usefull to answer in a step by step manner.",
+            description="Useful to answer in a step by step manner.",
         )
 
     if __name__ == "__main__":

@@ -35,7 +35,7 @@ class ProgramTest(testing.TestCase):
             inputs=x0,
             outputs=x1,
             name="chain_of_thought",
-            description="Usefull to answer in a step by step manner.",
+            description="Useful to answer in a step by step manner.",
         )
 
         state_tree = program.get_state_tree()
@@ -77,7 +77,7 @@ class ProgramTest(testing.TestCase):
             inputs=x0,
             outputs=x1,
             name="chain_of_thought",
-            description="Usefull to answer in a step by step manner.",
+            description="Useful to answer in a step by step manner.",
         )
 
         state_tree = program.get_state_tree()
@@ -107,7 +107,7 @@ class ProgramTest(testing.TestCase):
             inputs=x0,
             outputs=x1,
             name="chain_of_thought",
-            description="Usefull to answer in a step by step manner.",
+            description="Useful to answer in a step by step manner.",
         )
 
         program.compile(
@@ -157,7 +157,7 @@ class ProgramTest(testing.TestCase):
             inputs=x0,
             outputs=x1,
             name="chain_of_thought",
-            description="Usefull to answer in a step by step manner.",
+            description="Useful to answer in a step by step manner.",
         )
 
         program.compile(
@@ -193,7 +193,7 @@ class ProgramTest(testing.TestCase):
             inputs=x0,
             outputs=x1,
             name="chain_of_thought",
-            description="Usefull to answer in a step by step manner.",
+            description="Useful to answer in a step by step manner.",
         )
 
         program.compile(
@@ -233,7 +233,7 @@ class ProgramTest(testing.TestCase):
             inputs=x0,
             outputs=x1,
             name="chain_of_thought",
-            description="Usefull to answer in a step by step manner.",
+            description="Useful to answer in a step by step manner.",
         )
 
         program.compile(
@@ -276,7 +276,7 @@ class ProgramTest(testing.TestCase):
             inputs=x0,
             outputs=x1,
             name="chain_of_thought",
-            description="Usefull to answer in a step by step manner.",
+            description="Useful to answer in a step by step manner.",
         )
 
         program.compile(

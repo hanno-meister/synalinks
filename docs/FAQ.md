@@ -119,7 +119,7 @@ Likewise, cached dataset files, such as those downloaded with `get_file()`, are 
 
 ### How should I cite Synalinks?
 
-Please cite Synalinks if it is usefull in your research. Here is the bibtex entry to use:
+Please cite Synalinks if it is Useful in your research. Here is the bibtex entry to use:
 
 ```bibtex
 @misc{sallami2025synalinks,
@@ -142,7 +142,7 @@ We provide consulting, development and technical support for companies that want
 
 - **Sample**: A sample is one element of a dataset. For example, one DataModel is one sample.
 - **Batch**: A batch is a set of N samples. The samples in a batch are processed independently, in parallel. During training, a batch result in only one program update. A batch approximates the input distribution better than a single input. The larger the batch, the better the approximation; however a larger batch will take longer to process and still result in only one update.
-- **Epochs**: A epochs is an arbitrarly cutoff, generally defined as "one pass over the entire dataset", used to separate training into distinct phases, which is usefull for logging and periodic evaluation. When using `validation_split` or `validation_data` with the `fit` method of Synalinks programs, evaluation will be run at the end of every epoch.
+- **Epochs**: A epochs is an arbitrarly cutoff, generally defined as "one pass over the entire dataset", used to separate training into distinct phases, which is Useful for logging and periodic evaluation. When using `validation_split` or `validation_data` with the `fit` method of Synalinks programs, evaluation will be run at the end of every epoch.
 
 ---
 

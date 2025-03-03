@@ -180,7 +180,6 @@ class ReACTAgent(Program):
         )
 
     def build(self, inputs_schema):
-        print(f"call build with: {inputs_schema}")
         inputs = Input(schema=inputs_schema)
         asyncio.get_event_loop().run_until_complete(self.initialize(inputs))
         self.built = True

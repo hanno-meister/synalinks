@@ -40,7 +40,7 @@ class SequentialTest(testing.TestCase):
 
         program = Sequential(
             name="chain_of_thought",
-            description="Usefull to answer in a step by step manner",
+            description="Useful to answer in a step by step manner",
         )
         program.add(Input(data_model=Query))
         program.add(
@@ -75,7 +75,7 @@ class SequentialTest(testing.TestCase):
                 ),
             ],
             name="chain_of_thought",
-            description="Usefull to answer in a step by step manner",
+            description="Useful to answer in a step by step manner",
         )
         self.assertEqual(len(program.modules), 2)
         self.assertTrue(program.built)
@@ -95,11 +95,11 @@ class SequentialTest(testing.TestCase):
     def test_representation(self):
         program = Sequential(
             name="chain_of_thought",
-            description="Usefull to answer in a step by step manner",
+            description="Useful to answer in a step by step manner",
         )
         self.assertEqual(
             str(program),
             "<Sequential name=chain_of_thought, "
-            "description='Usefull to answer in a step by step manner', "
+            "description='Useful to answer in a step by step manner', "
             "built=False>",
         )

@@ -57,7 +57,7 @@ class Branch(Module):
             inputs=x0,
             outputs=x3,
             name="adaptative_chain_of_thought",
-            description="Usefull to answer step by step only when needed",
+            description="Useful to answer step by step only when needed",
         )
 
     if __name__ == "__main__":

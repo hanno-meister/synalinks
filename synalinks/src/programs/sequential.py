@@ -25,7 +25,7 @@ class Sequential(Program):
     ```python
     program = synalinks.Sequential(
         name="chain_of_thought",
-        description="Usefull to answer in a step by step manner."
+        description="Useful to answer in a step by step manner."
     )
     program.add(
         synalinks.Input(
@@ -45,7 +45,7 @@ class Sequential(Program):
 
     program = synalinks.Sequential(
         name="chain_of_thought",
-        description="Usefull to answer in a step by step manner."
+        description="Useful to answer in a step by step manner."
     )
     program.add(
         synalinks.Generator(
@@ -60,7 +60,7 @@ class Sequential(Program):
 
     program = synalinks.Sequential(
         name="chain_of_thought",
-        description="Usefull to answer in a step by step manner."
+        description="Useful to answer in a step by step manner."
     )
     program.add(
         synalinks.Input(

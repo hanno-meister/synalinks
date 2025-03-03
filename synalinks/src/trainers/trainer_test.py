@@ -40,7 +40,7 @@ async def program_test():
         inputs=x0,
         outputs=x1,
         name="chain_of_thought",
-        description="Usefull to answer step by step",
+        description="Useful to answer step by step",
     )
 
 

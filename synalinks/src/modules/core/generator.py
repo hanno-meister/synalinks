@@ -167,7 +167,7 @@ class Generator(Module):
             inputs=x0,
             outputs=x1,
             name="chain_of_thought_with_critique",
-            description="Usefull to answer step by step and evaluate your answer",
+            description="Useful to answer step by step and evaluate your answer",
         )
 
     if __name__ == "__main__":

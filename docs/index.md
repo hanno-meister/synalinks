@@ -48,7 +48,7 @@ async def main():
         inputs=x0,
         outputs=x1,
         name="chain_of_thought",
-        description="Usefull to answer in a step by step manner.",
+        description="Useful to answer in a step by step manner.",
     )
 
 if __name__ == "__main__":
@@ -80,7 +80,7 @@ async def main():
         )
 
     class ChainOfThought(synalinks.Program):
-        """Usefull to answer in a step by step manner.
+        """Useful to answer in a step by step manner.
         
         The first line of the docstring is provided as description
         for the program if not provided in the `super().__init__()`.
@@ -177,7 +177,7 @@ async def main():
             ),
         ],
         name="chain_of_thought",
-        description="Usefull to answer in a step by step manner.",
+        description="Useful to answer in a step by step manner.",
     )
 
 if __name__ == "__main__":
@@ -192,7 +192,7 @@ To print a tabular summary of your program:
 program.summary()
 ```
 
-Or a plot (usefull to document your system):
+Or a plot (Useful to document your system):
 
 ```python
 synalinks.utils.plot_program(

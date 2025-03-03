@@ -49,7 +49,7 @@ class BranchTest(testing.TestCase):
             inputs=x0,
             outputs=x3,
             name="adaptative_chain_of_thought",
-            description="Usefull to answer step by step only when needed",
+            description="Useful to answer step by step only when needed",
         )
 
         decision_response = (

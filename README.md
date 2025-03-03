@@ -46,7 +46,7 @@ Developping a successful LM application in a profesional context, beyond statele
 - **Ensuring the correctness of the LMs output**: Synalinks combines constrained structured output with In-Context RL to ensure both format and content correctness.
 - **Optimizing async processes**: Synalinks automatically optimizes your pipelines by detecting parallel processes.
 - **Assessing the performance of your application**: Synalinks provides built-in metrics and rewards to evaluate your workflows.
-- **Configuring Language & Embedding Models**: Seamlessly integrate multiple LM providers like Ollama, OpenAI, Anthropic, or Groq.
+- **Configuring Language & Embedding Models**: Seamlessly integrate multiple LM providers like Ollama, OpenAI, Anthropic, Mistral or Groq.
 - **Documenting your ML workflows**: Plot your workflows, training history, and evaluations; document everything.
 - **Versioning the prompts/pipelines**: Each program is serializable into JSON so you can version it with git.
 - **Deploying REST APIs**: Compatible out-of-the-box with FastAPI so your Data Scientists and Web Developers can stop tearing each other apart.
@@ -101,7 +101,7 @@ async def main():
         inputs=x0,
         outputs=x1,
         name="chain_of_thought",
-        description="Usefull to answer in a step by step manner.",
+        description="Useful to answer in a step by step manner.",
     )
 
 if __name__ == "__main__":
@@ -133,7 +133,7 @@ async def main():
         )
 
     class ChainOfThought(synalinks.Program):
-        """Usefull to answer in a step by step manner.
+        """Useful to answer in a step by step manner.
         
         The first line of the docstring is provided as description
         for the program if not provided in the `super().__init__()`.
@@ -230,7 +230,7 @@ async def main():
             ),
         ],
         name="chain_of_thought",
-        description="Usefull to answer in a step by step manner.",
+        description="Useful to answer in a step by step manner.",
     )
 
 if __name__ == "__main__":
@@ -245,7 +245,7 @@ To print a tabular summary of your program:
 program.summary()
 ```
 
-Or a plot (usefull to document your system):
+Or a plot (Useful to document your system):
 
 ```python
 synalinks.utils.plot_program(
