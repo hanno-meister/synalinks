@@ -162,32 +162,39 @@ Example:
 
 ```python
 import synalinks
+import asyncio
 
-class ThinkingWithAnswer(synalinks.DataModel):
-    thinking: str
-    answer: str
+async def main():
+    class ThinkingWithAnswer(synalinks.DataModel):
+        thinking: str
+        answer: str
 
-language_model = synalinks.LanguageModel("ollama_chat/deepseek-r1")
+    language_model = synalinks.LanguageModel(
+        "ollama_chat/deepseek-r1",
+    )
 
-program = synalinks.Sequential(
-    [
-        synalinks.Generator(
-            data_model=ThinkingWithAnswer,
-            language_model=language_model,
-        ),
-        synalinks.Generator(
-            data_model=ThinkingWithAnswer,
-            language_model=language_model,
-        ),
-    ]
-)
+    program = synalinks.Sequential(
+        [
+            synalinks.Generator(
+                data_model=ThinkingWithAnswer,
+                language_model=language_model,
+            ),
+            synalinks.Generator(
+                data_model=ThinkingWithAnswer,
+                language_model=language_model,
+            ),
+        ]
+    )
 
-program.modules[0].trainable = False # Freeze the first generator
+    program.modules[0].trainable = False # Freeze the first generator
 
-assert program.modules[0].trainable_variables == []
+    assert program.modules[0].trainable_variables == []
 
-program.compile(...)
-program.fit(...) # Train only the second generator
+    program.compile(...)
+    history = await program.fit(...) # Train only the second generator
+
+if __main__ == "__name__":
+    asyncio.run(main())
 ```
 
 In essence, "inference mode vs training mode" and "module variable trainability" are two very different concepts.
