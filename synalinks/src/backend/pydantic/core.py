@@ -24,30 +24,6 @@ class MetaDataModel(type(pydantic.BaseModel)):
     Allowing to use Synalinks Python operators with `DataModel` types.
     """
 
-    def schema(cls):
-        """Gets the JSON schema of the data model.
-
-        Returns:
-            (dict): The JSON schema.
-        """
-        return cls.model_json_schema()
-
-    def pretty_schema(cls):
-        """Get a pretty version of the JSON schema for display.
-
-        Returns:
-            (str): The indented JSON schema.
-        """
-        return json.dumps(cls.schema(), indent=2)
-
-    def to_symbolic_data_model(cls):
-        """Converts the data model to a symbolic data model.
-
-        Returns:
-            (SymbolicDataModel): The symbolic data model.
-        """
-        return SymbolicDataModel(schema=cls.schema())
-
     def __add__(cls, other):
         """Concatenates this data model with another.
 
@@ -194,6 +170,33 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
     """
 
     model_config: ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="forbid")
+    
+    @classmethod
+    def schema(cls):
+        """Gets the JSON schema of the data model.
+
+        Returns:
+            (dict): The JSON schema.
+        """
+        return cls.model_json_schema()
+
+    @classmethod
+    def pretty_schema(cls):
+        """Get a pretty version of the JSON schema for display.
+
+        Returns:
+            (str): The indented JSON schema.
+        """
+        return json.dumps(cls.schema(), indent=2)
+
+    @classmethod
+    def to_symbolic_data_model(cls):
+        """Converts the data model to a symbolic data model.
+
+        Returns:
+            (SymbolicDataModel): The symbolic data model.
+        """
+        return SymbolicDataModel(schema=cls.schema())
 
     def json(self):
         """Alias for the JSON value of the data model.

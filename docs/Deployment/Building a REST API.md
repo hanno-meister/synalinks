@@ -1,20 +1,17 @@
 # Building a REST API
 
-The optimal approach to developing Web-Apps or Micro-Services using Synalinks involves building REST APIs and deploying them. You can deploy these APIs locally to test your system or on a cloud provider of your choice to scale to millions of users.
+The optimal approach to developing web-apps or micro-services using Synalinks involves building REST APIs and deploying them. You can deploy these APIs locally to test your system or on a cloud provider of your choice to scale to millions of users.
 
 For this purpose, you will need to use FastAPI, a Python library that makes it easy and straightforward to create REST APIs. If you use the default backend, the DataModel will be compatible with FastAPI as their both use Pydantic.
 
-First, let's see how a production-ready project is structured.
+In this tutorial we are going to make a backend that run locally to test our system.
 
-In this tutorial, we will focus only on the backend of your application.
+## Project structure
 
-For the purpose of this tutorial, we will skip authentification. But because is is higly dependent on your business usecase/frontend, we will not handle it here.
+Your project structure should look like this:
 
-### Project Structure
-
-```sh
+```shell
 demo/
-│
 ├── backend/
 │   ├── app/
 │   │   ├── checkpoint.program.json
@@ -24,31 +21,26 @@ demo/
 ├── frontend/
 │   └── ... (your frontend code)
 ├── scripts/
-│   ├── export_program.py
 │   └── train.py (refer to the code examples to learn how to train programs)
 ├── docker-compose.yml
 ├── .env.backend
-├── .end.frontend
 └── README.md
 ```
 
-### Setting up your environment variables
+## Your `requirements.txt` file
 
-```env title=".env.backend"
-LLM_PROVIDER=ollama_chat/deepseek-r1
-EMBEDDING_PROVIDER=ollama/mxbai-embed-large
+Import additionally any necessary dependency
 
-LM_PROVIDER_API_BASE=http://localhost:11434
-EMBEDDING_PROVIDER_API_BASE=http://localhost:11434
-
-MLFLOW_URL=http://localhost:5000
-
-PROD_CORS_ORIGIN=http://localhost:3000
+```txt title="requirements.txt"
+mlflow
+fastapi[standard]
+uvicorn
+synalinks
 ```
 
-Feel free to add any API key needed for your LM provider
+## Creating your endpoint using FastAPI and SynaLinks
 
-### Creating your endpoint using FastAPI and SynaLinks
+Now you can create you endpoint using FastAPI.
 
 ```python title="main.py"
 import argparse
@@ -59,7 +51,6 @@ import mlflow
 import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
 import synalinks
 
@@ -70,6 +61,7 @@ mlflow.litellm.autolog()
 mlflow.set_tracking_uri(os.getenv("MLFLOW_URL"))
 
 # Set up logging
+logger = logging.getLogger(__name__)
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
@@ -77,21 +69,7 @@ logging.basicConfig(
 # Set up FastAPI
 app = FastAPI()
 
-# Set up CORS ORIGIN to avoid connexion problems with the frontend
-origins = [
-    "http://localhost",
-    os.getenv("PROD_CORS_ORIGIN"),
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# The dictionary mapping the name of your custom modules to the class
+# The dictionary mapping the name of your custom modules to their class
 custom_modules = {}
 
 # Load your program
@@ -102,72 +80,33 @@ program = synalinks.Program.load(
 
 @app.post("/v1/chat_completion")
 async def chat_completion(messages: synalinks.ChatMessages):
-    result = await program(messages)
-    return result.json()
+    logger.info(messages.pretty_json())
+    try:
+        result = await program(messages)
+        if result:
+            logger.info(result.pretty_json())
+            return result.json()
+        else:
+            return None
+    except Exception as e:
+        logger.error(f"Error occured: {str(e)}")
+        return None
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", type=str, default="127.0.0.1")
-    parser.add_argument("--port", type=int, default=80)
+    parser.add_argument("--port", type=int, default=8000)
     args = parser.parse_args()
     uvicorn.run(app, host=args.host, port=args.port)
 ```
 
-### Checkpoint migration
+## Creating the Dockerfile
 
-For obvious reasons, you will need to have a separate logic to train your application. This script will specify the program architecture, training and evaluation procedure and will end up saving your program into a serializable JSON format.
+Here is the dockerfile to use according to FastAPI documentation.
 
-Please refer to the code examples and [Training API](https://synalinks.github.io/synalinks/Synalinks%20API/Programs%20API/Program%20training%20API/) to learn how to train your programs.
-
-To ease the migration, we'll also make a small script that export the trained program into our backend folder.
-
-```python title="export_program.py"
-import argparse
-import os
-import shutil
-
-
-def main():
-    parser = argparse.ArgumentParser(
-        description="Copy a serialized program to a specified directory."
-    )
-    parser.add_argument(
-        "filepath",
-        type=str,
-        help="Path to the file to be copied.",
-    )
-    parser.add_argument(
-        "output_dir",
-        type=str,
-        help="Path to the output directory.",
-    )
-    args = parser.parse_args()
-
-    if not args.filepath.endswith(".json"):
-        raise ValueError("The filepath must ends with `.json`")
-
-    if not os.path.exists(args.output_dir):
-        print(f"[*] Output directory does not exist. Creating: '{args.output_dir}'")
-        os.makedirs(args.output_dir)
-
-    filename = os.path.basename(args.filepath)
-    destination = os.path.join(args.output_dir, filename)
-    print(f"[*] Copying file from '{args.filepath}' to '{destination}'...")
-    shutil.copy2(args.filepath, destination)
-    print(f"[*] Program exported to '{destination}'")
-
-
-if __name__ == "__main__":
-    main()
-```
-
-### Creating the backend's Dockerfile
-
-According to [FastAPI documentation](https://fastapi.tiangolo.com/deployment/docker/#dockerfile) here is the right Dockerfile to use for your backend.
-
-```Dockerfile
-FROM python:3.9
+```Dockerfile title="Dockerfile"
+FROM python:3.13
 
 WORKDIR /code
 
@@ -177,13 +116,14 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY ./app /code/app
 
-CMD ["fastapi", "run", "app/main.py", "--port", "80"]
+CMD ["fastapi", "run", "app/main.py", "--port", "8000"]
 ```
 
-### Creating your docker-compose.yml file
+## The docker compose file
 
-```yaml
-version: '3'
+And finally your docker compose file.
+
+```yml title="docker-compose.yml"
 services:
   mlflow:
     image: ghcr.io/mlflow/mlflow:latest
@@ -194,20 +134,20 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8000:8000"
     env_file:
       - .env.backend
-    volumes:
-      - ./data:/code/data
+    depends_on:
+      - mlflow
 ```
 
-### Launching your application
+## Launching your backend
+
+Launch your backend using `docker compose`
 
 ```shell
 cd demo
 docker compose up
 ```
 
-### Testing your application backend
-
-Open you browser to `http://127.0.0.1/docs` and test your API
+Open you browser to `http://0.0.0.0:8000/docs` and test your API with the FastAPI UI
