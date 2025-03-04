@@ -25,7 +25,12 @@
 ### What is the difference between DSPy, AdalFlow and Synalinks?
 
 Unlike DSPy and AdalFlow, Synalinks is inspired by Keras and not PyTorch.
-The reason for that is that ease of use is an important factor for us. The Functional API inspired by Keras make it easy and natural to describe any workflows. We additionaly provide more LLMOps features than DSPY and AdalFlow and have a strong focus on neuro-symbolic systems.
+The reason for that is that ease of use is an important factor for us. The Functional API inspired by Keras make it easy and natural to describe any workflows. Addtionally, we implement logical flows, a unique feature of Synalinks inspired by logical circuits.
+
+In the next releases we will focus in other Reinforcement Learning (RL) algorithms like Monte-Carlo-Tree-Search (MCTS) or QAgent.
+Also we don't plan to develop vector-only RAG systems, but focus on robust KnowledgeGraphRAG.
+
+Globally, you can think of Synalinks as more focused on RL and Graph based techniques while providing all the benefits of other similar frameworks, with the ease of use on top of it.
 
 ---
 
