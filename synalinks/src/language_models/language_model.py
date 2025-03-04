@@ -223,15 +223,10 @@ class LanguageModel(SynalinksSaveable):
                 )
                 if streaming:
                     return StreamingIterator(response)
-                if self.model.startswith("groq") and schema:
+                if (self.model.startswith("groq") or self.model.startswith("anthropic")) and schema:
                     response_str = response["choices"][0]["message"]["tool_calls"][0][
                         "function"
                     ]["arguments"]
-                elif self.model.startswith("anthropic") and schema:
-                    for content_block in response["content"]:
-                        if content_block["type"] == "tool_use":
-                            response_str = json.dumps(content_block["input"])
-                            break
                 else:
                     response_str = response["choices"][0]["message"]["content"].strip()
                 if schema:
