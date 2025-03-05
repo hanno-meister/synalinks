@@ -45,7 +45,7 @@ Developping a successful LM application in a profesional context, beyond statele
 - **Building optimized prompts with examples/hints at each step**: Synalinks uses advanced In-Context Reinforcement Learning techniques to optimize each prompt.
 - **Pipelines that change over time**: Easily edit your pipelines, re-run your training, and you're good to go.
 - **Ensuring the correctness of the LMs output**: Synalinks combines constrained structured output with In-Context RL to ensure both format and content correctness.
-- **Optimizing async processes**: Synalinks automatically optimizes your pipelines by detecting parallel processes.
+- **Async Optimization**: Synalinks automatically optimizes your pipelines by detecting parallel processes.
 - **Assessing the performance of your application**: Synalinks provides built-in metrics and rewards to evaluate your workflows.
 - **Configuring Language & Embedding Models**: Seamlessly integrate multiple LM providers like Ollama, OpenAI, Anthropic, Mistral or Groq.
 - **Documenting your ML workflows**: Plot your workflows, training history, and evaluations; document everything.
@@ -90,7 +90,9 @@ async def main():
             description="The correct numerical answer",
         )
 
-    language_model = synalinks.LanguageModel(model="ollama_chat/deepseek-r1")
+    language_model = synalinks.LanguageModel(
+        model="ollama_chat/deepseek-r1",
+    )
 
     x0 = synalinks.Input(data_model=Query)
     x1 = await synalinks.Generator(
@@ -187,9 +189,13 @@ async def main():
             )
             return cls(language_model=language_model, **config)
 
-    language_model = synalinks.LanguageModel(model="ollama_chat/deepseek-r1")
+    language_model = synalinks.LanguageModel(
+        model="ollama_chat/deepseek-r1",
+    )
 
-    program = ChainOfThought(language_model=language_model)
+    program = ChainOfThought(
+        language_model=language_model,
+    )
 
 if __name__ == "__main__":
     asyncio.run(main())
@@ -218,7 +224,9 @@ async def main():
             description="The correct numerical answer",
         )
 
-    language_model = synalinks.LanguageModel(model="ollama_chat/deepseek-r1")
+    language_model = synalinks.LanguageModel(
+        model="ollama_chat/deepseek-r1",
+    )
 
     program = synalinks.Sequential(
         [
@@ -238,7 +246,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## Getting summary of your program
+## Getting a summary of your program
 
 To print a tabular summary of your program:
 

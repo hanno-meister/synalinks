@@ -23,7 +23,7 @@ Developping a successful LM application in a profesional context, beyond statele
 - **Building optimized prompts with examples/hints at each step**: Synalinks uses advanced In-Context Reinforcement Learning techniques to optimize each prompt.
 - **Pipelines that change over time**: Easily edit your pipelines, re-run your training, and you're good to go.
 - **Ensuring the correctness of the LMs output**: Synalinks combines constrained structured output with In-Context RL to ensure both format and content correctness.
-- **Optimizing async processes**: Synalinks automatically optimizes your pipelines by detecting parallel processes.
+- **Async Optimization**: Synalinks automatically optimizes your pipelines by detecting parallel processes.
 - **Assessing the performance of your application**: Synalinks provides built-in metrics and rewards to evaluate your workflows.
 - **Configuring Language & Embedding Models**: Seamlessly integrate multiple LM providers like Ollama, OpenAI, Anthropic, Mistral or Groq.
 - **Documenting your ML workflows**: Plot your workflows, training history, and evaluations; document everything.

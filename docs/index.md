@@ -16,7 +16,8 @@ uv pip install synalinks
 
 ### Using the `Functional` API
 
-You start from `Input`, you chain modules calls to specify the program's structure, and finally, you create your program from inputs and outputs:
+You start from `Input`, you chain modules calls to specify the program's structure, 
+and finally, you create your program from inputs and outputs:
 
 ```python
 import synalinks
@@ -36,7 +37,9 @@ async def main():
             description="The correct numerical answer",
         )
 
-    language_model = synalinks.LanguageModel(model="ollama_chat/deepseek-r1")
+    language_model = synalinks.LanguageModel(
+        model="ollama_chat/deepseek-r1",
+    )
 
     x0 = synalinks.Input(data_model=Query)
     x1 = await synalinks.Generator(
@@ -164,7 +167,9 @@ async def main():
             description="The correct numerical answer",
         )
 
-    language_model = synalinks.LanguageModel(model="ollama_chat/deepseek-r1")
+    language_model = synalinks.LanguageModel(
+        model="ollama_chat/deepseek-r1",
+    )
 
     program = synalinks.Sequential(
         [
@@ -240,7 +245,7 @@ async def main():
         epochs=epochs,
     )
 
-    filepath = synalinks.utils.plot_history(history)
+    synalinks.utils.plot_history(history)
 
 if __name__ == "__main__":
     asyncio.run(main())
