@@ -21,8 +21,8 @@ class JsonSchemaConcatenateTest(testing.TestCase):
             foo: str
             foo_1: str
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result_schema = concatenate_schema(schema, schema)
         self.assertEqual(result_schema, expected_schema)
@@ -38,9 +38,9 @@ class JsonSchemaConcatenateTest(testing.TestCase):
             foo: str
             bar: str
 
-        schema1 = standardize_schema(Input1.schema())
-        schema2 = standardize_schema(Input2.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema1 = standardize_schema(Input1.get_schema())
+        schema2 = standardize_schema(Input2.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result_schema = concatenate_schema(schema1, schema2)
         self.assertEqual(result_schema, expected_schema)
@@ -54,8 +54,8 @@ class JsonSchemaConcatenateTest(testing.TestCase):
             foo_1: str
             foo_2: str
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result_schema = concatenate_schema(schema, schema)
         result_schema = concatenate_schema(result_schema, schema)
@@ -71,8 +71,8 @@ class JsonSchemaFactorizeTest(testing.TestCase):
         class Result(DataModel):
             foos: List[str]
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result_schema = factorize_schema(schema)
         self.assertEqual(result_schema, expected_schema)
@@ -86,8 +86,8 @@ class JsonSchemaFactorizeTest(testing.TestCase):
         class Result(DataModel):
             foos: List[str]
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result_schema = factorize_schema(schema)
         self.assertEqual(result_schema, expected_schema)
@@ -101,8 +101,8 @@ class JsonSchemaFactorizeTest(testing.TestCase):
         class Result(DataModel):
             foos: List[str]
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result_schema = factorize_schema(schema)
         self.assertEqual(result_schema, expected_schema)
@@ -117,8 +117,8 @@ class JsonSchemaFactorizeTest(testing.TestCase):
             foos: List[str]
             bar: str
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result_schema = factorize_schema(schema)
         self.assertEqual(result_schema, expected_schema)
@@ -131,8 +131,8 @@ class JsonSchemaFactorizeTest(testing.TestCase):
         class Result(DataModel):
             foos: List[str]
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result_schema = factorize_schema(schema)
         self.assertEqual(result_schema, expected_schema)
@@ -148,8 +148,8 @@ class JsonSchemaFactorizeTest(testing.TestCase):
         class Result(DataModel):
             foos: List[str]
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result_schema = factorize_schema(schema)
         self.assertEqual(result_schema, expected_schema)
@@ -165,8 +165,8 @@ class JsonSchemaFactorizeTest(testing.TestCase):
             foos: List[str]
             bars: List[str]
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result_schema = factorize_schema(schema)
         self.assertEqual(result_schema, expected_schema)
@@ -181,8 +181,8 @@ class JsonSchemaOutMaskTest(testing.TestCase):
         class Result(DataModel):
             bar: str
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result = out_mask_schema(schema, mask=["foo"])
         self.assertEqual(result, expected_schema)
@@ -198,8 +198,8 @@ class JsonSchemaOutMaskTest(testing.TestCase):
             bar: str
             bar_1: str
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result = out_mask_schema(schema, mask=["foo"])
         self.assertEqual(result, expected_schema)
@@ -214,7 +214,7 @@ class JsonSchemaOutMaskTest(testing.TestCase):
             foo_1: str
             bar: BarObject
 
-        schema = standardize_schema(Input.schema())
+        schema = standardize_schema(Input.get_schema())
 
         class BarObject(DataModel):
             bar: str
@@ -222,7 +222,7 @@ class JsonSchemaOutMaskTest(testing.TestCase):
         class Result(DataModel):
             bar: BarObject
 
-        expected_schema = standardize_schema(Result.schema())
+        expected_schema = standardize_schema(Result.get_schema())
         result = out_mask_schema(schema, mask=["foo"])
         self.assertEqual(result, expected_schema)
 
@@ -238,7 +238,7 @@ class JsonSchemaOutMaskTest(testing.TestCase):
             foo: str
             bar: BarObject
 
-        schema = standardize_schema(Input.schema())
+        schema = standardize_schema(Input.get_schema())
 
         class BooObject(DataModel):
             boo: str
@@ -249,7 +249,7 @@ class JsonSchemaOutMaskTest(testing.TestCase):
         class Result(DataModel):
             bar: BarObject
 
-        expected_schema = standardize_schema(Result.schema())
+        expected_schema = standardize_schema(Result.get_schema())
         result = out_mask_schema(schema, mask=["foo"])
         self.assertEqual(result, expected_schema)
 
@@ -261,7 +261,7 @@ class JsonSchemaOutMaskTest(testing.TestCase):
         class Input(DataModel):
             bars: List[BarObject]
 
-        schema = standardize_schema(Input.schema())
+        schema = standardize_schema(Input.get_schema())
 
         class BarObject(DataModel):
             bar: str
@@ -269,7 +269,7 @@ class JsonSchemaOutMaskTest(testing.TestCase):
         class Result(DataModel):
             bars: List[BarObject]
 
-        expected_schema = standardize_schema(Result.schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result = out_mask_schema(schema, mask=["foo"])
         self.assertEqual(result, expected_schema)
@@ -281,8 +281,8 @@ class JsonSchemaOutMaskTest(testing.TestCase):
         class Result(DataModel):
             pass
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result = out_mask_schema(schema, mask=["foo"])
         self.assertEqual(result, expected_schema)
@@ -296,8 +296,8 @@ class JsonSchemaOutMaskTest(testing.TestCase):
             foo: str
             bar: str
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result = out_mask_schema(schema, mask=[])
         self.assertEqual(result, expected_schema)
@@ -315,8 +315,8 @@ class JsonSchemaOutMaskTest(testing.TestCase):
         class Result(DataModel):
             bar: BarObject
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result = out_mask_schema(schema, mask=["foo"], recursive=False)
         self.assertEqual(result, expected_schema)
@@ -331,8 +331,8 @@ class JsonSchemaInMaskTest(testing.TestCase):
         class Result(DataModel):
             foo: str
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result = in_mask_schema(schema, mask=["foo"])
         self.assertEqual(result, expected_schema)
@@ -348,8 +348,8 @@ class JsonSchemaInMaskTest(testing.TestCase):
             foo: str
             foo_1: str
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result = in_mask_schema(schema, mask=["foo"])
         self.assertEqual(result, expected_schema)
@@ -366,7 +366,7 @@ class JsonSchemaInMaskTest(testing.TestCase):
             bar: BarObject
             boo: str
 
-        schema = standardize_schema(Input.schema())
+        schema = standardize_schema(Input.get_schema())
 
         class BarObject(DataModel):
             foo: str
@@ -377,7 +377,7 @@ class JsonSchemaInMaskTest(testing.TestCase):
             foo_1: str
             bar: BarObject
 
-        expected_schema = standardize_schema(Result.schema())
+        expected_schema = standardize_schema(Result.get_schema())
         result = in_mask_schema(schema, mask=["foo", "bar"])
         self.assertEqual(result, expected_schema)
 
@@ -393,7 +393,7 @@ class JsonSchemaInMaskTest(testing.TestCase):
             foo: str
             bar: BarObject
 
-        schema = standardize_schema(Input.schema())
+        schema = standardize_schema(Input.get_schema())
 
         class BooObject(DataModel):
             foo: str
@@ -405,7 +405,7 @@ class JsonSchemaInMaskTest(testing.TestCase):
             foo: str
             bar: BarObject
 
-        expected_schema = standardize_schema(Result.schema())
+        expected_schema = standardize_schema(Result.get_schema())
         result = in_mask_schema(schema, mask=["foo", "bar"])
         self.assertEqual(result, expected_schema)
 
@@ -417,7 +417,7 @@ class JsonSchemaInMaskTest(testing.TestCase):
         class Input(DataModel):
             bars: List[BarObject]
 
-        schema = standardize_schema(Input.schema())
+        schema = standardize_schema(Input.get_schema())
 
         class BarObject(DataModel):
             bar: str
@@ -425,7 +425,7 @@ class JsonSchemaInMaskTest(testing.TestCase):
         class Result(DataModel):
             bars: List[BarObject]
 
-        expected_schema = standardize_schema(Result.schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result = in_mask_schema(schema, mask=["bar"])
         self.assertEqual(result, expected_schema)
@@ -437,8 +437,8 @@ class JsonSchemaInMaskTest(testing.TestCase):
         class Result(DataModel):
             pass
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result = in_mask_schema(schema, mask=["foo"])
         self.assertEqual(result, expected_schema)
@@ -451,8 +451,8 @@ class JsonSchemaInMaskTest(testing.TestCase):
         class Result(DataModel):
             pass
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result = in_mask_schema(schema, mask=[])
         self.assertEqual(result, expected_schema)
@@ -474,8 +474,8 @@ class JsonSchemaInMaskTest(testing.TestCase):
             foo_1: str
             bar: BarObject
 
-        schema = standardize_schema(Input.schema())
-        expected_schema = standardize_schema(Result.schema())
+        schema = standardize_schema(Input.get_schema())
+        expected_schema = standardize_schema(Result.get_schema())
 
         result = in_mask_schema(schema, mask=["foo", "bar"], recursive=False)
         self.assertEqual(result, expected_schema)
@@ -491,8 +491,8 @@ class JsonSchemaContainsTest(testing.TestCase):
             foo: str
             bar: str
 
-        schema1 = standardize_schema(Input1.schema())
-        schema2 = standardize_schema(Input2.schema())
+        schema1 = standardize_schema(Input1.get_schema())
+        schema2 = standardize_schema(Input2.get_schema())
 
         self.assertTrue(contains_schema(schema1, schema2))
 
@@ -504,8 +504,8 @@ class JsonSchemaContainsTest(testing.TestCase):
         class Input2(DataModel):
             foo: str
 
-        schema1 = standardize_schema(Input1.schema())
-        schema2 = standardize_schema(Input2.schema())
+        schema1 = standardize_schema(Input1.get_schema())
+        schema2 = standardize_schema(Input2.get_schema())
 
         self.assertTrue(contains_schema(schema1, schema2))
 
@@ -516,7 +516,7 @@ class JsonSchemaContainsTest(testing.TestCase):
         class Input2(DataModel):
             foo: str
 
-        schema1 = standardize_schema(Input1.schema())
-        schema2 = standardize_schema(Input2.schema())
+        schema1 = standardize_schema(Input1.get_schema())
+        schema2 = standardize_schema(Input2.get_schema())
 
         self.assertFalse(contains_schema(schema1, schema2))

@@ -71,7 +71,7 @@ class TestTrainer(testing.TestCase):
         )
 
         mock_completion.return_value = {
-            "choices": [{"message": {"content": json.dumps(mock_answer.json())}}]
+            "choices": [{"message": {"content": json.dumps(mock_answer.get_json())}}]
         }
 
         program = await program_test()
@@ -81,8 +81,8 @@ class TestTrainer(testing.TestCase):
         y_pred = await program.predict_on_batch(x_train)
 
         self.assertEqual(len(y_pred), len(x_train))
-        self.assertEqual(y_pred[0].json(), mock_answer.json())
-        self.assertEqual(y_pred[1].json(), mock_answer.json())
+        self.assertEqual(y_pred[0].get_json(), mock_answer.get_json())
+        self.assertEqual(y_pred[1].get_json(), mock_answer.get_json())
 
     @patch("litellm.completion")
     async def test_test_on_batch(self, mock_completion):
@@ -91,7 +91,7 @@ class TestTrainer(testing.TestCase):
             """the French government.""",
             answer="Paris",
         )
-        mock_answer = json.dumps(mock_answer.json())
+        mock_answer = json.dumps(mock_answer.get_json())
 
         mock_completion.return_value = {
             "choices": [{"message": {"content": mock_answer}}]
@@ -121,7 +121,7 @@ class TestTrainer(testing.TestCase):
         )
 
         mock_completion.return_value = {
-            "choices": [{"message": {"content": json.dumps(mock_answer.json())}}]
+            "choices": [{"message": {"content": json.dumps(mock_answer.get_json())}}]
         }
 
         program = await program_test()
@@ -150,7 +150,7 @@ class TestTrainer(testing.TestCase):
         )
 
         mock_completion.return_value = {
-            "choices": [{"message": {"content": json.dumps(mock_answer.json())}}]
+            "choices": [{"message": {"content": json.dumps(mock_answer.get_json())}}]
         }
 
         program = await program_test()

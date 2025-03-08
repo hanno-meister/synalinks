@@ -24,9 +24,9 @@ class SchemaEqualTest(testing.TestCase):
 
         x = SymbolicDataModel(data_model=Test)
         y = SymbolicDataModel(data_model=Test)
-        self.assertEqual(x.schema(), standardize_schema(Test.schema()))
-        self.assertEqual(y.schema(), standardize_schema(Test.schema()))
-        self.assertTrue(is_schema_equal(x.schema(), y.schema()))
+        self.assertEqual(x.get_schema(), standardize_schema(Test.get_schema()))
+        self.assertEqual(y.get_schema(), standardize_schema(Test.get_schema()))
+        self.assertTrue(is_schema_equal(x.get_schema(), y.get_schema()))
 
     def test_schema_not_equal(self):
         class Test1(DataModel):
@@ -38,9 +38,9 @@ class SchemaEqualTest(testing.TestCase):
 
         x = SymbolicDataModel(data_model=Test1)
         y = SymbolicDataModel(data_model=Test2)
-        self.assertEqual(x.schema(), standardize_schema(Test1.schema()))
-        self.assertEqual(y.schema(), standardize_schema(Test2.schema()))
-        self.assertFalse(is_schema_equal(x.schema(), y.schema()))
+        self.assertEqual(x.get_schema(), standardize_schema(Test1.get_schema()))
+        self.assertEqual(y.get_schema(), standardize_schema(Test2.get_schema()))
+        self.assertFalse(is_schema_equal(x.get_schema(), y.get_schema()))
 
     def test_not_equal_but_same_names(self):
         class Test1(DataModel):
@@ -51,9 +51,9 @@ class SchemaEqualTest(testing.TestCase):
 
         x = SymbolicDataModel(data_model=Test1)
         y = SymbolicDataModel(data_model=Test2)
-        self.assertEqual(x.schema(), standardize_schema(Test1.schema()))
-        self.assertEqual(y.schema(), standardize_schema(Test2.schema()))
-        self.assertFalse(is_schema_equal(x.schema(), y.schema()))
+        self.assertEqual(x.get_schema(), standardize_schema(Test1.get_schema()))
+        self.assertEqual(y.get_schema(), standardize_schema(Test2.get_schema()))
+        self.assertFalse(is_schema_equal(x.get_schema(), y.get_schema()))
 
 
 class ConcatenateTest(testing.TestCase):
@@ -73,7 +73,7 @@ class ConcatenateTest(testing.TestCase):
         expected = SymbolicDataModel(data_model=Result)
 
         result = await concat(x, y)
-        self.assertTrue(is_schema_equal(result.schema(), expected.schema()))
+        self.assertTrue(is_schema_equal(result.get_schema(), expected.get_schema()))
 
     async def test_concat_schema_different_property(self):
         class Test1(DataModel):
@@ -90,7 +90,7 @@ class ConcatenateTest(testing.TestCase):
         y = SymbolicDataModel(data_model=Test2)
         expected = SymbolicDataModel(data_model=Result)
         result = await concat(x, y)
-        self.assertTrue(is_schema_equal(result.schema(), expected.schema()))
+        self.assertTrue(is_schema_equal(result.get_schema(), expected.get_schema()))
 
     async def test_concat_serialization(self):
         class Test1(DataModel):
@@ -113,7 +113,7 @@ class ConcatenateTest(testing.TestCase):
         for var1 in program.variables:
             for var2 in new_program.variables:
                 if remove_numerical_suffix(var2.path) == var1.path:
-                    self.assertEqual(var2.json(), var1.json())
+                    self.assertEqual(var2.get_json(), var1.get_json())
 
 
 class FactorizeTest(testing.TestCase):
@@ -128,7 +128,7 @@ class FactorizeTest(testing.TestCase):
         x = SymbolicDataModel(data_model=Test)
         expected = SymbolicDataModel(data_model=Result)
         result = await factorize(x)
-        self.assertTrue(is_schema_equal(result.schema(), expected.schema()))
+        self.assertTrue(is_schema_equal(result.get_schema(), expected.get_schema()))
 
     async def test_factorize_schema_properties_multiple_times(self):
         class Test(DataModel):
@@ -141,7 +141,7 @@ class FactorizeTest(testing.TestCase):
         x = SymbolicDataModel(data_model=Test)
         expected = SymbolicDataModel(data_model=Result)
         result = await factorize(x)
-        self.assertTrue(is_schema_equal(result.schema(), expected.schema()))
+        self.assertTrue(is_schema_equal(result.get_schema(), expected.get_schema()))
 
     async def test_factorize_schema_different_property(self):
         class Test(DataModel):
@@ -155,7 +155,7 @@ class FactorizeTest(testing.TestCase):
         x = SymbolicDataModel(data_model=Test)
         expected = SymbolicDataModel(data_model=Result)
         result = await factorize(x)
-        self.assertTrue(is_schema_equal(result.schema(), expected.schema()))
+        self.assertTrue(is_schema_equal(result.get_schema(), expected.get_schema()))
 
     async def test_factorize_serialization(self):
         class Test(DataModel):
@@ -175,7 +175,7 @@ class FactorizeTest(testing.TestCase):
         for var1 in program.variables:
             for var2 in new_program.variables:
                 if remove_numerical_suffix(var2.path) == var1.path:
-                    self.assertEqual(var2.json(), var1.json())
+                    self.assertEqual(var2.get_json(), var1.get_json())
 
 
 class OutMaskTest(testing.TestCase):
@@ -198,7 +198,7 @@ class OutMaskTest(testing.TestCase):
         for var1 in program.variables:
             for var2 in new_program.variables:
                 if remove_numerical_suffix(var2.path) == var1.path:
-                    self.assertEqual(var2.json(), var1.json())
+                    self.assertEqual(var2.get_json(), var1.get_json())
 
 
 class InMaskTest(testing.TestCase):
@@ -221,4 +221,4 @@ class InMaskTest(testing.TestCase):
         for var1 in program.variables:
             for var2 in new_program.variables:
                 if remove_numerical_suffix(var2.path) == var1.path:
-                    self.assertEqual(var2.json(), var1.json())
+                    self.assertEqual(var2.get_json(), var1.get_json())

@@ -63,9 +63,9 @@ class RandomFewShot(Optimizer):
     async def optimize(self, trainable_variable, reward=None):
         """Perform a backprop/optimization on a single variable."""
         # Reward backpropagation
-        predictions = trainable_variable.json().get("predictions")
+        predictions = trainable_variable.get_json().get("predictions")
         predictions = backpropagate_reward_to_predictions(predictions, reward)
-        trainable_variable.json().update({"predictions": predictions})
+        trainable_variable.get_json().update({"predictions": predictions})
         # Get the k best predictions (sorted by reward)
         sorted_predictions = sorted(
             predictions,
@@ -77,11 +77,11 @@ class RandomFewShot(Optimizer):
             selected_predictions = random.sample(top_k_predictions, self.k)
         else:
             selected_predictions = top_k_predictions
-        trainable_variable.json().update({"examples": selected_predictions})
+        trainable_variable.get_json().update({"examples": selected_predictions})
 
     async def finalize(self, trainable_variable):
         """Finalize the optimization of a single variable (cleanup/scaling etc.)."""
-        trainable_variable.json().update({"predictions": []})
+        trainable_variable.get_json().update({"predictions": []})
 
     def get_config(self):
         return {

@@ -124,7 +124,7 @@ class ProgramAsJudge(Reward):
 
     async def call(self, y_true, y_pred):
         result = await self.program([y_true, y_pred])
-        return float(result.json().get("reward", 0.0))
+        return float(result.get_json().get("reward", 0.0))
 
     def get_config(self):
         config = super().get_config()

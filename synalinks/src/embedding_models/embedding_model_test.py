@@ -16,5 +16,5 @@ class EmbeddingModelTest(testing.TestCase):
         mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
 
         result = await embedding_model(["What is the capital of France?"])
-        self.assertEqual(result, Embeddings(**result).json())
+        self.assertEqual(result, Embeddings(**result).get_json())
         self.assertEqual(result, {"embeddings": [expected_value]})

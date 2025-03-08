@@ -24,10 +24,12 @@ from synalinks.src.backend.common.json_utils import in_mask_json
 from synalinks.src.backend.common.json_utils import out_mask_json
 from synalinks.src.backend.common.json_utils import prefix_json
 from synalinks.src.backend.common.json_utils import suffix_json
+from synalinks.src.backend.common.stateless_scope import StatelessScope
 from synalinks.src.backend.common.stateless_scope import get_stateless_scope
 from synalinks.src.backend.common.stateless_scope import in_stateless_scope
 from synalinks.src.backend.common.symbolic_data_model import any_symbolic_data_models
 from synalinks.src.backend.common.symbolic_data_model import is_symbolic_data_model
+from synalinks.src.backend.common.symbolic_scope import SymbolicScope
 
 if backend() == "pydantic":
     from pydantic import Field
@@ -62,7 +64,6 @@ if backend() == "pydantic":
     from synalinks.src.backend.pydantic.core import DataModel as BackendDataModel
     from synalinks.src.backend.pydantic.core import any_data_model
     from synalinks.src.backend.pydantic.core import any_meta_class
-    from synalinks.src.backend.pydantic.core import compute_output_spec
     from synalinks.src.backend.pydantic.core import is_data_model
     from synalinks.src.backend.pydantic.core import is_meta_class
     from synalinks.src.backend.pydantic.module import PydanticModule
@@ -90,9 +91,28 @@ class name_scope(backend_name_scope):
 
 @synalinks_export("synalinks.ops.convert_to_json_data_model")
 def convert_to_json_data_model(x):
-    return JsonDataModel(schema=x.schema(), value=x.value()) if x else x
+    return JsonDataModel(schema=x.get_schema(), json=x.get_json()) if x else x
 
 
 @synalinks_export("synalinks.ops.convert_to_symbolic_data_model")
 def convert_to_symbolic_data_model(x):
-    return SymbolicDataModel(schema=x.schema()) if x else x
+    return SymbolicDataModel(schema=x.get_schema()) if x else x
+
+
+async def compute_output_spec(fn, *args, **kwargs):
+    """Computes the output specification of a function.
+
+    This function wraps the given function call in a stateless and symbolic scope
+    to compute the output specification.
+
+    Args:
+        fn (callable): The function to compute the output specification for.
+        *args (positional arguments): The positional arguments to pass to the function.
+        **kwargs (keyword arguments): The keyword arguments to pass to the function.
+
+    Returns:
+        (SymbolicDataModel): The output specification of the function.
+    """
+    with StatelessScope(), SymbolicScope():
+        output_spec = await fn(*args, **kwargs)
+    return output_spec

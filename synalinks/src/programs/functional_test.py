@@ -30,10 +30,10 @@ class FunctionalTest(testing.TestCase):
         # Eager call
         in_val = [
             JsonDataModel(
-                value={"query": "What is the capital of France?"},
-                schema=Query.schema(),
+                json={"query": "What is the capital of France?"},
+                schema=Query.get_schema(),
             ),
-            JsonDataModel(value={"answer": "Paris"}, schema=Answer.schema()),
+            JsonDataModel(json={"answer": "Paris"}, schema=Answer.get_schema()),
         ]
         out_val = await program(in_val)
         expected_schema = {
@@ -51,8 +51,8 @@ class FunctionalTest(testing.TestCase):
             "answer": "Paris",
         }
         self.assertIsInstance(out_val, JsonDataModel)
-        self.assertEqual(out_val.schema(), expected_schema)
-        self.assertEqual(out_val.json(), expected_value)
+        self.assertEqual(out_val.get_schema(), expected_schema)
+        self.assertEqual(out_val.get_json(), expected_value)
 
         # Eager call with data_models
         in_val = [
@@ -61,15 +61,15 @@ class FunctionalTest(testing.TestCase):
         ]
         out_val = await program(in_val)
         self.assertIsInstance(out_val, JsonDataModel)
-        self.assertEqual(out_val.schema(), expected_schema)
-        self.assertEqual(out_val.json(), expected_value)
+        self.assertEqual(out_val.get_schema(), expected_schema)
+        self.assertEqual(out_val.get_json(), expected_value)
 
         # Symbolic call
         input_a_2 = Input(data_model=Query, name="input_a_2")
         input_b_2 = Input(data_model=Answer, name="input_b_2")
         in_val = [input_a_2, input_b_2]
         out_val = await program(in_val)
-        self.assertEqual(out_val.schema(), expected_schema)
+        self.assertEqual(out_val.get_schema(), expected_schema)
 
     async def test_basic_flow_multi_output(self):
         class Query(DataModel):
@@ -88,10 +88,10 @@ class FunctionalTest(testing.TestCase):
         # Eager call
         in_val = [
             JsonDataModel(
-                value={"query": "What is the capital of France?"},
-                schema=Query.schema(),
+                json={"query": "What is the capital of France?"},
+                schema=Query.get_schema(),
             ),
-            JsonDataModel(value={"answer": "Paris"}, schema=Answer.schema()),
+            JsonDataModel(json={"answer": "Paris"}, schema=Answer.get_schema()),
         ]
         out_val = await program(in_val)
 
@@ -117,8 +117,8 @@ class FunctionalTest(testing.TestCase):
         }
         self.assertIsInstance(out_val, list)
         self.assertEqual(len(out_val), 2)
-        self.assertEqual(out_val[0].schema(), expected_schema_a)
-        self.assertEqual(out_val[1].schema(), expected_schema_b)
+        self.assertEqual(out_val[0].get_schema(), expected_schema_a)
+        self.assertEqual(out_val[1].get_schema(), expected_schema_b)
 
         # Eager call with data_models
         in_val = [
@@ -128,8 +128,8 @@ class FunctionalTest(testing.TestCase):
         out_val = await program(in_val)
         self.assertIsInstance(out_val, list)
         self.assertEqual(len(out_val), 2)
-        self.assertEqual(out_val[0].schema(), expected_schema_a)
-        self.assertEqual(out_val[1].schema(), expected_schema_b)
+        self.assertEqual(out_val[0].get_schema(), expected_schema_a)
+        self.assertEqual(out_val[1].get_schema(), expected_schema_b)
 
         # Symbolic call
         input_a_2 = Input(data_model=Query, name="input_a_2")
@@ -137,8 +137,8 @@ class FunctionalTest(testing.TestCase):
         out_val = await program([input_a_2, input_b_2])
         self.assertIsInstance(out_val, list)
         self.assertEqual(len(out_val), 2)
-        self.assertEqual(out_val[0].schema(), expected_schema_a)
-        self.assertEqual(out_val[1].schema(), expected_schema_b)
+        self.assertEqual(out_val[0].get_schema(), expected_schema_a)
+        self.assertEqual(out_val[1].get_schema(), expected_schema_b)
 
     async def test_basic_flow_dict_io(self):
         class Query(DataModel):
@@ -181,7 +181,7 @@ class FunctionalTest(testing.TestCase):
             "additionalProperties": False,
         }
         self.assertIsInstance(out_val, JsonDataModel)
-        self.assertEqual(out_val.schema(), expected_schema)
+        self.assertEqual(out_val.get_schema(), expected_schema)
 
     async def test_representation(self):
         class Query(DataModel):

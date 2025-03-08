@@ -27,8 +27,8 @@ class LanguageModelTest(testing.TestCase):
             role=ChatRole.ASSISTANT, content="Hello, how can I help you?"
         )
         result = await lm(messages)
-        self.assertEqual(result, ChatMessage(**result).json())
-        self.assertEqual(result, expected.json())
+        self.assertEqual(result, ChatMessage(**result).get_json())
+        self.assertEqual(result, expected.get_json())
 
     @patch("litellm.completion")
     async def test_call_api_with_structured_output(self, mock_completion):
@@ -70,9 +70,9 @@ class LanguageModelTest(testing.TestCase):
             ),
             answer="Toulouse",
         )
-        result = await lm(messages, schema=AnswerWithRationale.schema())
-        self.assertEqual(result, AnswerWithRationale(**result).json())
-        self.assertEqual(result, expected.json())
+        result = await lm(messages, schema=AnswerWithRationale.get_schema())
+        self.assertEqual(result, AnswerWithRationale(**result).get_json())
+        self.assertEqual(result, expected.get_json())
 
     @patch("litellm.completion")
     async def test_call_api_streaming_mode(self, mock_completion):

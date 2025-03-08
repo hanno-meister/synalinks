@@ -1,11 +1,9 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
-import asyncio
 
 from synalinks.src.modules.core.action import Action
 from synalinks.src.modules.core.branch import Branch
 from synalinks.src.modules.core.generator import Generator
-from synalinks.src.modules.core.input_module import Input
 from synalinks.src.modules.merging.logical_or import Or
 from synalinks.src.programs.program import Program
 from synalinks.src.utils.tool_utils import Tool
@@ -16,7 +14,7 @@ def get_decision_question():
     return "Choose the next function to use based on its name."
 
 
-def get_decision_hints():
+def get_hints():
     """The default hints for decision-making"""
     return [
         "Always reflect on your previous actions to know what to do.",
@@ -27,6 +25,13 @@ def get_decision_hints():
 class ReACTAgent(Program):
     """ReACT agent as a directed acyclic graph that choose at each step
         the function to use.
+
+    More information [here](https://arxiv.org/abs/2210.03629)
+
+    The difference with DSPy or AdalFlow implementation is that each node in the DAG
+    is a separate module with its own trainable variables, yielding better optimization
+    (specific for each step). Which makes it more memory intensive, but since ReACT are
+    anyway limited to a small set of tools/functions, its ok.
 
     **Note:** Each function **MUST** return a JSON object dict and be asynchrounous
 
@@ -102,10 +107,8 @@ class ReACTAgent(Program):
         action_language_model (LanguageModel): The language model used for actions.
         prompt_template (str): Optional. The jinja2 prompt template to use
             (See `Generator`).
-        decision_examples (list): A default list of examples for decision-making
-            (See `Decision`).
-        decision_hints (list): A default list of hints for decision-making
-            (See `Decision`).
+        examples (list): A default list of examples for decision-making (See `Decision`).
+        hints (list): A default list of hints for decision-making (See `Decision`).
         use_inputs_schema (bool): Optional. Whether or not use the inputs schema in
             the decision prompt (Default to False) (see `Decision`).
         use_outputs_schema (bool): Optional. Whether or not use the outputs schema in
@@ -126,8 +129,8 @@ class ReACTAgent(Program):
         decision_language_model=None,
         action_language_model=None,
         prompt_template=None,
-        decision_examples=None,
-        decision_hints=None,
+        examples=None,
+        hints=None,
         use_inputs_schema=False,
         use_outputs_schema=False,
         max_iterations=5,
@@ -136,7 +139,7 @@ class ReACTAgent(Program):
         trainable=True,
     ):
         if not schema and data_model:
-            schema = data_model.schema()
+            schema = data_model.get_schema()
         self.schema = schema
 
         if language_model:
@@ -148,13 +151,13 @@ class ReACTAgent(Program):
 
         self.prompt_template = prompt_template
 
-        if decision_examples:
-            decision_examples = []
-        self.decision_examples = decision_examples
+        if examples:
+            examples = []
+        self.examples = examples
 
-        if not decision_hints:
-            decision_hints = get_decision_hints()
-        self.decision_hints = decision_hints
+        if not hints:
+            hints = get_hints()
+        self.hints = hints
 
         self.use_inputs_schema = use_inputs_schema
         self.use_outputs_schema = use_outputs_schema
@@ -179,12 +182,7 @@ class ReACTAgent(Program):
             trainable=trainable,
         )
 
-    def build(self, inputs_schema):
-        inputs = Input(schema=inputs_schema)
-        asyncio.get_event_loop().run_until_complete(self.initialize(inputs))
-        self.built = True
-
-    async def initialize(self, inputs):
+    async def build(self, inputs):
         current_steps = [inputs]
         next_steps = []
         finish_branches = []
@@ -216,10 +214,10 @@ class ReACTAgent(Program):
                         branches=actions,
                         language_model=self.decision_language_model,
                         prompt_template=self.prompt_template,
-                        decision_examples=self.decision_examples,
-                        decision_hints=self.decision_hints,
-                        decision_use_inputs_schema=self.use_inputs_schema,
-                        decision_use_outputs_schema=self.use_outputs_schema,
+                        examples=self.examples,
+                        hints=self.hints,
+                        use_inputs_schema=self.use_inputs_schema,
+                        use_outputs_schema=self.use_outputs_schema,
                         return_decision=False,
                     )(step)
                     next_steps.extend([step & branch for branch in branches[:-1]])

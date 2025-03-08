@@ -23,7 +23,9 @@ class SequentialTest(testing.TestCase):
             rationale: str
             answer: str
 
-        language_model = LanguageModel(model="ollama/mistral")
+        language_model = LanguageModel(
+            model="ollama_chat/deepseek-r1",
+        )
 
         expected_string = (
             """{"rationale": "Toulouse hosts numerous research institutions """
@@ -45,7 +47,8 @@ class SequentialTest(testing.TestCase):
         program.add(Input(data_model=Query))
         program.add(
             modules.Generator(
-                data_model=AnswerWithRationale, language_model=language_model
+                data_model=AnswerWithRationale,
+                language_model=language_model,
             )
         )
 
@@ -57,13 +60,15 @@ class SequentialTest(testing.TestCase):
         result = await program(
             Query(query="What is the french city of aerospace and robotics?")
         )
-        self.assertEqual(result.json(), json.loads(expected_string))
+        self.assertEqual(result.get_json(), json.loads(expected_string))
 
         # Test symbolic call
         x = SymbolicDataModel(data_model=Query)
         y = await program(x)
         self.assertIsInstance(y, SymbolicDataModel)
-        self.assertEqual(y.schema(), standardize_schema(AnswerWithRationale.schema()))
+        self.assertEqual(
+            y.get_schema(), standardize_schema(AnswerWithRationale.get_schema())
+        )
 
         # Test `modules` constructor arg
         program = Sequential(
@@ -84,7 +89,7 @@ class SequentialTest(testing.TestCase):
         result = await program(
             Query(query="What is the french city of aerospace and robotics?")
         )
-        self.assertEqual(result.json(), json.loads(expected_string))
+        self.assertEqual(result.get_json(), json.loads(expected_string))
 
         # Test pop
         program.pop()

@@ -123,19 +123,19 @@ class Functional(Function, Program):
         # From Function
         return await super().compute_output_spec(inputs)
 
-    def build(self, input_schema):
+    async def build(self, inputs):
         self.built = True
 
     @property
     def input_schema(self):
-        input_schemas = tree.map_structure(lambda x: x.schema(), self.inputs)
+        input_schemas = tree.map_structure(lambda x: x.get_schema(), self.inputs)
         if isinstance(input_schemas, (list, tuple)) and len(input_schemas) == 1:
             return input_schemas[0]
         return input_schemas
 
     @property
     def output_schema(self):
-        output_schemas = tree.map_structure(lambda x: x.schema(), self.outputs)
+        output_schemas = tree.map_structure(lambda x: x.get_schema(), self.outputs)
         if isinstance(output_schemas, (list, tuple)) and len(output_schemas) == 1:
             return output_schemas[0]
         return output_schemas
@@ -173,7 +173,9 @@ class Functional(Function, Program):
             else:
                 if backend.is_data_model(x):
                     converted.append(
-                        backend.JsonDataModel(value=x.json(), schema=symb_input.schema())
+                        backend.JsonDataModel(
+                            value=x.json(), schema=symb_input.get_schema()
+                        )
                     )
                 else:
                     converted.append(x)
@@ -582,7 +584,7 @@ def is_input_symbolic_data_model(x):
 
 
 def clone_single_symbolic_data_model(x):
-    return backend.SymbolicDataModel(schema=x.schema(), name=x.name + "_clone")
+    return backend.SymbolicDataModel(schema=x.get_schema(), name=x.name + "_clone")
 
 
 def clone_symbolic_data_models(data_models, sd_id_mapping):
@@ -641,7 +643,7 @@ def clone_graph_nodes(inputs, outputs):
         else:
             # We need to create a new symbolic data model for any intermediate data_model
             cloned_input = Input(
-                schema=sd_input.schema(),
+                schema=sd_input.get_schema(),
                 name=sd_input.name + "CLONE",
             )
             cloned_inputs.append(cloned_input)

@@ -85,7 +85,7 @@ async def chat_completion(messages: synalinks.ChatMessages):
         result = await program(messages)
         if result:
             logger.info(result.pretty_json())
-            return result.json()
+            return result.get_json()
         else:
             return None
     except Exception as e:

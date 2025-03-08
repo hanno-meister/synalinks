@@ -36,7 +36,7 @@ class ConcatTest(testing.TestCase):
             "query_2": "c",
         }
 
-        self.assertEqual(result.json(), expected_json)
+        self.assertEqual(result.get_json(), expected_json)
 
     async def test_concat_module_none(self):
         class Query(DataModel):

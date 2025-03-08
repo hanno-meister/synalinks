@@ -37,12 +37,12 @@ class Concat(Operation):
             raise ValueError(f"Received x1={x1} and x2={x2}")
         if not x2:
             raise ValueError(f"Received x1={x1} and x2={x2}")
-        value = concatenate_json(x1.json(), x2.json())
-        schema = concatenate_schema(x1.schema(), x2.schema())
-        return JsonDataModel(value=value, schema=schema, name=self.name)
+        json = concatenate_json(x1.get_json(), x2.get_json())
+        schema = concatenate_schema(x1.get_schema(), x2.get_schema())
+        return JsonDataModel(json=json, schema=schema, name=self.name)
 
     async def compute_output_spec(self, x1, x2):
-        schema = concatenate_schema(x1.schema(), x2.schema())
+        schema = concatenate_schema(x1.get_schema(), x2.get_schema())
         return SymbolicDataModel(schema=schema, name=self.name)
 
 
@@ -108,9 +108,9 @@ class And(Operation):
 
     async def call(self, x1, x2):
         if x1 and x2:
-            value = concatenate_json(x1.json(), x2.json())
-            schema = concatenate_schema(x1.schema(), x2.schema())
-            return JsonDataModel(value=value, schema=schema, name=self.name)
+            json = concatenate_json(x1.get_json(), x2.get_json())
+            schema = concatenate_schema(x1.get_schema(), x2.get_schema())
+            return JsonDataModel(json=json, schema=schema, name=self.name)
         elif x1 and not x2:
             return None
         elif not x1 and x2:
@@ -119,7 +119,7 @@ class And(Operation):
             return None
 
     async def compute_output_spec(self, x1, x2):
-        schema = concatenate_schema(x1.schema(), x2.schema())
+        schema = concatenate_schema(x1.get_schema(), x2.get_schema())
         return SymbolicDataModel(schema=schema, name=self.name)
 
 
@@ -180,18 +180,22 @@ class Or(Operation):
 
     async def call(self, x1, x2):
         if x1 and x2:
-            value = concatenate_json(x1.json(), x2.json())
-            schema = concatenate_schema(x1.schema(), x2.schema())
-            return JsonDataModel(value=value, schema=schema, name=self.name)
+            json = concatenate_json(x1.get_json(), x2.get_json())
+            schema = concatenate_schema(x1.get_schema(), x2.get_schema())
+            return JsonDataModel(json=json, schema=schema, name=self.name)
         elif x1 and not x2:
-            return JsonDataModel(value=x1.json(), schema=x1.schema(), name=self.name)
+            return JsonDataModel(
+                json=x1.get_json(), schema=x1.get_schema(), name=self.name
+            )
         elif not x1 and x2:
-            return JsonDataModel(value=x2.json(), schema=x2.schema(), name=self.name)
+            return JsonDataModel(
+                json=x2.get_json(), schema=x2.get_schema(), name=self.name
+            )
         else:
             return None
 
     async def compute_output_spec(self, x1, x2):
-        return SymbolicDataModel(schema=x1.schema(), name=self.name)
+        return SymbolicDataModel(schema=x1.get_schema(), name=self.name)
 
 
 async def logical_or(x1, x2, name=None, description=None):
@@ -250,12 +254,12 @@ class Factorize(Operation):
         )
 
     async def call(self, x):
-        value = factorize_json(x.json())
-        schema = factorize_schema(x.schema())
-        return JsonDataModel(value=value, schema=schema, name=self.name)
+        json = factorize_json(x.get_json())
+        schema = factorize_schema(x.get_schema())
+        return JsonDataModel(json=json, schema=schema, name=self.name)
 
     async def compute_output_spec(self, x):
-        schema = factorize_schema(x.schema())
+        schema = factorize_schema(x.get_schema())
         return SymbolicDataModel(schema=schema, name=self.name)
 
 
@@ -309,12 +313,12 @@ class OutMask(Operation):
         self.recursive = recursive
 
     async def call(self, x):
-        value = out_mask_json(x.json(), mask=self.mask, recursive=self.recursive)
-        schema = out_mask_schema(x.schema(), mask=self.mask, recursive=self.recursive)
-        return JsonDataModel(value=value, schema=schema, name=self.name)
+        json = out_mask_json(x.get_json(), mask=self.mask, recursive=self.recursive)
+        schema = out_mask_schema(x.get_schema(), mask=self.mask, recursive=self.recursive)
+        return JsonDataModel(json=json, schema=schema, name=self.name)
 
     async def compute_output_spec(self, x):
-        schema = out_mask_schema(x.schema(), mask=self.mask, recursive=self.recursive)
+        schema = out_mask_schema(x.get_schema(), mask=self.mask, recursive=self.recursive)
         return SymbolicDataModel(schema=schema, name=self.name)
 
 
@@ -377,12 +381,12 @@ class InMask(Operation):
         self.recursive = recursive
 
     async def call(self, x):
-        value = in_mask_json(x.json(), mask=self.mask, recursive=self.recursive)
-        schema = in_mask_schema(x.schema(), mask=self.mask, recursive=self.recursive)
-        return JsonDataModel(value=value, schema=schema, name=self.name)
+        json = in_mask_json(x.get_json(), mask=self.mask, recursive=self.recursive)
+        schema = in_mask_schema(x.get_schema(), mask=self.mask, recursive=self.recursive)
+        return JsonDataModel(json=json, schema=schema, name=self.name)
 
     async def compute_output_spec(self, x):
-        schema = in_mask_schema(x.schema(), mask=self.mask, recursive=self.recursive)
+        schema = in_mask_schema(x.get_schema(), mask=self.mask, recursive=self.recursive)
         return SymbolicDataModel(schema=schema, name=self.name)
 
 
@@ -443,12 +447,12 @@ class Prefix(Operation):
         self.prefix = prefix
 
     async def call(self, x):
-        value = prefix_json(x.json(), self.prefix)
-        schema = prefix_schema(x.schema(), self.prefix)
-        return JsonDataModel(value=value, schema=schema, name=self.name)
+        json = prefix_json(x.get_json(), self.prefix)
+        schema = prefix_schema(x.get_schema(), self.prefix)
+        return JsonDataModel(json=json, schema=schema, name=self.name)
 
     async def compute_output_spec(self, x):
-        schema = prefix_schema(x.schema(), self.prefix)
+        schema = prefix_schema(x.get_schema(), self.prefix)
         return SymbolicDataModel(schema=schema, name=self.name)
 
 
@@ -501,12 +505,12 @@ class Suffix(Operation):
         self.suffix = suffix
 
     async def call(self, x):
-        value = suffix_json(x.json(), self.suffix)
-        schema = suffix_schema(x.schema(), self.suffix)
-        return JsonDataModel(value=value, schema=schema, name=self.name)
+        json = suffix_json(x.get_json(), self.suffix)
+        schema = suffix_schema(x.get_schema(), self.suffix)
+        return JsonDataModel(json=json, schema=schema, name=self.name)
 
     async def compute_output_spec(self, x):
-        schema = suffix_schema(x.schema(), self.suffix)
+        schema = suffix_schema(x.get_schema(), self.suffix)
         return SymbolicDataModel(schema=schema, name=self.name)
 
 

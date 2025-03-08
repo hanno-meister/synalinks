@@ -22,8 +22,8 @@ class ModuleTest(testing.TestCase):
 
         module = TestModule()
         self.assertEqual(
-            (await module(backend.SymbolicDataModel(data_model=Query))).schema(),
-            backend.standardize_schema(Query.schema()),
+            (await module(backend.SymbolicDataModel(data_model=Query))).get_schema(),
+            backend.standardize_schema(Query.get_schema()),
         )
 
         # Case: tuple output
@@ -41,8 +41,12 @@ class ModuleTest(testing.TestCase):
         out = await module(backend.SymbolicDataModel(data_model=Query))
         self.assertIsInstance(out, tuple)
         self.assertEqual(len(out), 2)
-        self.assertEqual(out[0].schema(), backend.standardize_schema(Query.schema()))
-        self.assertEqual(out[1].schema(), backend.standardize_schema(Query.schema()))
+        self.assertEqual(
+            out[0].get_schema(), backend.standardize_schema(Query.get_schema())
+        )
+        self.assertEqual(
+            out[1].get_schema(), backend.standardize_schema(Query.get_schema())
+        )
 
         # Case: list output
         class TestModule(modules.Module):
@@ -60,8 +64,12 @@ class ModuleTest(testing.TestCase):
 
         self.assertIsInstance(out, list)
         self.assertEqual(len(out), 2)
-        self.assertEqual(out[0].schema(), backend.standardize_schema(Query.schema()))
-        self.assertEqual(out[1].schema(), backend.standardize_schema(Query.schema()))
+        self.assertEqual(
+            out[0].get_schema(), backend.standardize_schema(Query.get_schema())
+        )
+        self.assertEqual(
+            out[1].get_schema(), backend.standardize_schema(Query.get_schema())
+        )
 
         # Case: dict output
         class TestModule(modules.Module):
@@ -79,5 +87,9 @@ class ModuleTest(testing.TestCase):
 
         self.assertIsInstance(out, dict)
         self.assertEqual(len(out), 2)
-        self.assertEqual(out["1"].schema(), backend.standardize_schema(Query.schema()))
-        self.assertEqual(out["2"].schema(), backend.standardize_schema(Query.schema()))
+        self.assertEqual(
+            out["1"].get_schema(), backend.standardize_schema(Query.get_schema())
+        )
+        self.assertEqual(
+            out["2"].get_schema(), backend.standardize_schema(Query.get_schema())
+        )

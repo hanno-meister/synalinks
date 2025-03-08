@@ -105,7 +105,7 @@ Hints:
 """
 
 
-class GeneratorVariables(DataModel):
+class GeneratorState(DataModel):
     """The Generator variables."""
 
     prompt_template: str = None
@@ -155,7 +155,9 @@ class Generator(Module):
                 description="The correct answer",
             )
 
-        language_model = synalinks.LanguageModel("ollama_chat/deepseek-r1")
+        language_model = synalinks.LanguageModel(
+            model="ollama_chat/deepseek-r1",
+        )
 
         x0 = synalinks.Input(data_model=Query)
         x1 = await synalinks.Generator(
@@ -219,7 +221,7 @@ class Generator(Module):
             trainable=trainable,
         )
         if not schema and data_model:
-            schema = data_model.schema()
+            schema = data_model.get_schema()
         self.schema = schema
         self.language_model = language_model
         if not prompt_template:
@@ -238,13 +240,12 @@ class Generator(Module):
             streaming = False
         self.streaming = streaming
         self.state = self.add_variable(
-            initializer=GeneratorVariables(
+            initializer=GeneratorState(
                 prompt_template=prompt_template,
                 examples=examples,
                 hints=hints,
-            ).json(),
-            data_model=GeneratorVariables,
-            trainable=True,
+            ).get_json(),
+            data_model=GeneratorState,
             name=self.name + "_state",
         )
 
@@ -270,8 +271,8 @@ class Generator(Module):
             if training:
                 self.state.get("predictions").append(
                     (
-                        inputs.json(),
-                        result.json(),
+                        inputs.get_json(),
+                        result.get_json(),
                         None,
                     )
                 )
@@ -306,25 +307,25 @@ class Generator(Module):
                 return await ops.concat(
                     inputs,
                     SymbolicDataModel(
-                        schema=ChatMessage.schema(),
+                        schema=ChatMessage.get_schema(),
                         name=self.name,
                     ),
                     name=self.name + "_with_inputs",
                 )
             else:
                 return SymbolicDataModel(
-                    schema=ChatMessage.schema(),
+                    schema=ChatMessage.get_schema(),
                     name=self.name,
                 )
 
     def format_messages(self, inputs):
         template = jinja2.Template(self.state.get("prompt_template"))
         rendered_prompt = template.render(
-            inputs_schema=inputs.schema() if self.use_inputs_schema else None,
+            inputs_schema=inputs.get_schema() if self.use_inputs_schema else None,
             outputs_schema=self.schema if self.use_outputs_schema else None,
             examples=self.state.get("examples"),
             hints=self.state.get("hints"),
-            inputs=inputs.json(),
+            inputs=inputs.get_json(),
         )
         matches = XML_TAGS_REGEX.findall(rendered_prompt)
         extracted_tags = [(match[0], match[1].strip()) for match in matches]

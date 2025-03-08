@@ -3,7 +3,7 @@
 """
 We provide different backend-dependent `DataModel`s to use.
 
-These data models provide basic functionality for GraphRAGs, MCTS, Agents etc.
+These data models provide basic functionality for GraphRAGs, Agents etc.
 
 The user can build new data models by inheriting from these base models.
 
@@ -73,7 +73,7 @@ def is_chat_message(x):
     Returns:
         (bool): True if the condition is met
     """
-    if contains_schema(x.schema(), ChatMessage.schema()):
+    if contains_schema(x.get_schema(), ChatMessage.get_schema()):
         return True
     return False
 
@@ -96,7 +96,7 @@ def is_chat_messages(x):
     Returns:
         (bool): True if the condition is met
     """
-    if contains_schema(x.schema(), ChatMessages.schema()):
+    if contains_schema(x.get_schema(), ChatMessages.get_schema()):
         return True
     return False
 
@@ -119,7 +119,7 @@ def is_embedding(x):
     Returns:
         (bool): True if the condition is met
     """
-    if contains_schema(x.schema(), Embedding.schema()):
+    if contains_schema(x.get_schema(), Embedding.get_schema()):
         return True
     return False
 
@@ -142,7 +142,7 @@ def is_embeddings(x):
     Returns:
         (bool): True if the condition is met
     """
-    if contains_schema(x.schema(), Embeddings.schema()):
+    if contains_schema(x.get_schema(), Embeddings.get_schema()):
         return True
     return False
 
@@ -202,7 +202,7 @@ def is_entity(x):
     Returns:
         (bool): True if the condition is met
     """
-    if contains_schema(x.schema(), Entity.schema()):
+    if contains_schema(x.get_schema(), Entity.get_schema()):
         return True
     return False
 
@@ -225,7 +225,7 @@ def is_entities(x):
     Returns:
         (bool): True if the condition is met
     """
-    if contains_schema(x.schema(), Entities.schema()):
+    if contains_schema(x.get_schema(), Entities.get_schema()):
         return True
     return False
 
@@ -249,7 +249,7 @@ def is_edge(x):
     Returns:
         (bool): True if the condition is met
     """
-    if contains_schema(x.schema(), Edge.schema()):
+    if contains_schema(x.get_schema(), Edge.get_schema()):
         return True
     return False
 
@@ -273,7 +273,7 @@ def is_knowledge_graph(x):
     Returns:
         (bool): True if the condition is met
     """
-    if contains_schema(x.schema(), KnowledgeGraph.schema()):
+    if contains_schema(x.get_schema(), KnowledgeGraph.get_schema()):
         return True
     return False
 
@@ -296,6 +296,6 @@ def is_knowledge_graphs(x):
     Returns:
         (bool): True if the condition is met
     """
-    if contains_schema(x.schema(), KnowledgeGraphs.schema()):
+    if contains_schema(x.get_schema(), KnowledgeGraphs.get_schema()):
         return True
     return False

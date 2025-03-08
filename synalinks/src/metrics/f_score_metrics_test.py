@@ -143,4 +143,4 @@ class BinaryF1ScoreTest(testing.TestCase):
         self.assertAlmostEqual(score, 1.0, delta=3 * backend.epsilon())
         state = metric.variables[0]
         # Try to dump it so we can test if the state is serializable
-        _ = json.dumps(state.json())
+        _ = json.dumps(state.get_json())

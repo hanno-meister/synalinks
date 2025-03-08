@@ -68,4 +68,4 @@ class BranchTest(testing.TestCase):
         mock_completion.side_effect = mock_responses
 
         result = await program(Query(query="What is the French capital?"))
-        self.assertEqual(result.json().get("answer"), "Paris")
+        self.assertEqual(result.get_json().get("answer"), "Paris")

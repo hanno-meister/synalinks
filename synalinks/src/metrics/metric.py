@@ -44,7 +44,7 @@ class Metric(SynalinksSaveable):
         """
         for v in self.variables:
             initializer = initializers.Empty(data_model=v._data_model)
-            v.assign(initializer.value())
+            v.assign(initializer.get_json())
 
     async def update_state(self, *args, **kwargs):
         """Accumulate statistics for the metric."""

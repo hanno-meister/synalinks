@@ -36,7 +36,9 @@ class Decision(Module):
 
     async def main():
 
-        language_model = synalinks.LanguageModel("ollama_chat/deepseek-r1")
+        language_model = synalinks.LanguageModel(
+            model="ollama_chat/deepseek-r1",
+        )
 
         x0 = synalinks.Input(data_model=synalinks.ChatMessages)
         x1 = await synalinks.Decision(
@@ -101,7 +103,7 @@ class Decision(Module):
             raise ValueError("The `labels` argument must be provided.")
         if not isinstance(labels, list):
             raise ValueError("The `labels` parameter must be a list of string.")
-        schema = dynamic_enum(DecisionAnswer.schema(), "choice", labels)
+        schema = dynamic_enum(DecisionAnswer.get_schema(), "choice", labels)
         self.schema = schema
         self.question = question
         self.labels = labels

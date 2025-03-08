@@ -2,7 +2,6 @@
 
 import asyncio
 import inspect
-import json
 
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.backend.common.json_schema_utils import standardize_schema
@@ -20,16 +19,16 @@ class JsonDataModel:
     Args:
         schema (dict): The JSON object's schema. If not provided,
             uses the data_model to infer it.
-        value (dict): The JSON object's value. If not provided,
+        json (dict): The JSON object's json. If not provided,
             uses the data_model to infer it.
         data_model (DataModel | JsonDataModel): The data_model to use to
-            infer the schema and value.
+            infer the schema and json.
         name (str): Optional. The name of the data model, automatically
             inferred if not provided.
 
     Examples:
 
-    **Creating a `JsonDataModel` with a DataModel's schema and value:**
+    **Creating a `JsonDataModel` with a DataModel's schema and json:**
 
     ```python
     class Query(synalinks.DataModel):
@@ -37,11 +36,11 @@ class JsonDataModel:
             description="The user query",
         )
 
-    value = {"query": "What is the capital of France?"}
+    json = {"query": "What is the capital of France?"}
 
     data_model = JsonDataModel(
-        schema=Query.schema(),
-        value=value,
+        schema=Query.get_schema(),
+        json=json,
     )
     ```
 
@@ -78,38 +77,40 @@ class JsonDataModel:
     def __init__(
         self,
         schema=None,
-        value=None,
+        json=None,
         data_model=None,
         name=None,
     ):
         name = name or auto_name(self.__class__.__name__)
-        self._name = name
+        self.name = name
         self._schema = None
-        self._value = None
+        self._json = None
 
-        if not data_model and not schema and not value:
+        if not data_model and not schema and not json:
             raise ValueError("Initializing without arguments is not permited.")
         if not schema and not data_model:
             raise ValueError(
-                "You should specify at least one argument between data_model or schema"
+                "You should specify at least one argument between "
+                "`data_model` or `schema`."
             )
-        if not value and not data_model:
+        if not json and not data_model:
             raise ValueError(
-                "You should specify at least one argument between data_model or value"
+                "You should specify at least one argument between `data_model` or `json`."
             )
         if data_model:
             if not schema:
-                schema = data_model.schema()
-            if not value:
+                schema = data_model.get_schema()
+            if not json:
                 if inspect.isclass(data_model):
                     raise ValueError(
-                        "Couldn't get the JSON data from the data_model, "
-                        "the data_model needs to be instanciated."
+                        "Couldn't get the JSON data from the `data_model` argument, "
+                        "the `data_model` needs to be instanciated. "
+                        f"Received data_model={data_model}."
                     )
-                value = data_model.json()
+                json = data_model.get_json()
 
         self._schema = standardize_schema(schema)
-        self._value = value
+        self._json = json
 
     def to_symbolic_data_model(self):
         """Converts the JsonDataModel to a SymbolicDataModel.
@@ -119,23 +120,15 @@ class JsonDataModel:
         """
         return SymbolicDataModel(schema=self._schema)
 
-    def json(self):
-        """Alias for the JSON object's value.
+    def get_json(self):
+        """Gets the current json of the JSON object.
 
         Returns:
-            (dict): The current value of the JSON object.
+            (dict): The current json of the JSON object.
         """
-        return self.value()
+        return self._json
 
-    def value(self):
-        """The current value of the JSON object.
-
-        Returns:
-            (dict): The current value of the JSON object.
-        """
-        return self._value
-
-    def schema(self):
+    def get_schema(self):
         """Gets the schema of the JSON object.
 
         Returns:
@@ -143,26 +136,25 @@ class JsonDataModel:
         """
         return self._schema
 
-    def pretty_schema(self):
+    def prettify_schema(self):
         """Get a pretty version of the JSON schema for display.
 
         Returns:
             (dict): The indented JSON schema.
         """
-        return json.dumps(self.schema(), indent=2)
+        import json
 
-    def pretty_json(self):
+        return json.dumps(self._schema, indent=2)
+
+    def prettify_json(self):
         """Get a pretty version of the JSON object for display.
 
         Returns:
             (str): The indented JSON object.
         """
-        return json.dumps(self.json(), indent=2)
+        import json
 
-    @property
-    def name(self):
-        """The name of the Json object."""
-        return self._name
+        return json.dumps(self._json, indent=2)
 
     def __add__(self, other):
         """Concatenates this data model with another.
@@ -351,23 +343,23 @@ class JsonDataModel:
         )
 
     def get(self, key):
-        """Get wrapper to make easier to access fields.
+        """Get wrapper to make it easier to access fields.
 
         Args:
             key (str): The key to access.
         """
-        return self.json().get(key)
+        return self._json.get(key)
 
     def update(self, kv_dict):
-        """Update wrapper to make easier to modify fields.
+        """Update wrapper to make it easier to modify fields.
 
         Args:
-            kv_dict (dict): The key/value dict to update.
+            kv_dict (dict): The key/json dict to update.
         """
-        self.json().update(kv_dict)
+        self._json.update(kv_dict)
 
     def __repr__(self):
-        return f"<JsonDataModel schema={self._schema}, value={self._value}>"
+        return f"<JsonDataModel schema={self._schema}, json={self._json}>"
 
 
 @synalinks_export(

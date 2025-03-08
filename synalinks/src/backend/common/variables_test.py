@@ -25,8 +25,11 @@ class VariablesTest(testing.TestCase):
             initializer=initial_data,
             data_model=Hints,
         )
-        self.assertEqual(variable_from_dict.value(), initial_data)
-        self.assertEqual(variable_from_dict.schema(), standardize_schema(Hints.schema()))
+        self.assertEqual(variable_from_dict.get_json(), initial_data)
+        self.assertEqual(
+            variable_from_dict.get_schema(),
+            standardize_schema(Hints.get_schema()),
+        )
 
     def test_initialize_variable_with_callable_initializer(self):
         class Hints(DataModel):
@@ -35,9 +38,10 @@ class VariablesTest(testing.TestCase):
         from synalinks.src.initializers import Empty
 
         variable_from_initializer = Variable(initializer=Empty(data_model=Hints))
-        self.assertEqual(variable_from_initializer.value(), Hints().value())
+        self.assertEqual(variable_from_initializer.get_json(), Hints().get_json())
         self.assertEqual(
-            variable_from_initializer.schema(), standardize_schema(Hints.schema())
+            variable_from_initializer.get_schema(),
+            standardize_schema(Hints.get_schema()),
         )
 
     def test_assign_variable_from_dict(self):
@@ -59,8 +63,11 @@ class VariablesTest(testing.TestCase):
             ],
         }
         variable_from_dict.assign(new_value)
-        self.assertEqual(variable_from_dict.value(), new_value)
-        self.assertEqual(variable_from_dict.schema(), standardize_schema(Hints.schema()))
+        self.assertEqual(variable_from_dict.get_json(), new_value)
+        self.assertEqual(
+            variable_from_dict.get_schema(),
+            standardize_schema(Hints.get_schema()),
+        )
 
     def test_assign_variable_from_dataype(self):
         class Hints(DataModel):
@@ -81,5 +88,8 @@ class VariablesTest(testing.TestCase):
             ],
         }
         variable_from_dict.assign(new_value)
-        self.assertEqual(variable_from_dict.value(), new_value)
-        self.assertEqual(variable_from_dict.schema(), standardize_schema(Hints.schema()))
+        self.assertEqual(variable_from_dict.get_json(), new_value)
+        self.assertEqual(
+            variable_from_dict.get_schema(),
+            standardize_schema(Hints.get_schema()),
+        )

@@ -45,4 +45,4 @@ class DecisionTest(testing.TestCase):
 
         result = await program(Query(query="What is the French capital?"))
 
-        self.assertEqual(result.json(), json.loads(expected_string))
+        self.assertEqual(result.get_json(), json.loads(expected_string))

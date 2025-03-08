@@ -23,8 +23,8 @@ class Optimizer(SynalinksSaveable):
 
     Args:
         schema (dict): The schema of the variables that the optimizer can act upon.
-        data_model (DataModel): The backend DataModel that the optimizer can act upon,
-            if no schema is specified, uses the data_model to infer it.
+        data_model (DataModel): The backend data model that the optimizer can act upon,
+            if no schema is specified, uses the data model to infer it.
         name (str): The name of the optimizer.
         description (str): The description of the optimizer.
     """
@@ -58,11 +58,9 @@ class Optimizer(SynalinksSaveable):
                 "You should provide at least one argument "
                 "between `data_model` or `schema`"
             )
-        if not schema:
-            schema = standardize_schema(data_model.schema())
-            self._schema = schema
-        else:
-            self._schema = standardize_schema(schema)
+        if not schema and data_model:
+            schema = standardize_schema(data_model.get_schema())
+        self._schema = schema
 
         self.built = False
         self._variables = []
@@ -84,7 +82,7 @@ class Optimizer(SynalinksSaveable):
         self._track_variable(iterations)
         self._iteration = iterations
 
-    def schema(self):
+    def get_schema(self):
         return self._schema
 
     @property
@@ -133,22 +131,22 @@ class Optimizer(SynalinksSaveable):
         """Apply the backprop/optimization for each trainable variables
         that match the optimizer schema.
         """
-        iteration = self._iteration.json().get("iteration")
-        self._iteration.json().update({"iteration": iteration + 1})
+        iteration = self._iteration.get_json().get("iteration")
+        self._iteration.get_json().update({"iteration": iteration + 1})
         for variable in trainable_variables:
-            if contains_schema(variable.schema(), self.schema()):
+            if contains_schema(variable.get_schema(), self.get_schema()):
                 await self.optimize(variable, reward=reward)
 
     async def finalize_variable_values(self, trainable_variables):
         """Finalize the optimization of the variables (cleanup/scaling etc.)."""
         for variable in trainable_variables:
-            if contains_schema(variable.schema(), self.schema()):
+            if contains_schema(variable.get_schema(), self.get_schema()):
                 await self.finalize(variable)
 
     async def optimize(self, trainable_variable, reward=None):
         """Perform a backprop/optimization on a single variable.
 
-        This function needs to be implemented by subclassed Optimizer
+        This function needs to be implemented by subclassed Optimizer.
         """
         raise NotImplementedError(
             "Optimizer subclasses must implement the `optimize()` method."
@@ -157,7 +155,7 @@ class Optimizer(SynalinksSaveable):
     async def finalize(self, trainable_variable):
         """Finalize the optimization of the variable (cleanup/scaling etc.).
 
-        This function needs to be implemented by subclassed Optimizer
+        This function needs to be implemented by subclassed Optimizer.
         """
         raise NotImplementedError(
             "Optimizer subclasses must implement the `finalize()` method."

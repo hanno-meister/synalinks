@@ -136,16 +136,3 @@ def lists_to_tuples(structure):
         return tuple(instance) if isinstance(instance, list) else None
 
     return traverse(list_to_tuple, structure, top_down=False)
-
-
-def map_schema_structure(func, structure):
-    def is_schema(x):
-        return isinstance(x, dict) and x.get("type", None) == "object"
-
-    return optree.tree_map(
-        func,
-        structure,
-        is_leaf=is_schema,
-        none_is_leaf=True,
-        namespace="synalinks",
-    )

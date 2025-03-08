@@ -304,4 +304,4 @@ class ProgramTest(testing.TestCase):
                 if remove_numerical_suffix(var1.path) == remove_numerical_suffix(
                     var2.path
                 ):
-                    self.assertEqual(var1.value(), var2.value())
+                    self.assertEqual(var1.get_json(), var2.get_json())

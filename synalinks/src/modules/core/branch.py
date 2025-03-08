@@ -75,12 +75,12 @@ class Branch(Module):
         language_model (LanguageModel): The language model to use.
         prompt_template (str): The default jinja2 prompt template
             to use (see `Generator`).
-        decision_examples (list): The default examples to use in the prompt
+        examples (list): The default examples to use in the prompt
             (see `Decision`).
-        decision_hints (list): The default hints to use (see `Decision`).
-        decision_use_inputs_schema (bool): Optional. Whether or not use the inputs
+        hints (list): The default hints to use (see `Decision`).
+        use_inputs_schema (bool): Optional. Whether or not use the inputs
             schema in the decision prompt (Default to False) (see `Decision`).
-        decision_use_outputs_schema (bool): Optional. Whether or not use the outputs
+        use_outputs_schema (bool): Optional. Whether or not use the outputs
             schema in the decision prompt (Default to False) (see `Decision`).
         name (str): Optional. The name of the module.
         description (str): Optional. The description of the module.
@@ -96,13 +96,15 @@ class Branch(Module):
         return_decision=True,
         language_model=None,
         prompt_template=None,
-        decision_examples=None,
-        decision_hints=None,
-        decision_use_inputs_schema=False,
-        decision_use_outputs_schema=False,
+        examples=None,
+        hints=None,
+        use_inputs_schema=False,
+        use_outputs_schema=False,
+        decision_type=Decision,
         name=None,
         description=None,
         trainable=True,
+        **kwargs,
     ):
         super().__init__(
             name=name,
@@ -121,19 +123,19 @@ class Branch(Module):
         self.inject_decision = inject_decision
         self.return_decision = return_decision
         self.prompt_template = prompt_template
-        self.decision_examples = decision_examples
-        self.decision_hints = decision_hints
-        self.decision_use_inputs_schema = decision_use_inputs_schema
-        self.decision_use_outputs_schema = decision_use_outputs_schema
-        self.decision = Decision(
+        self.examples = examples
+        self.hints = hints
+        self.use_inputs_schema = use_inputs_schema
+        self.use_outputs_schema = use_outputs_schema
+        self.decision = decision_type(
             question=question,
             labels=labels,
             language_model=language_model,
             prompt_template=prompt_template,
-            examples=decision_examples,
-            hints=decision_hints,
-            use_inputs_schema=decision_use_inputs_schema,
-            use_outputs_schema=decision_use_outputs_schema,
+            examples=examples,
+            hints=hints,
+            use_inputs_schema=use_inputs_schema,
+            use_outputs_schema=use_outputs_schema,
             name=self.name + "_decision",
         )
 
@@ -259,10 +261,10 @@ class Branch(Module):
             "inject_decision": self.inject_decision,
             "return_decision": self.return_decision,
             "prompt_template": self.prompt_template,
-            "decision_examples": self.decision_examples,
-            "decision_hints": self.decision_hints,
-            "decision_use_inputs_schema": self.decision_use_inputs_schema,
-            "decision_use_outputs_schema": self.decision_use_outputs_schema,
+            "examples": self.examples,
+            "hints": self.hints,
+            "use_inputs_schema": self.use_inputs_schema,
+            "use_outputs_schema": self.use_outputs_schema,
             "name": self.name,
             "description": self.description,
             "trainable": self.trainable,

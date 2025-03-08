@@ -125,7 +125,7 @@ class LanguageModel(SynalinksSaveable):
         Returns:
             (dict): The generated structured response.
         """
-        formatted_messages = messages.json().get("messages", [])
+        formatted_messages = messages.get_json().get("messages", [])
         json_instance = {}
         if schema:
             if self.model.startswith("groq"):
@@ -223,7 +223,9 @@ class LanguageModel(SynalinksSaveable):
                 )
                 if streaming:
                     return StreamingIterator(response)
-                if (self.model.startswith("groq") or self.model.startswith("anthropic")) and schema:
+                if (
+                    self.model.startswith("groq") or self.model.startswith("anthropic")
+                ) and schema:
                     response_str = response["choices"][0]["message"]["tool_calls"][0][
                         "function"
                     ]["arguments"]

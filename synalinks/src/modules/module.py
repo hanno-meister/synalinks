@@ -85,10 +85,10 @@ class Module(BackendModule, Operation, SynalinksSaveable):
         original_build_method = obj.build
 
         @wraps(original_build_method)
-        def build_wrapper(*args, **kwargs):
+        async def build_wrapper(*args, **kwargs):
             with obj._open_name_scope():
                 obj._path = current_path()
-                original_build_method(*args, **kwargs)
+                await original_build_method(*args, **kwargs)
             # Record build config.
             signature = inspect.signature(original_build_method)
             obj._build_schemas_dict = signature.bind(*args, **kwargs).arguments
@@ -190,8 +190,8 @@ class Module(BackendModule, Operation, SynalinksSaveable):
     def input_spec(self, value):
         self._input_spec = value
 
-    @utils.default
-    def build(self, input_schema):
+    @python_utils.default
+    async def build(self, input_schema):
         self._check_super_called()
         if utils.is_default(self.build) and might_have_unbuilt_state(self):
             warnings.warn(
@@ -277,13 +277,6 @@ class Module(BackendModule, Operation, SynalinksSaveable):
         for metric in self.metrics:
             vars.extend(metric.variables)
         return vars
-
-    @utils.default
-    def compute_output_schema(self, *args, **kwargs):
-        raise self._not_implemented_error(
-            self.compute_output_schema,
-            "Should implement `def compute_output_schema(self, input_schema)`.",
-        )
 
     def _get_own_rewards(self):
         if backend.in_stateless_scope():
@@ -593,9 +586,9 @@ class Module(BackendModule, Operation, SynalinksSaveable):
                 "in the `__init__()` method. Go add it!"
             )
 
-    def _assert_input_compatibility(self, arg_0):
-        pass
+    def _assert_input_compatibility(self, first_arg):
         # TODO perform check using schemas
+        pass
 
     def _maybe_convert_inputs(self, inputs):
         return tree.map_structure(
@@ -684,18 +677,12 @@ class Module(BackendModule, Operation, SynalinksSaveable):
         if self.built:
             return
 
-        schemas_dict = get_schemas_dict(call_spec)
-        first_schema = next(iter(schemas_dict.values()), None)
-
         # If the module has a build method, call it with our input schemas.
         if not utils.is_default(self.build):
-            schemas_dict = update_schemas_dict_for_target_fn(
-                self.build,
-                schemas_dict=schemas_dict,
-                call_spec=call_spec,
-                class_name=self.__class__.__name__,
-            )
-            self.build(**schemas_dict)
+            if len(call_spec.first_arg) == 1:
+                await self.build(call_spec.first_arg[0])
+            else:
+                await self.build(call_spec.first_arg)
             # Check input spec again (after build, since self.input_spec
             # may have been updated
             self._assert_input_compatibility(call_spec.first_arg)
@@ -722,13 +709,13 @@ class Module(BackendModule, Operation, SynalinksSaveable):
                     "to `__call__()` the module eagerly on some test input "
                     "first to see if it works. "
                     "2. If the `call()` method is correct, then you may need "
-                    "to implement the `def build(self, input_schema)` method on "
+                    "to implement the `def build(self, inputs)` method on "
                     "your module. It should create all variables used by the "
                     "module (e.g. by calling `module.build()` on all its "
                     "children modules).\n"
                     f"Exception encountered: ''{e}''"
                 )
-        self.build(first_schema)
+        await self.build(call_spec.first_arg)
 
 
 def is_json_data_model_or_symbolic_data_model(x, allow_none=False):
@@ -794,112 +781,10 @@ class CallSpec:
             self.eager = False
 
 
-def get_arguments_dict(fn, args, kwargs):
-    """Return a dict mapping argument names to their values."""
-    sig = inspect.signature(fn)
-    bound_args = sig.bind(*args, **kwargs)
-    arg_dict = {}
-    for name, value in bound_args.arguments.items():
-        arg_dict[name] = value
-    return arg_dict
-
-
-def get_schemas_dict(call_spec):
-    """Convert the `call()` arguments dict into a dict of input schema arguments."""
-    schemas_dict = {}
-    for k, v in call_spec.data_arguments_dict.items():
-        if k == "kwargs" or k == "args":
-            # Do not include catch-alls in shapes dict
-            continue
-        if k in call_spec.nested_data_argument_names:
-            schemas_dict[f"{k}_schema"] = tree.map_structure(
-                lambda x: backend.standardize_schema(x.schema()), v
-            )
-        else:
-            schemas_dict[f"{k}_schema"] = backend.standardize_schema(v.schema())
-    return schemas_dict
-
-
 class CallContext:
     def __init__(self, entry_module):
         self.entry_module = entry_module
         self.training = None
-
-
-def update_schemas_dict_for_target_fn(
-    target_fn,
-    schemas_dict,
-    call_spec,
-    class_name,
-):
-    """Updates a `schemas_dict` for `build()` or `compute_output_schema()`.
-
-    This function will align a dictionary of the schemas of all data_model
-    passed to `call`, with the signatures of `build()` or
-    `compute_output_schema()`.
-
-    The alignment is a follows:
-
-    - If `build()` or `compute_output_schema()` accept only one argument,
-        forward the schema of the first positional argument from call without
-        checking any argument names.
-    - If `build()` or `compute_output_schema()` accept multiple arguments,
-        enforce that all argument names match a call argument name, e.g.
-        `foo_schema` would match call argument `foo`.
-
-    Returns:
-        An updated `schemas_dict` that can be used to invoke
-        `target_fn(**schemas_dict)`.
-    """
-    if utils.is_default(target_fn):
-        return None
-    sig = inspect.signature(target_fn)
-    expected_names = []
-    for name, param in sig.parameters.items():
-        if param.kind in (
-            param.POSITIONAL_OR_KEYWORD,
-            param.POSITIONAL_ONLY,
-            param.KEYWORD_ONLY,
-        ):
-            expected_names.append(name)
-
-    # Single arg: don't check names, pass first schema.
-    if len(expected_names) == 1:
-        key = expected_names[0]
-        values = tuple(schemas_dict.values())
-        if values:
-            input_schema = values[0]
-        else:
-            input_schema = call_spec.first_arg[0].schema()
-        return {key: input_schema}
-
-    # Multiple args: check that all names line up.
-    kwargs = {}
-    for name in expected_names:
-        method_name = target_fn.__name__
-        error_preamble = (
-            f"For a `{method_name}()` method with more than one argument, all "
-            "arguments should have a `_schema` suffix and match an argument "
-            f"from `call()`. E.g. `{method_name}(self, foo_schema, bar_schema)` "
-        )
-        if not name.endswith("_schema"):
-            raise ValueError(
-                f"{error_preamble} For module '{class_name}', "
-                f"Received `{method_name}()` argument "
-                f"`{name}`, which does not end in `_schema`."
-            )
-        expected_call_arg = utils.removesuffix(name, "_schema")
-        if expected_call_arg not in call_spec.arguments_dict:
-            raise ValueError(
-                f"{error_preamble} For module '{class_name}', "
-                f"received `{method_name}()` argument "
-                f"`{name}`, but `call()` does not have argument "
-                f"`{expected_call_arg}`."
-            )
-        if name in schemas_dict:
-            kwargs[name] = schemas_dict[name]
-
-    return kwargs
 
 
 def might_have_unbuilt_state(module):

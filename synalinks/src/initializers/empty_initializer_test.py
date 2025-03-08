@@ -14,8 +14,8 @@ class EmptyInitializerTest(testing.TestCase):
 
         initializer = Empty(data_model=Hints)
         empty_data_model = initializer()
-        self.assertEqual(initializer.schema(), Hints.schema())
-        self.assertEqual(empty_data_model, Hints().json())
+        self.assertEqual(initializer.get_schema(), Hints.get_schema())
+        self.assertEqual(empty_data_model, Hints().get_json())
 
     def test_empty_initializer_from_config(self):
         class Hints(DataModel):
@@ -25,5 +25,5 @@ class EmptyInitializerTest(testing.TestCase):
         config = initializer.get_config()
         initializer = Empty.from_config(config)
         empty_data_model = initializer()
-        self.assertEqual(initializer.schema(), Hints.schema())
-        self.assertEqual(empty_data_model, Hints().json())
+        self.assertEqual(initializer.get_schema(), Hints.get_schema())
+        self.assertEqual(empty_data_model, Hints().get_json())

@@ -57,14 +57,14 @@ class Sum(Metric):
 
     async def update_state(self, values):
         values = reduce_to_samplewise_values(values, reduce_fn=numpy.sum)
-        total = self.total.json().get("total")
-        self.total.json().update({"total": float(numpy.sum(total, values))})
+        total = self.total.get_json().get("total")
+        self.total.get_json().update({"total": float(numpy.sum(total, values))})
 
     def reset_state(self):
         self.total.assign(Total())
 
     def result(self):
-        return self.total.json().get("total")
+        return self.total.get_json().get("total")
 
 
 class TotalWithCount(DataModel):
@@ -104,14 +104,16 @@ class Mean(Metric):
 
     async def update_state(self, values):
         values = reduce_to_samplewise_values(values, reduce_fn=numpy.mean)
-        total = self.total_with_count.json().get("total")
-        self.total_with_count.json().update({"total": float(total + numpy.sum(values))})
+        total = self.total_with_count.get_json().get("total")
+        self.total_with_count.get_json().update(
+            {"total": float(total + numpy.sum(values))}
+        )
         if len(values.shape) >= 1:
             num_samples = numpy.shape(values)[0]
         else:
             num_samples = 1
-        count = self.total_with_count.json().get("count")
-        self.total_with_count.json().update({"count": int(count + num_samples)})
+        count = self.total_with_count.get_json().get("count")
+        self.total_with_count.get_json().update({"count": int(count + num_samples)})
 
     def reset_state(self):
         self.total_with_count.assign(TotalWithCount())
@@ -119,8 +121,8 @@ class Mean(Metric):
     def result(self):
         return float(
             numpy.divide_no_nan(
-                self.total_with_count.json().get("total"),
-                self.total_with_count.json().get("count"),
+                self.total_with_count.get_json().get("total"),
+                self.total_with_count.get_json().get("count"),
             )
         )
 

@@ -36,7 +36,7 @@ class LogicalOrTest(testing.TestCase):
             "query_2": "c",
         }
 
-        self.assertEqual(result.json(), expected_json)
+        self.assertEqual(result.get_json(), expected_json)
 
     async def test_logical_or_module_none(self):
         class Query(DataModel):
@@ -64,4 +64,4 @@ class LogicalOrTest(testing.TestCase):
             "query": "b",
         }
 
-        self.assertEqual(result.json(), expected_json)
+        self.assertEqual(result.get_json(), expected_json)

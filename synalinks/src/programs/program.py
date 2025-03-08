@@ -501,7 +501,7 @@ class Program(Trainer, Module):
                     "all variable paths are unique. Make sure to give unique "
                     "names to your modules (and other objects)."
                 )
-            flat_dict[v.path] = v.value()
+            flat_dict[v.path] = v.get_json()
 
         nested_dict = {}
         for path, value in flat_dict.items():
@@ -551,7 +551,7 @@ class Program(Trainer, Module):
             field_name = full_path.split("/")[-1]
             for variable in variables:
                 if remove_numerical_suffix(variable.path) == path:
-                    variable.value()[field_name] = value
+                    variable.get_json()[field_name] = value
 
     def _flatten_nested_dict(self, nested_dict):
         flat_dict = {}

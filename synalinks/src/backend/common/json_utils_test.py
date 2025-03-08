@@ -19,8 +19,8 @@ class JsonConcatenateTest(testing.TestCase):
             foo: str
             foo_1: str
 
-        json = Input(foo="test").json()
-        expected = Result(foo="test", foo_1="test").json()
+        json = Input(foo="test").get_json()
+        expected = Result(foo="test", foo_1="test").get_json()
 
         result = concatenate_json(json, json)
         self.assertEqual(result, expected)
@@ -36,11 +36,11 @@ class JsonConcatenateTest(testing.TestCase):
             foo: str
             bar: str
 
-        json1 = Input1(foo="test").json()
+        json1 = Input1(foo="test").get_json()
 
-        json2 = Input2(bar="test").json()
+        json2 = Input2(bar="test").get_json()
 
-        expected = Result(foo="test", bar="test").json()
+        expected = Result(foo="test", bar="test").get_json()
 
         result = concatenate_json(json1, json2)
         self.assertEqual(result, expected)
@@ -54,8 +54,8 @@ class JsonConcatenateTest(testing.TestCase):
             foo_1: str
             foo_2: str
 
-        json = Input(foo="test").json()
-        expected = Result(foo="test", foo_1="test", foo_2="test").json()
+        json = Input(foo="test").get_json()
+        expected = Result(foo="test", foo_1="test", foo_2="test").get_json()
 
         result = concatenate_json(json, json)
         result = concatenate_json(result, json)
@@ -73,11 +73,11 @@ class JsonConcatenateTest(testing.TestCase):
             bar: BarObject
             bar_1: BarObject
 
-        json = Input(bar=BarObject(foo="test", bar="test")).json()
+        json = Input(bar=BarObject(foo="test", bar="test")).get_json()
         expected = Result(
             bar=BarObject(foo="test", bar="test"),
             bar_1=BarObject(foo="test", bar="test"),
-        ).json()
+        ).get_json()
 
         result = concatenate_json(json, json)
         self.assertEqual(result, expected)
@@ -92,8 +92,8 @@ class JsonFactorizeTest(testing.TestCase):
         class Result(DataModel):
             foos: List[str]
 
-        json = Input(foo="test", foo_1="test").json()
-        expected = Result(foos=["test", "test"]).json()
+        json = Input(foo="test", foo_1="test").get_json()
+        expected = Result(foos=["test", "test"]).get_json()
 
         result = factorize_json(json)
         self.assertEqual(result, expected)
@@ -107,8 +107,8 @@ class JsonFactorizeTest(testing.TestCase):
         class Result(DataModel):
             foos: List[str]
 
-        json = Input(foo="test", foo_1="test", foo_2="test").json()
-        expected = Result(foos=["test", "test", "test"]).json()
+        json = Input(foo="test", foo_1="test", foo_2="test").get_json()
+        expected = Result(foos=["test", "test", "test"]).get_json()
 
         result = factorize_json(json)
         self.assertEqual(result, expected)
@@ -122,8 +122,8 @@ class JsonFactorizeTest(testing.TestCase):
             foo: str
             bar: str
 
-        json = Input(foo="test", bar="test").json()
-        expected = Result(foo="test", bar="test").json()
+        json = Input(foo="test", bar="test").get_json()
+        expected = Result(foo="test", bar="test").get_json()
 
         result = factorize_json(json)
         self.assertEqual(result, expected)
@@ -145,13 +145,13 @@ class JsonFactorizeTest(testing.TestCase):
             foo_1="test",
             bar="test",
             boo="test",
-        ).json()
+        ).get_json()
 
         expected = Result(
             foos=["test", "test"],
             bar="test",
             boo="test",
-        ).json()
+        ).get_json()
 
         result = factorize_json(json)
         self.assertEqual(result, expected)
@@ -164,8 +164,8 @@ class JsonFactorizeTest(testing.TestCase):
         class Result(DataModel):
             foos: List[str]
 
-        json = Input(foos=["test"], foo="test").json()
-        expected = Result(foos=["test", "test"]).json()
+        json = Input(foos=["test"], foo="test").get_json()
+        expected = Result(foos=["test", "test"]).get_json()
 
         result = factorize_json(json)
         self.assertEqual(result, expected)
@@ -185,9 +185,9 @@ class JsonFactorizeTest(testing.TestCase):
             foos=["test", "test"],
             foo="test",
             foo_1="test",
-        ).json()
+        ).get_json()
 
-        expected = Result(foos=["test", "test", "test", "test"]).json()
+        expected = Result(foos=["test", "test", "test", "test"]).get_json()
 
         result = factorize_json(json)
         self.assertEqual(result, expected)
@@ -208,12 +208,12 @@ class JsonFactorizeTest(testing.TestCase):
             foo_1="test",
             bar="test",
             bar_1="test",
-        ).json()
+        ).get_json()
 
         expected = Result(
             foos=["test", "test"],
             bars=["test", "test"],
-        ).json()
+        ).get_json()
 
         result = factorize_json(json)
         self.assertEqual(result, expected)
@@ -239,7 +239,7 @@ class JsonFactorizeTest(testing.TestCase):
                 foo="test",
                 bar="test",
             ),
-        ).json()
+        ).get_json()
 
         expected = Result(
             bars=[
@@ -252,7 +252,7 @@ class JsonFactorizeTest(testing.TestCase):
                     bar="test",
                 ),
             ]
-        ).json()
+        ).get_json()
 
         result = factorize_json(json)
         self.assertEqual(result, expected)
@@ -267,8 +267,8 @@ class JsonOutMaskTest(testing.TestCase):
         class Result(DataModel):
             bar: str
 
-        json = Input(foo="test", bar="test").json()
-        expected = Result(bar="test").json()
+        json = Input(foo="test", bar="test").get_json()
+        expected = Result(bar="test").get_json()
 
         result = out_mask_json(json, mask=["foo"])
         self.assertEqual(result, expected)
@@ -289,12 +289,12 @@ class JsonOutMaskTest(testing.TestCase):
             foo_1="str",
             bar="test",
             bar_1="test",
-        ).json()
+        ).get_json()
 
         expected = Result(
             bar="test",
             bar_1="test",
-        ).json()
+        ).get_json()
 
         result = out_mask_json(json, mask=["foo"])
         self.assertEqual(result, expected)
@@ -317,7 +317,7 @@ class JsonOutMaskTest(testing.TestCase):
                 foo="test",
                 bar="test",
             ),
-        ).json()
+        ).get_json()
 
         class BarObject(DataModel):
             bar: str
@@ -333,7 +333,7 @@ class JsonOutMaskTest(testing.TestCase):
             bar_1=BarObject(
                 bar="test",
             ),
-        ).json()
+        ).get_json()
 
         result = out_mask_json(json, mask=["foo"])
         self.assertEqual(result, expected)
@@ -358,7 +358,7 @@ class JsonOutMaskTest(testing.TestCase):
                     boo="test",
                 )
             ),
-        ).json()
+        ).get_json()
 
         class BooObject(DataModel):
             boo: str
@@ -375,7 +375,7 @@ class JsonOutMaskTest(testing.TestCase):
                     boo="test",
                 )
             )
-        ).json()
+        ).get_json()
 
         result = out_mask_json(json, mask=["foo"])
         self.assertEqual(result, expected)
@@ -399,7 +399,7 @@ class JsonOutMaskTest(testing.TestCase):
                     boo="test",
                 ),
             ]
-        ).json()
+        ).get_json()
 
         class BooObject(DataModel):
             boo: str
@@ -416,7 +416,7 @@ class JsonOutMaskTest(testing.TestCase):
                     boo="test",
                 ),
             ]
-        ).json()
+        ).get_json()
 
         result = out_mask_json(json, mask=["foo"])
         self.assertEqual(result, expected)
@@ -428,8 +428,8 @@ class JsonOutMaskTest(testing.TestCase):
         class Result(DataModel):
             pass
 
-        json = Input().json()
-        expected = Result().json()
+        json = Input().get_json()
+        expected = Result().get_json()
 
         result = out_mask_json(json, mask=["foo"])
         self.assertEqual(result, expected)
@@ -443,8 +443,8 @@ class JsonOutMaskTest(testing.TestCase):
             foo: str
             bar: str
 
-        json = Input(foo="test", bar="test").json()
-        expected = Result(foo="test", bar="test").json()
+        json = Input(foo="test", bar="test").get_json()
+        expected = Result(foo="test", bar="test").get_json()
 
         result = out_mask_json(json, mask=[])
         self.assertEqual(result, expected)
@@ -461,7 +461,7 @@ class JsonOutMaskTest(testing.TestCase):
         json = Input(
             foo="test",
             boo=BooObject(foo="test", boo="test"),
-        ).json()
+        ).get_json()
 
         class Result(DataModel):
             boo: BooObject
@@ -471,7 +471,7 @@ class JsonOutMaskTest(testing.TestCase):
                 foo="test",
                 boo="test",
             )
-        ).json()
+        ).get_json()
 
         result = out_mask_json(json, mask=["foo"], recursive=False)
         self.assertEqual(result, expected)

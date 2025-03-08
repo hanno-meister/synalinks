@@ -32,26 +32,23 @@ class Initializer(SynalinksSaveable):
     def __init__(
         self,
         schema=None,
-        value=None,
+        json=None,
         data_model=None,
     ):
         if not schema and data_model:
-            schema = data_model.schema()
-        if not value and data_model:
+            schema = data_model.get_schema()
+        if not json and data_model:
             if not is_meta_class(data_model):
-                value = data_model.value()
+                json = data_model.get_json()
             else:
-                value = data_model().value()
+                json = data_model().get_json()
         self._schema = schema
-        self._value = value
+        self._json = json
 
-    def json(self):
-        return self.value()
+    def get_json(self):
+        return self._json
 
-    def value(self):
-        return self._value
-
-    def schema(self):
+    def get_schema(self):
         return self._schema
 
     def __call__(self, data_model=None, **kwargs):

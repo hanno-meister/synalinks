@@ -2,7 +2,6 @@
 
 import asyncio
 import inspect
-import json
 
 import pydantic
 from typing_extensions import ClassVar
@@ -10,9 +9,7 @@ from typing_extensions import ClassVar
 from synalinks.src import tree
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.backend.common.json_data_model import JsonDataModel
-from synalinks.src.backend.common.stateless_scope import StatelessScope
 from synalinks.src.backend.common.symbolic_data_model import SymbolicDataModel
-from synalinks.src.backend.common.symbolic_scope import SymbolicScope
 
 IS_THREAD_SAFE = True
 
@@ -170,9 +167,9 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
     """
 
     model_config: ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="forbid")
-    
+
     @classmethod
-    def schema(cls):
+    def get_schema(cls):
         """Gets the JSON schema of the data model.
 
         Returns:
@@ -187,7 +184,9 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
         Returns:
             (str): The indented JSON schema.
         """
-        return json.dumps(cls.schema(), indent=2)
+        import json
+
+        return json.dumps(cls.get_schema(), indent=2)
 
     @classmethod
     def to_symbolic_data_model(cls):
@@ -196,17 +195,9 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
         Returns:
             (SymbolicDataModel): The symbolic data model.
         """
-        return SymbolicDataModel(schema=cls.schema())
+        return SymbolicDataModel(schema=cls.get_schema())
 
-    def json(self):
-        """Alias for the JSON value of the data model.
-
-        Returns:
-            (dict): The JSON value.
-        """
-        return self.value()
-
-    def value(self):
+    def get_json(self):
         """Gets the JSON value of the data model.
 
         Returns:
@@ -220,10 +211,12 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
         Returns:
             (str): The indented JSON object.
         """
-        return json.dumps(self.json(), indent=2)
+        import json
+
+        return json.dumps(self.get_json(), indent=2)
 
     def __repr__(self):
-        return f"<DataModel value={self.value()}, schema={self.schema()}>"
+        return f"<DataModel json={self.get_json()}, schema={self.get_schema()}>"
 
     def to_json_data_model(self):
         """Converts the data model to a backend-independent data model.
@@ -231,7 +224,7 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
         Returns:
             (JsonDataModel): The backend-independent data model.
         """
-        return JsonDataModel(value=self.value(), schema=self.schema())
+        return JsonDataModel(schema=self.get_schema(), json=self.get_json())
 
     def __add__(self, other):
         """Concatenates this data model with another.
@@ -297,10 +290,12 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
 
         if any_meta_class(self, other):
             return asyncio.get_event_loop().run_until_complete(
-                ops.Add().symbolic_call(self, other)
+                ops.Add().symbolic_call(self, other),
             )
         else:
-            return asyncio.get_event_loop().run_until_complete(ops.Add()(self, other))
+            return asyncio.get_event_loop().run_until_complete(
+                ops.Add()(self, other),
+            )
 
     def __rand__(self, other):
         """Perform a `logical_and` (reverse) with another data model.
@@ -322,10 +317,12 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
 
         if any_meta_class(other, self):
             return asyncio.get_event_loop().run_until_complete(
-                ops.Add().symbolic_call(other, self)
+                ops.Add().symbolic_call(other, self),
             )
         else:
-            return asyncio.get_event_loop().run_until_complete(ops.Add()(other, self))
+            return asyncio.get_event_loop().run_until_complete(
+                ops.Add()(other, self),
+            )
 
     def __or__(self, other):
         """Perform a `logical_or` with another data model
@@ -348,10 +345,12 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
 
         if any_meta_class(self, other):
             return asyncio.get_event_loop().run_until_complete(
-                ops.Or().symbolic_call(self, other)
+                ops.Or().symbolic_call(self, other),
             )
         else:
-            return asyncio.get_event_loop().run_until_complete(ops.Or()(self, other))
+            return asyncio.get_event_loop().run_until_complete(
+                ops.Or()(self, other),
+            )
 
     def __ror__(self, other):
         """Perform a `logical_or` (reverse) with another data model
@@ -374,10 +373,12 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
 
         if any_meta_class(other, self):
             return asyncio.get_event_loop().run_until_complete(
-                ops.Or().symbolic_call(other, self)
+                ops.Or().symbolic_call(other, self),
             )
         else:
-            return asyncio.get_event_loop().run_until_complete(ops.Or()(other, self))
+            return asyncio.get_event_loop().run_until_complete(
+                ops.Or()(other, self),
+            )
 
 
 def is_data_model(x):
@@ -408,25 +409,6 @@ def any_data_model(args=None, kwargs=None):
         if is_meta_class(x):
             return True
     return False
-
-
-async def compute_output_spec(fn, *args, **kwargs):
-    """Computes the output specification of a function.
-
-    This function wraps the given function call in a stateless and symbolic scope
-    to compute the output specification.
-
-    Args:
-        fn (callable): The function to compute the output specification for.
-        *args (positional arguments): The positional arguments to pass to the function.
-        **kwargs (keyword arguments): The keyword arguments to pass to the function.
-
-    Returns:
-        (SymbolicDataModel): The output specification of the function.
-    """
-    with StatelessScope(), SymbolicScope():
-        output_spec = await fn(*args, **kwargs)
-    return output_spec
 
 
 def any_meta_class(args=None, kwargs=None):

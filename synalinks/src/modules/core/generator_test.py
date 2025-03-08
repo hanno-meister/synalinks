@@ -70,7 +70,7 @@ class GeneratorModuleTest(testing.TestCase):
             Query(query="What is the french city of aerospace and robotics?")
         )
 
-        self.assertEqual(result.json(), json.loads(expected_string))
+        self.assertEqual(result.get_json(), json.loads(expected_string))
 
     @patch("litellm.completion")
     async def test_basic_functional_setup_with_schema(self, mock_completion):
@@ -98,7 +98,7 @@ class GeneratorModuleTest(testing.TestCase):
 
         x0 = Input(data_model=Query)
         x1 = await Generator(
-            schema=AnswerWithRationale.schema(),
+            schema=AnswerWithRationale.get_schema(),
             language_model=language_model,
         )(x0)
         program = Program(
@@ -111,7 +111,7 @@ class GeneratorModuleTest(testing.TestCase):
             Query(query="What is the french city of aerospace and robotics?")
         )
 
-        self.assertEqual(result.json(), json.loads(expected_string))
+        self.assertEqual(result.get_json(), json.loads(expected_string))
 
     @patch("litellm.completion")
     async def test_basic_subclassing_setup(self, mock_completion):
@@ -154,7 +154,7 @@ class GeneratorModuleTest(testing.TestCase):
             Query(query="What is the french city of aerospace and robotics?")
         )
 
-        self.assertEqual(result.json(), json.loads(expected_string))
+        self.assertEqual(result.get_json(), json.loads(expected_string))
 
     def test_serialization(self):
         class Query(DataModel):

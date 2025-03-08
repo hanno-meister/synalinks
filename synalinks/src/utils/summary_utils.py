@@ -14,7 +14,7 @@ from synalinks.src.utils import io_utils
 
 
 def count_params(variables):
-    return int(sum(len(v.json()) for v in variables))
+    return int(sum(len(v.get_json()) for v in variables))
 
 
 def highlight_number(x):
@@ -56,7 +56,7 @@ def format_module_schema(module):
         for i in range(len(module._inbound_nodes)):
             outputs = module._inbound_nodes[i].output_data_models
             output_schemas = tree.map_structure(
-                lambda x: format_schema(x.schema()), outputs
+                lambda x: format_schema(x.get_schema()), outputs
             )
     else:
         try:

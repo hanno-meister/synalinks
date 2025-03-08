@@ -36,12 +36,12 @@ class Embedding(Operation):
         self.em_kwargs = kwargs
 
     async def call(self, x):
-        texts = tree.flatten(tree.map_structure(lambda field: str(field), x.json()))
+        texts = tree.flatten(tree.map_structure(lambda field: str(field), x.get_json()))
         embeddings = await self.embedding_model(texts)
         return JsonDataModel(data_model=Embeddings(**embeddings), name=self.name)
 
     async def compute_output_spec(self, x):
-        return SymbolicDataModel(schema=Embeddings.schema(), name="symbolic_" + self.name)
+        return SymbolicDataModel(schema=Embeddings.get_schema(), name=self.name)
 
     def get_config(self):
         config = {

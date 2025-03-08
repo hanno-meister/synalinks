@@ -105,12 +105,12 @@ class Function(Operation):
         # if so take a shortcut.
         shortcut = True
         for x, x_ref in zip(tree.flatten(inputs), self._inputs):
-            if not is_schema_equal(x.schema(), x_ref.schema()):
+            if not is_schema_equal(x.get_schema(), x_ref.get_schema()):
                 shortcut = False
                 break
         if shortcut:
             return tree.map_structure(
-                lambda x: SymbolicDataModel(schema=x.schema()),
+                lambda x: SymbolicDataModel(schema=x.get_schema()),
                 self._outputs_struct,
             )
         # No luck; take the long road through the graph.
@@ -128,7 +128,7 @@ class Function(Operation):
             lambda x: SymbolicDataModel(schema=x), input_schema
         )
         output_spec = self.compute_output_spec(input_shape_struct)
-        return tree.map_structure(lambda x: x.schema(), output_spec)
+        return tree.map_structure(lambda x: x.get_schema(), output_spec)
 
     async def call(self, inputs):
         """Computes output data_models for new inputs."""
@@ -203,12 +203,12 @@ class Function(Operation):
                 f"Received input structure: {inputs}"
             )
         for x, x_ref in zip(tree.flatten(inputs), self._inputs):
-            if not is_schema_equal(x.schema(), x_ref.schema()):
+            if not is_schema_equal(x.get_schema(), x_ref.get_schema()):
                 raise ValueError(
                     f"{self.__class__.__name__} was passed "
                     f"incompatible inputs. For input '{x_ref.name}', "
-                    f"expected schema {x_ref.schema()}, but received "
-                    f"instead the a JsonDataModel with schema: {x.schema()}."
+                    f"expected schema {x_ref.get_schema()}, but received "
+                    f"instead the a JsonDataModel with schema: {x.get_schema()}."
                 )
 
 

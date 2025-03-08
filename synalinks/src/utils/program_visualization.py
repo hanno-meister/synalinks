@@ -96,8 +96,8 @@ def make_module_label(module, **kwargs):
         input_schema = None
         output_schema = None
         try:
-            input_schema = tree.map_structure(lambda x: x.schema(), module.input)
-            output_schema = tree.map_structure(lambda x: x.schema(), module.output)
+            input_schema = tree.map_structure(lambda x: x.get_schema(), module.input)
+            output_schema = tree.map_structure(lambda x: x.get_schema(), module.output)
         except (ValueError, AttributeError):
             pass
 

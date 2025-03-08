@@ -52,8 +52,8 @@ class FunctionTest(testing.TestCase):
         }
 
         self.assertIsInstance(output_val, JsonDataModel)
-        self.assertEqual(output_val.json(), expected_value)
-        self.assertEqual(output_val.schema(), expected_schema)
+        self.assertEqual(output_val.get_json(), expected_value)
+        self.assertEqual(output_val.get_schema(), expected_schema)
 
         # Symbolic call
         x1_alt = SymbolicDataModel(data_model=Query)
@@ -71,8 +71,8 @@ class FunctionTest(testing.TestCase):
         )
 
         self.assertIsInstance(output_val, JsonDataModel)
-        self.assertEqual(output_val.json(), expected_value)
-        self.assertEqual(output_val.schema(), expected_schema)
+        self.assertEqual(output_val.get_json(), expected_value)
+        self.assertEqual(output_val.get_schema(), expected_schema)
 
     async def test_invalid_inputs_error(self):
         class Query(DataModel):

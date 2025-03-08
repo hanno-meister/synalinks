@@ -977,10 +977,7 @@ class Trainer:
             def to_symbolic_input(v):
                 if v is None:
                     return None
-                if backend.is_data_model(v):
-                    return backend.SymbolicDataModel(schema=v.schema())
-                else:
-                    return backend.SymbolicDataModel(schema=v.schema)
+                return backend.SymbolicDataModel(schema=v.get_schema())
 
             if data_batch is None:
                 for _, data_or_iterator in iterator:

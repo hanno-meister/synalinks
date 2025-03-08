@@ -163,7 +163,7 @@ def serialize_synalinks_object(obj):
         return {
             "class_name": "__symbolic_data_model__",
             "config": {
-                "schema": obj.schema(),
+                "schema": obj.get_schema(),
                 "synalinks_history": history,
             },
         }
@@ -171,8 +171,8 @@ def serialize_synalinks_object(obj):
         return {
             "class_name": "__data_model__",
             "config": {
-                "schema": obj.schema(),
-                "value": obj.value(),
+                "schema": obj.get_schema(),
+                "json": obj.get_json(),
             },
         }
     if isinstance(obj, types.FunctionType) and obj.__name__ == "<lambda>":
@@ -492,7 +492,7 @@ def deserialize_synalinks_object(config, custom_objects=None, safe_mode=True, **
 
     if class_name == "__data_model__":
         return backend.JsonDataModel(
-            value=inner_config["value"], schema=inner_config["schema"]
+            json=inner_config["value"], schema=inner_config["schema"]
         )
     if config["class_name"] == "__bytes__":
         return inner_config["value"].encode("utf-8")

@@ -28,15 +28,15 @@ class Empty(Initializer):
     def get_config(self):
         return {
             "schema": self._schema,
-            "value": self._value,
+            "json": self._json,
         }
 
     def __call__(self, data_model=None):
         """Returns a JSON object initialized as specified by the initializer."""
         if data_model:
             if not is_meta_class(data_model):
-                self._value = data_model.value()
+                self._json = data_model.get_json()
             else:
-                self._value = data_model().value()
-            self._schema = data_model.schema()
-        return self._value
+                self._json = data_model().get_json()
+            self._schema = data_model.get_schema()
+        return self._json

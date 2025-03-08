@@ -388,19 +388,3 @@ def lists_to_tuples(structure):
         The same structure but with tuples instead of lists.
     """
     return tree_impl.lists_to_tuples(structure)
-
-
-@synalinks_export("synalinks.tree.map_schema_structure")
-def map_schema_structure(func, structure):
-    """Variant of synalinks.tree.map_structure that operates on schemas.
-
-    Dict containing the "type" key with "object" in it are considered schemas
-    and passed to `func`.
-
-    Args:
-        structure: Arbitrarily nested structure.
-
-    Returns:
-        The same structure with `func` applied.
-    """
-    return tree_impl.map_schema_structure(func, structure)

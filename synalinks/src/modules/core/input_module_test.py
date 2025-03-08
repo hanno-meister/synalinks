@@ -15,7 +15,7 @@ class InputLayerTest(testing.TestCase):
 
         values = InputModule(input_data_model=SymbolicDataModel(data_model=Query))
         self.assertEqual(values.name, "input_module")
-        self.assertEqual(values.schema(), standardize_schema(Query.schema()))
+        self.assertEqual(values.get_schema(), standardize_schema(Query.get_schema()))
 
     def test_input(self):
         class Query(DataModel):
@@ -23,4 +23,4 @@ class InputLayerTest(testing.TestCase):
 
         inputs = Input(data_model=Query)
         self.assertIsInstance(inputs, SymbolicDataModel)
-        self.assertEqual(inputs.schema(), standardize_schema(Query.schema()))
+        self.assertEqual(inputs.get_schema(), standardize_schema(Query.get_schema()))

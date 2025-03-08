@@ -28,7 +28,7 @@ class Predict(Operation):
             description=description,
         )
         if not schema and data_model:
-            schema = data_model.schema()
+            schema = data_model.get_schema()
         self.schema = schema
         self.data_model = data_model
         self.language_model = language_model
@@ -49,15 +49,17 @@ class Predict(Operation):
         if not value:
             return None
         if self.schema:
-            return JsonDataModel(value=value, schema=self.schema, name=self.name)
+            return JsonDataModel(json=value, schema=self.schema, name=self.name)
         else:
-            return JsonDataModel(value=value, schema=ChatMessage.schema(), name=self.name)
+            return JsonDataModel(
+                json=value, schema=ChatMessage.get_schema(), name=self.name
+            )
 
     async def compute_output_spec(self, x):
         if self.schema:
             return SymbolicDataModel(schema=self.schema, name=self.name)
         else:
-            return SymbolicDataModel(schema=ChatMessage.schema(), name=self.name)
+            return SymbolicDataModel(schema=ChatMessage.get_schema(), name=self.name)
 
     def get_config(self):
         config = {

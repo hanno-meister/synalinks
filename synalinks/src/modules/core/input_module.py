@@ -32,12 +32,12 @@ class InputModule(Module):
                     f"(of type {type(input_data_model)})"
                 )
             if schema is not None:
-                if not is_schema_equal(schema, input_data_model.schema()):
+                if not is_schema_equal(schema, input_data_model.get_schema()):
                     raise ValueError(
                         "When providing the `input_data_model` argument, you "
                         "cannot provide an incompatible `schema` argument."
                     )
-            schema = input_data_model.schema()
+            schema = input_data_model.get_schema()
         else:
             if schema is None:
                 raise ValueError("You must pass a `schema` argument.")
@@ -65,7 +65,7 @@ class InputModule(Module):
     async def call(self):
         return
 
-    def schema(self):
+    def get_schema(self):
         return self._schema
 
     def get_config(self):
@@ -106,7 +106,7 @@ def Input(
 
     # You can also create it using a JSON schema like this:
 
-    inputs = synalinks.Input(schema=Query.schema())
+    inputs = synalinks.Input(schema=Query.get_schema())
 
     # Or using a symbolic datamodel:
 

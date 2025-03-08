@@ -54,7 +54,7 @@ class SymbolicDataModel:
             description="The user query",
         )
 
-    data_model = SymbolicDataModel(schema=Query.schema())
+    data_model = SymbolicDataModel(schema=Query.get_schema())
     ```
 
     **Creating a `SymbolicDataModel` with `to_symbolic_data_model()`:**
@@ -79,7 +79,7 @@ class SymbolicDataModel:
         name=None,
     ):
         self.name = name or auto_name(self.__class__.__name__)
-        self.record_history = record_history
+        self._record_history = record_history
         self._schema = None
         if not schema and not data_model:
             raise ValueError(
@@ -87,29 +87,20 @@ class SymbolicDataModel:
                 "`data_model` or `schema`"
             )
         if schema and data_model:
-            if not is_schema_equal(schema, data_model.schema()):
+            if not is_schema_equal(schema, data_model.get_schema()):
                 raise ValueError(
                     "Attempting to create a SymbolicDataModel "
                     "with both `schema` and `data_model` argument "
                     "but their schemas are incompatible "
                     f"received schema={schema} and "
-                    f"data_model.schema()={data_model.schema()}."
+                    f"data_model.get_schema()={data_model.get_schema()}."
                 )
             self._schema = standardize_schema(schema)
         else:
             if schema:
                 self._schema = standardize_schema(schema)
             if data_model:
-                self._schema = standardize_schema(data_model.schema())
-
-    @property
-    def name(self):
-        """The name of the data model."""
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        self._name = value
+                self._schema = standardize_schema(data_model.get_schema())
 
     @property
     def record_history(self):
@@ -120,26 +111,16 @@ class SymbolicDataModel:
     def record_history(self, value):
         self._record_history = value
 
-    def schema(self):
-        """The JSON schema of the data model.
+    def get_schema(self):
+        """Gets the JSON schema of the data model.
 
         Returns:
             (dict): The JSON schema.
         """
         return self._schema
 
-    def json(self, key):
-        """Alias for the JSON object's value (impossible in `SymbolicDataModel`).
-
-        Implemented to help the user to identifying issues.
-
-        Raises:
-            ValueError: The help message.
-        """
-        return self.value()
-
-    def value(self):
-        """The current value of the JSON object (impossible in `SymbolicDataModel`).
+    def get_json(self):
+        """Gets the current value of the JSON object (impossible in `SymbolicDataModel`).
 
         Implemented to help the user to identifying issues.
 
@@ -153,16 +134,16 @@ class SymbolicDataModel:
             " `compute_output_spec()` in your subclassed module."
         )
 
-    def pretty_schema(self):
+    def prettify_schema(self):
         """Get a pretty version of the JSON schema for display.
 
         Returns:
             (dict): The indented JSON schema.
         """
-        return json.dumps(self.schema(), indent=2)
+        return json.dumps(self._schema, indent=2)
 
     def __repr__(self):
-        return f"<SymbolicDataModel schema={self._schema}, name={self._name}>"
+        return f"<SymbolicDataModel schema={self._schema}, name={self.name}>"
 
     def __add__(self, other):
         """Concatenates this data model with another.
@@ -307,7 +288,7 @@ class SymbolicDataModel:
         )
 
     def out_mask(self, mask=None, recursive=True):
-        """Applies an output mask to **remove** specified keys of the data model.
+        """Applies an mask to **remove** specified keys of the data model.
 
         Args:
             mask (list): The mask to be applied (list of keys).
@@ -383,7 +364,7 @@ class SymbolicDataModel:
             ValueError: The help message.
         """
         raise ValueError(
-            f"Attempting to update keys '{list(kv_dict.keys())}' from a symbolic "
+            f"Attempting to update keys {list(kv_dict.keys())} from a symbolic "
             "data model this operation is not possible, make sure that your `call()` "
             "is correctly implemented, if so then you likely need to implement "
             " `compute_output_spec()` in your subclassed module."

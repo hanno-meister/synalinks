@@ -15,16 +15,16 @@ class JsonDataModelTest(testing.TestCase):
         )
 
         expected_schema = {
+            "additionalProperties": False,
             "properties": {"query": {"title": "Query", "type": "string"}},
             "required": ["query"],
             "title": "SymbolicDataModel",
             "type": "object",
-            "additionalProperties": False,
         }
-        expected_value = {"query": "What is the capital of France?"}
+        expected_json = {"query": "What is the capital of France?"}
 
-        self.assertEqual(json_data_model.json(), expected_value)
-        self.assertEqual(json_data_model.schema(), expected_schema)
+        self.assertEqual(json_data_model.get_json(), expected_json)
+        self.assertEqual(json_data_model.get_schema(), expected_schema)
 
     def test_init_with_data_model_non_instanciated(self):
         class Query(DataModel):
@@ -38,36 +38,36 @@ class JsonDataModelTest(testing.TestCase):
             query: str
 
         expected_schema = {
+            "additionalProperties": False,
             "properties": {"query": {"title": "Query", "type": "string"}},
             "required": ["query"],
             "title": "SymbolicDataModel",
             "type": "object",
-            "additionalProperties": False,
         }
-        expected_value = {"query": "What is the capital of France?"}
+        expected_json = {"query": "What is the capital of France?"}
 
         json_data_model = JsonDataModel(
             data_model=Query,
-            value=expected_value,
+            json=expected_json,
         )
 
-        self.assertEqual(json_data_model.value(), expected_value)
-        self.assertEqual(json_data_model.schema(), expected_schema)
+        self.assertEqual(json_data_model.get_json(), expected_json)
+        self.assertEqual(json_data_model.get_schema(), expected_schema)
 
     def test_init_with_dict(self):
         schema = {
+            "additionalProperties": False,
             "properties": {"query": {"title": "Query", "type": "string"}},
             "required": ["query"],
             "title": "SymbolicDataModel",
             "type": "object",
-            "additionalProperties": False,
         }
         value = {"query": "What is the capital of France?"}
 
-        json_data_model = JsonDataModel(value=value, schema=schema)
+        json_data_model = JsonDataModel(schema=schema, json=value)
 
-        self.assertEqual(json_data_model.value(), value)
-        self.assertEqual(json_data_model.schema(), schema)
+        self.assertEqual(json_data_model.get_json(), value)
+        self.assertEqual(json_data_model.get_schema(), schema)
 
     def test_representation(self):
         class Query(DataModel):
@@ -84,9 +84,9 @@ class JsonDataModelTest(testing.TestCase):
             "title": "SymbolicDataModel",
             "type": "object",
         }
-        expected_value = {"query": "What is the capital of France?"}
+        expected_json = {"query": "What is the capital of France?"}
 
         self.assertEqual(
             str(json_data_model),
-            f"<JsonDataModel schema={expected_schema}, value={expected_value}>",
+            f"<JsonDataModel schema={expected_schema}, json={expected_json}>",
         )

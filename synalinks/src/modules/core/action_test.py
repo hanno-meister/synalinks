@@ -87,4 +87,4 @@ class ActionTest(testing.TestCase):
             }
         }
 
-        self.assertEqual(result.json(), expected_json)
+        self.assertEqual(result.get_json(), expected_json)

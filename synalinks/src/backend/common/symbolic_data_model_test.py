@@ -13,15 +13,21 @@ class SymbolicDataModelTest(testing.TestCase):
         class Query(DataModel):
             query: str
 
-        x = SymbolicDataModel(schema=Query.schema())
-        self.assertEqual(x.schema(), standardize_schema(Query.schema()))
+        x = SymbolicDataModel(schema=Query.get_schema())
+        self.assertEqual(
+            x.get_schema(),
+            standardize_schema(Query.get_schema()),
+        )
 
     def test_constructor_with_datatype(self):
         class Query(DataModel):
             query: str
 
         x = SymbolicDataModel(data_model=Query)
-        self.assertEqual(x.schema(), standardize_schema(Query.schema()))
+        self.assertEqual(
+            x.get_schema(),
+            standardize_schema(Query.get_schema()),
+        )
 
     def test_constructor_without_args(self):
         with self.assertRaisesRegex(
@@ -34,8 +40,8 @@ class SymbolicDataModelTest(testing.TestCase):
         class Query(DataModel):
             query: str
 
-        x = SymbolicDataModel(schema=Query.schema())
+        x = SymbolicDataModel(schema=Query.get_schema())
         self.assertIn(
-            f"<SymbolicDataModel schema={standardize_schema(Query.schema())}",
+            f"<SymbolicDataModel schema={standardize_schema(Query.get_schema())}",
             repr(x),
         )

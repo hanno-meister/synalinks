@@ -113,8 +113,8 @@ class FBetaScore(Metric):
             y_pred = tree.map_structure(lambda x: x.out_mask(mask=self.out_mask), y_pred)
             y_true = tree.map_structure(lambda x: x.out_mask(mask=self.out_mask), y_true)
 
-        y_true = tree.flatten(tree.map_structure(lambda x: str(x), y_true.json()))
-        y_pred = tree.flatten(tree.map_structure(lambda x: str(x), y_pred.json()))
+        y_true = tree.flatten(tree.map_structure(lambda x: str(x), y_true.get_json()))
+        y_pred = tree.flatten(tree.map_structure(lambda x: str(x), y_pred.get_json()))
 
         true_positives = []
         false_positives = []
@@ -389,10 +389,10 @@ class BinaryFBetaScore(FBetaScore):
                 )
 
         y_true = tree.flatten(
-            tree.map_structure(lambda x: convert_to_binary(x), y_true.json())
+            tree.map_structure(lambda x: convert_to_binary(x), y_true.get_json())
         )
         y_pred = tree.flatten(
-            tree.map_structure(lambda x: convert_to_binary(x), y_pred.json())
+            tree.map_structure(lambda x: convert_to_binary(x), y_pred.get_json())
         )
         y_true = np.convert_to_tensor(y_true)
         y_pred = np.convert_to_tensor(y_pred)

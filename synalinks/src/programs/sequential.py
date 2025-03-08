@@ -10,6 +10,7 @@ import typing
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.backend import standardize_schema
 from synalinks.src.modules import Module
+from synalinks.src.modules.core.input_module import Input
 from synalinks.src.modules.core.input_module import InputModule
 from synalinks.src.programs import Functional
 from synalinks.src.programs import Program
@@ -96,7 +97,7 @@ class Sequential(Program):
         if modules:
             for module in modules:
                 self.add(module, rebuild=False)
-            self._maybe_rebuild()
+            asyncio.get_event_loop().run_until_complete(self._maybe_rebuild())
 
     def add(self, module, rebuild=True):
         """Adds a module instance on top of the module stack.
@@ -137,7 +138,7 @@ class Sequential(Program):
 
         self._modules.append(module)
         if rebuild:
-            self._maybe_rebuild()
+            asyncio.get_event_loop().run_until_complete(self._maybe_rebuild())
         else:
             self.built = False
             self._functional = None
@@ -152,21 +153,21 @@ class Sequential(Program):
         self.built = False
         self._functional = None
         if rebuild:
-            self._maybe_rebuild()
+            asyncio.get_event_loop().run_until_complete(self._maybe_rebuild())
         return module
 
-    def _maybe_rebuild(self):
+    async def _maybe_rebuild(self):
         self.built = False
         self._functional = None
         if isinstance(self._modules[0], InputModule) and len(self._modules) > 1:
-            input_schema = self._modules[0].schema()
-            self.build(input_schema)
+            input_schema = self._modules[0].get_schema()
+            await self.build(Input(schema=input_schema))
         elif hasattr(self._modules[0], "input_schema") and len(self._modules) > 1:
             # We can build the Sequential program if the first module has the
             # `input_schema` property. This is most commonly found in Functional
             # program.
             input_schema = self._modules[0].input_schema
-            self.build(input_schema)
+            await self.build(Input(schema=input_schema))
 
     def _lock_state(self):
         # Unlike other modules, Sequential is mutable after build.
@@ -175,9 +176,9 @@ class Sequential(Program):
     def _obj_type(self):
         return "Sequential"
 
-    def build(self, input_schema=None):
+    async def build(self, inputs):
         try:
-            input_schema = standardize_schema(input_schema)
+            input_schema = standardize_schema(inputs.get_schema())
         except Exception:
             # Do not attempt to build if the program does not have a single
             # input.
@@ -188,11 +189,11 @@ class Sequential(Program):
                 "no modules. Call `program.add(module)`."
             )
         if isinstance(self._modules[0], InputModule):
-            if self._modules[0].schema() != input_schema:
+            if self._modules[0].get_schema() != input_schema:
                 raise ValueError(
                     f"Sequential program '{self.name}' has already been "
                     "configured to use input schema "
-                    f"{self._modules[0].schema()}. You cannot build it "
+                    f"{self._modules[0].get_schema()}. You cannot build it "
                     f"with input_schema {input_schema}"
                 )
         else:
@@ -203,9 +204,9 @@ class Sequential(Program):
         x = inputs
         for module in self._modules[1:]:
             try:
-                x = asyncio.get_event_loop().run_until_complete(module(x))
+                x = await module(x)
             except NotImplementedError:
-                # Can happen if schema inference is not implemented.
+                # Can happen if spec inference is not implemented.
                 # TODO: consider reverting inbound nodes on modules processed.
                 return
             except TypeError as e:
@@ -268,15 +269,6 @@ class Sequential(Program):
             inputs = outputs
         return outputs
 
-    # def compute_output_schema(self, input_schema):
-    #     if self._functional:
-    #         return self._functional.compute_output_schema(input_schema)
-    #     # Direct application
-    #     for module in self.modules:
-    #         output_schema = module.compute_output_schema(input_schema)
-    #         input_schema = output_schema
-    #     return output_schema
-
     @property
     def input_schema(self):
         if self._functional:
@@ -322,6 +314,7 @@ class Sequential(Program):
             module_configs.append(serialize_fn(module))
         config = Program.get_config(self)
         config["name"] = self.name
+        config["description"] = self.description
         config["modules"] = copy.deepcopy(module_configs)
         if self._functional is not None:
             config["build_input_schema"] = self._modules[0].input_schema
@@ -336,7 +329,11 @@ class Sequential(Program):
         else:
             name = None
             module_configs = config
-        program = cls(name=name)
+        if "description" in config:
+            description = config["description"]
+        else:
+            description = None
+        program = cls(name=name, description=description)
         for module_config in module_configs:
             module = serialization_lib.deserialize_synalinks_object(
                 module_config,

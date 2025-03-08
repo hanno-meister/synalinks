@@ -73,7 +73,9 @@ class Action(Module):
                     "log": f"Error: {e}",
                 }
 
-        language_model = synalinks.LanguageModel("ollama_chat/deepseek-r1")
+        language_model = synalinks.LanguageModel(
+            model="ollama_chat/deepseek-r1",
+        )
 
         x0 = synalinks.Input(data_model=Query)
         x1 = await synalinks.Action(
@@ -150,16 +152,16 @@ class Action(Module):
         if not inputs:
             return None
         fn_inputs = await self.action(inputs, training=training)
-        fn_outputs = await self.fn(**fn_inputs.json())
-        generic_io = GenericIO(inputs=fn_inputs.json(), outputs=fn_outputs)
+        fn_outputs = await self.fn(**fn_inputs.get_json())
+        generic_io = GenericIO(inputs=fn_inputs.get_json(), outputs=fn_outputs)
         return JsonDataModel(
-            value=GenericAction(action=generic_io.json()).json(),
-            schema=GenericAction.schema(),
+            json=GenericAction(action=generic_io.get_json()).get_json(),
+            schema=GenericAction.get_schema(),
             name=self.name,
         )
 
     async def compute_output_spec(self, inputs, training=False):
-        return SymbolicDataModel(schema=GenericAction.schema(), name=self.name)
+        return SymbolicDataModel(schema=GenericAction.get_schema(), name=self.name)
 
     def get_config(self):
         config = {

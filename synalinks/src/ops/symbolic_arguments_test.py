@@ -112,9 +112,9 @@ class SymbolicArgumentsTest(testing.TestCase):
             foo: int
             bar: str
 
-        a = SymbolicDataModel(schema=Test1.schema())
-        b = SymbolicDataModel(schema=Test2.schema())
-        c = SymbolicDataModel(schema=Test2.schema())
+        a = SymbolicDataModel(schema=Test1.get_schema())
+        b = SymbolicDataModel(schema=Test2.get_schema())
+        c = SymbolicDataModel(schema=Test2.get_schema())
 
         json_data_model1 = JsonDataModel(data_model=Test1(foo="foo", bar=2))
         json_data_model2 = JsonDataModel(data_model=Test2(foo=3, bar="foo"))

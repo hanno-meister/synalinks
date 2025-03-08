@@ -2,8 +2,6 @@
 # Original authors: François Chollet et al. (Keras Team)
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
-import json
-
 from synalinks.src import backend
 from synalinks.src.backend.common import global_state
 from synalinks.src.backend.common.json_data_model import JsonDataModel
@@ -69,14 +67,14 @@ class Variable:
     **Updating the value of a `Variable`:**
 
     ```python
-    new_value = {
+    new_json = {
         "hints": [
             "When performing division, always check if the division results "
             "in a whole number. If not, express the result as a fraction or "
             "a decimal, depending on the context of the problem."
         ],
     }
-    variable_from_dict.assign(new_value)
+    variable_from_dict.assign(new_json)
     ```
 
     **Marking a `Variable` as non-trainable:**
@@ -132,9 +130,9 @@ class Variable:
 
         if in_stateless_scope():
             if callable(initializer):
-                self._value = None
+                self._json = None
                 self._initializer = initializer
-                self._schema = standardize_schema(data_model.schema())
+                self._schema = standardize_schema(data_model.get_schema())
                 register_uninitialized_variable(self)
             else:
                 raise ValueError(
@@ -167,7 +165,7 @@ class Variable:
                     )
                 value = initializer
                 self._initialize(value)
-                self._schema = standardize_schema(data_model.schema())
+                self._schema = standardize_schema(data_model.get_schema())
 
     def _deferred_initialize(self):
         """Deferred initialization of the variable.
@@ -176,8 +174,8 @@ class Variable:
             ValueError: If the variable is already initialized or
                 if attempting to initialize while in a stateless scope.
         """
-        if self._value is not None:
-            raise ValueError(f"Variable {self.path} is already initialized.")
+        if self._json is not None:
+            raise ValueError(f"Variable '{self._path}' is already initialized.")
 
         if in_stateless_scope():
             raise ValueError(
@@ -189,15 +187,7 @@ class Variable:
         self._initialize_with_initializer(self._initializer)
         self._initializer = None
 
-    def json(self):
-        """Alias for the Variable's value.
-
-        Returns:
-            (dict): The current value of the variable.
-        """
-        return self.value()
-
-    def value(self):
+    def get_json(self):
         """The current value of the variable.
 
         Returns:
@@ -208,29 +198,33 @@ class Variable:
             value = scope.get_current_value(self)
             if value is not None:
                 return value
-        if self._value is None:
+        if self._json is None:
             # Uninitialized variable. Return a placeholder.
             # This is fine because it's only ever used
             # in during schema inference / graph tracing
             # (anything else would be a bug, to be fixed.)
             return self._initializer(data_model=self._data_model)
-        return self._value
+        return self._json
 
-    def pretty_schema(self):
+    def prettify_schema(self):
         """Get a pretty version of the JSON schema for display.
 
         Returns:
             (dict): The indented JSON schema.
         """
-        return json.dumps(self.schema(), indent=2)
+        import json
 
-    def pretty_json(self):
+        return json.dumps(self.get_schema(), indent=2)
+
+    def prettify_json(self):
         """Get a pretty version of the JSON object for display.
 
         Returns:
             (dict): The indented JSON object.
         """
-        return json.dumps(self.json(), indent=2)
+        import json
+
+        return json.dumps(self.get_json(), indent=2)
 
     def assign(self, value):
         """Assigns a new value to the variable.
@@ -247,7 +241,7 @@ class Variable:
                 the value are incompatible.
         """
         if backend.is_data_model(value):
-            value = value.json()
+            value = value.get_json()
         if in_stateless_scope():
             scope = get_stateless_scope()
             scope.add_update((self, value))
@@ -255,15 +249,15 @@ class Variable:
             self._direct_assign(value)
         return value
 
-    def _direct_assign(self, value):
+    def _direct_assign(self, json):
         """Directly assigns a new value to the variable.
 
         Args:
-            value (dict): The new value to be assigned.
+            json (dict): The new json value to be assigned.
         """
-        self._value = value
+        self._json = json
 
-    def schema(self):
+    def get_schema(self):
         """The schema of the variable.
 
         Returns:
@@ -291,11 +285,11 @@ class Variable:
         return self._path
 
     def __repr__(self):
-        value = None
-        if hasattr(self, "_value") and self._value is not None:
-            value = self._value
-        value_str = f", value={value}" if value is not None else ""
-        return f"<Variable path={self.path}, schema={self._schema}{value_str}>"
+        json = None
+        if self._json is not None:
+            json = self._json
+        json_str = f", json={json}" if json is not None else ""
+        return f"<Variable path={self.path}, schema={self._schema}{json_str}>"
 
     def _initialize_with_initializer(self, initializer):
         """Initializes the variable using an initializer object.
@@ -304,16 +298,16 @@ class Variable:
             initializer (Initializer): The initializer to be used.
         """
         value = initializer()
-        self._schema = standardize_schema(initializer.schema())
+        self._schema = standardize_schema(initializer.get_schema())
         self._initialize(value)
 
-    def _initialize(self, value):
-        """Initializes the variable with a given value.
+    def _initialize(self, json):
+        """Initializes the variable with a given json dict.
 
         Args:
-            value (dict): The initial value (JSON object dict).
+            json (dict): The initial value (JSON object dict).
         """
-        self._value = value
+        self._json = json
 
     def to_json_data_model(self):
         """Convert the variable into a `JsonDataModel`.
@@ -321,7 +315,7 @@ class Variable:
         Returns:
             (JsonDataModel): The equivalent backend-independent data model
         """
-        return JsonDataModel(value=self.value(), schema=self.schema())
+        return JsonDataModel(schema=self.get_schema(), json=self.get_json())
 
     def to_symbolic_data_model(self):
         """Convert the variable into a `SymbolicDataModel`.
@@ -329,7 +323,7 @@ class Variable:
         Returns:
             (SymbolicDataModel): The equivalent symbolic data model
         """
-        return SymbolicDataModel(schema=self.schema())
+        return SymbolicDataModel(schema=self._schema)
 
     def get(self, key):
         """Get wrapper to make easier to access fields.
@@ -337,7 +331,7 @@ class Variable:
         Args:
             key (str): The key to access.
         """
-        return self.json().get(key)
+        return self._json.get(key)
 
     def update(self, kv_dict):
         """Update wrapper to make easier to modify fields.
@@ -345,7 +339,7 @@ class Variable:
         Args:
             kv_dict (dict): The key/value dict to update.
         """
-        self.json().update(kv_dict)
+        self._json.update(kv_dict)
 
 
 def register_uninitialized_variable(variable):

@@ -25,6 +25,6 @@ class DynamicEnumTest(testing.TestCase):
 
         labels = ["easy", "difficult", "unkown"]
 
-        schema = dynamic_enum(DecisionAnswer.schema(), "choice", labels)
+        schema = dynamic_enum(DecisionAnswer.get_schema(), "choice", labels)
 
-        self.assertTrue(is_schema_equal(Decision.schema(), schema))
+        self.assertTrue(is_schema_equal(Decision.get_schema(), schema))
