@@ -25,7 +25,7 @@ tracer_provider = register(
 LiteLLMInstrumentor().instrument(tracer_provider=tracer_provider)
 ```
 
-You are done, MLflow is now configured.
+You are done, Arize Phoenix is now configured.
 
 To launch Arize Phoenix server, first pull the docker image with the following command.
 

@@ -36,6 +36,8 @@ mlflow
 fastapi[standard]
 uvicorn
 synalinks
+openinference-instrumentation-litellm
+arize-otel
 ```
 
 ## Creating your endpoint using FastAPI and SynaLinks
@@ -46,8 +48,6 @@ Now you can create you endpoint using FastAPI.
 import argparse
 import logging
 import os
-
-import mlflow
 import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
