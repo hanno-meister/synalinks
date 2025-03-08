@@ -54,11 +54,21 @@ from fastapi import FastAPI
 
 import synalinks
 
+# Import open-telemetry dependencies
+from arize.otel import register
+from openinference.instrumentation.litellm import LiteLLMInstrumentor
+
+# Load the environment variables
 load_dotenv()
 
-mlflow.litellm.autolog()
-# Set this to your MLflow server
-mlflow.set_tracking_uri(os.getenv("MLFLOW_URL"))
+# Setup OTel via Arize Phoenix convenience function
+tracer_provider = register(
+    space_id = os.environ["ARIZE_SPACE_ID"], # in app space settings page
+    api_key = os.environ["ARIZE_API_KEY"], # in app space settings page
+    project_name = os.environ["ARIZE_PROJECT_NAME"], # name this to whatever you would like
+)
+
+LiteLLMInstrumentor().instrument(tracer_provider=tracer_provider)
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -125,10 +135,11 @@ And finally your docker compose file.
 
 ```yml title="docker-compose.yml"
 services:
-  mlflow:
-    image: ghcr.io/mlflow/mlflow:latest
+  arizephoenix:
+    image: arizephoenix/phoenix:latest
     ports:
-      - "5000:5000"
+      - "6006:6006"
+      - "4317:4317"
   backend:
     build:
       context: ./backend
@@ -138,7 +149,7 @@ services:
     env_file:
       - .env.backend
     depends_on:
-      - mlflow
+      - arizephoenix
 ```
 
 ## Launching your backend
