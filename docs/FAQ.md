@@ -66,7 +66,7 @@ Whole program saving means creating a file that will contain:
 - The architecture of the program, allowing you to re-create the program.
 - The variables of the program
 - The training configuration (reward, optimizer, metrics)
-- The state of the optimizer, allowing you to resumethe training exactly where you left off.
+- The state of the optimizer, allowing you to resume the training exactly where you left off.
 
 The default and recommended way to save the whole program is to do:
 

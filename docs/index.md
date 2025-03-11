@@ -12,7 +12,7 @@ or (recommended)
 uv pip install synalinks
 ```
 
-## Programming your application: 3 ways
+## Programming your application: 4 ways
 
 ### Using the `Functional` API
 
