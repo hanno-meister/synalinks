@@ -144,6 +144,76 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+### Mixing the subclassing and the `Functional` API
+
+This way of programming is recommended to encapsulate your application while providing an easy to use setup.
+It is the recommended way for most users as it avoid making your program/agents from scratch.
+In that case, you should implement only the `__init__()` and `build()` methods.
+
+```python
+import synalinks
+import asyncio
+
+async def main():
+
+    class Query(synalinks.DataModel):
+        query: str = synalinks.Field(
+            description="The user query",
+        )
+
+    class AnswerWithThinking(synalinks.DataModel):
+        thinking: str = synalinks.Field(
+            description="Your step by step thinking process",
+        )
+        answer: float = synalinks.Field(
+            description="The correct numerical answer",
+        )
+
+    language_model = synalinks.LanguageModel(
+        model="ollama_chat/deepseek-r1",
+    )
+
+    class ChainOfThought(synalinks.Program):
+        """Useful to answer in a step by step manner."""
+
+        def __init__(
+            self,
+            language_model=None,
+            name=None,
+            description=None,
+            trainable=True,
+        ):
+            super().__init__(
+                name=name,
+                description=description,
+                trainable=trainable,
+            )
+
+            self.language_model = language_model
+        
+        async def build(self, inputs):
+            outputs = await synalinks.Generator(
+                data_model=AnswerWithThinking,
+                language_model=self.language_model,
+            )(inputs)
+
+            # Create your program using the functional API
+            super().__init__(
+                inputs=inputs,
+                outputs=outputs,
+                name=self.name,
+                description=self.description,
+                trainable=self.trainable,
+            )
+
+    program = ChainOfThought(
+        language_model=language_model,
+    )
+```
+
+This allows you to not have to implement the `call()` and serialization methods
+(`get_config()` and `from_config()`). The program will be built for any inputs the first time called.
+
 ### Using the `Sequential` API
 
 In addition, `Sequential` is a special case of program where the program

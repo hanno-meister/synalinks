@@ -183,15 +183,15 @@ class Generator(Module):
         language_model (LanguageModel): The language model to use.
         prompt_template (str): The jinja2 prompt template.
         examples (list): The default list of examples, the examples
-            are a list of tuples containing input/output JSON pairs.
+            are a list of tuples containing input/output JSON pairs and reward.
         hints (list): The default hints being a list of string containing
             addtional hints for the language model.
-        return_inputs (bool): Optional. Whether or not to concatenate the inputs to
-            the outputs (Default to False).
         use_inputs_schema (bool): Optional. Whether or not use the inputs schema in
             the prompt (Default to False).
         use_outputs_schema (bool): Optional. Whether or not use the outputs schema in
             the prompt (Default to False).
+        return_inputs (bool): Optional. Whether or not to concatenate the inputs to
+            the outputs (Default to False).
         streaming (str): Optional. If true stream the LM response, enabled only if
             `schema` is `None` and only during inference (not during training).
         name (str): Optional. The name of the module.
@@ -207,9 +207,9 @@ class Generator(Module):
         prompt_template=None,
         examples=None,
         hints=None,
-        return_inputs=False,
         use_inputs_schema=False,
         use_outputs_schema=False,
+        return_inputs=False,
         streaming=False,
         name=None,
         description=None,

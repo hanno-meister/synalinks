@@ -32,7 +32,6 @@ demo/
 Import additionally any necessary dependency
 
 ```txt title="requirements.txt"
-mlflow
 fastapi[standard]
 uvicorn
 synalinks

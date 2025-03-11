@@ -23,14 +23,11 @@ def get_hints():
 
 
 class ReACTAgent(Program):
-    """ReACT agent as a directed acyclic graph that choose at each step
-        the function to use.
-
-    More information [here](https://arxiv.org/abs/2210.03629)
+    """ReACT agent as a directed acyclic graph that choose at each step the tool to use.
 
     The difference with DSPy or AdalFlow implementation is that each node in the DAG
     is a separate module with its own trainable variables, yielding better optimization
-    (specific for each step). Which makes it more memory intensive, but since ReACT are
+    (specific for each step/tool). Which makes it more memory intensive, but since ReACT are
     anyway limited to a small set of tools/functions, its ok.
 
     **Note:** Each function **MUST** return a JSON object dict and be asynchrounous
@@ -91,6 +88,10 @@ class ReACTAgent(Program):
     if __name__ == "__main__":
         asyncio.run(main())
     ```
+    
+    References:
+        - [ReAct: Synergizing Reasoning and Acting in Language Models]
+        (https://arxiv.org/abs/2210.03629)
 
     Args:
         schema (dict): The JSON schema to use for the final answer.
@@ -138,6 +139,12 @@ class ReACTAgent(Program):
         description=None,
         trainable=True,
     ):
+        super().__init__(
+            name=name,
+            description=description,
+            trainable=trainable,
+        )
+        
         if not schema and data_model:
             schema = data_model.get_schema()
         self.schema = schema
@@ -175,12 +182,6 @@ class ReACTAgent(Program):
             self.labels.append(Tool(fn).name())
 
         self.labels.append("finish")
-
-        super().__init__(
-            name=name,
-            description=description,
-            trainable=trainable,
-        )
 
     async def build(self, inputs):
         current_steps = [inputs]

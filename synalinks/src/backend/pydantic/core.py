@@ -178,7 +178,7 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
         return cls.model_json_schema()
 
     @classmethod
-    def pretty_schema(cls):
+    def prettify_schema(cls):
         """Get a pretty version of the JSON schema for display.
 
         Returns:
@@ -205,7 +205,7 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
         """
         return self.model_dump(mode="json")
 
-    def pretty_json(self):
+    def prettify_json(self):
         """Get a pretty version of the JSON object for display.
 
         Returns:
