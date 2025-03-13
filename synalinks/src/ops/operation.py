@@ -5,6 +5,8 @@
 import inspect
 import textwrap
 
+import docstring_parser
+
 from synalinks.src import backend
 from synalinks.src import tree
 from synalinks.src.api_export import synalinks_export
@@ -21,7 +23,9 @@ class Operation:
             name = auto_name(self.__class__.__name__)
         if description is None:
             if self.__class__.__doc__:
-                description = self.__class__.__doc__.strip().split("\n")[0].strip()
+                description = docstring_parser.parse(
+                    self.__class__.__doc__
+                ).short_description
             else:
                 description = ""
         if not isinstance(name, str) or "/" in name:

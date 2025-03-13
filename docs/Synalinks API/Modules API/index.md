@@ -61,6 +61,12 @@ if __name__ == "__main__":
 
 ---
 
+### Test Time Compute Modules
+
+- [ChainOfThought module](Test Time Compute Modules/ChainOfThought module.md)
+
+---
+
 ### Agents Modules
 
 - [ReACT Agent module](Agents Modules/ReACT Agent module.md)

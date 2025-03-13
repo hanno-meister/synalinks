@@ -4,6 +4,8 @@
 
 import warnings
 
+import docstring_parser
+
 from synalinks.src import backend
 from synalinks.src.backend import DataModel
 from synalinks.src.backend import contains_schema
@@ -48,7 +50,9 @@ class Optimizer(SynalinksSaveable):
 
         if description is None:
             if self.__class__.__doc__:
-                description = self.__class__.__doc__.strip().split("\n")[0].strip()
+                description = docstring_parser.parse(
+                    self.__class__.__doc__
+                ).short_description
             else:
                 description = ""
         self.description = description

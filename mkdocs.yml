@@ -23,10 +23,10 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
 
 plugins:
-  - glightbox
   - search
   - mkdocstrings:
       default_handler: python
+  # - glightbox
 
 nav:
   - index.md
@@ -66,6 +66,9 @@ nav:
         - Synalinks API/Modules API/Merging Modules/Concat module.md
         - Synalinks API/Modules API/Merging Modules/And module.md
         - Synalinks API/Modules API/Merging Modules/Or module.md
+      - Test Time Compute Modules:
+        - Synalinks API/Modules API/Test Time Compute Modules/index.md
+        - Synalinks API/Modules API/Test Time Compute Modules/ChainOfThought module.md
       - Agents Modules:
         - Synalinks API/Modules API/Agents Modules/index.md
         - Synalinks API/Modules API/Agents Modules/ReACT Agent module.md

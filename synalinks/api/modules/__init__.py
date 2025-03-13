@@ -16,3 +16,4 @@ from synalinks.src.modules.merging.concat import Concat
 from synalinks.src.modules.merging.logical_and import And
 from synalinks.src.modules.merging.logical_or import Or
 from synalinks.src.modules.module import Module
+from synalinks.src.modules.ttc.chain_of_thought import ChainOfThought

@@ -2,6 +2,7 @@
 from synalinks.api import Action
 from synalinks.api import And
 from synalinks.api import Branch
+from synalinks.api import ChainOfThought
 from synalinks.api import Concat
 from synalinks.api import DataModel
 from synalinks.api import Decision

@@ -10,7 +10,7 @@ from synalinks.src.modules.core.action import Action
 from synalinks.src.programs import Program
 
 
-class ActionTest(testing.TestCase):
+class ActionModuleTest(testing.TestCase):
     @patch("litellm.completion")
     async def test_basic_action(self, mock_completion):
         class Query(DataModel):

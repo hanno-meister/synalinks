@@ -169,10 +169,6 @@ async def main():
             description="The correct numerical answer",
         )
 
-    language_model = synalinks.LanguageModel(
-        model="ollama_chat/deepseek-r1",
-    )
-
     class ChainOfThought(synalinks.Program):
         """Useful to answer in a step by step manner."""
 
@@ -206,9 +202,16 @@ async def main():
                 trainable=self.trainable,
             )
 
+    language_model = synalinks.LanguageModel(
+        model="ollama_chat/deepseek-r1",
+    )
+
     program = ChainOfThought(
         language_model=language_model,
     )
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 This allows you to not have to implement the `call()` and serialization methods

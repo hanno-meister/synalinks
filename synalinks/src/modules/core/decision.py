@@ -28,6 +28,8 @@ class Decision(Module):
     This module dynamically create an `Enum` schema based on the given labels and
     use it to generate a possible answer using structured output.
 
+    This ensure that the LM answer is **always** one of the provided labels.
+
     Example:
 
     ```python

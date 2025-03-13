@@ -6,6 +6,7 @@ from synalinks.src.modules.core.generator import Generator
 from synalinks.src.modules.core.input_module import Input
 from synalinks.src.modules.core.input_module import InputModule
 from synalinks.src.modules.module import Module
+from synalinks.src.modules.ttc.chain_of_thought import ChainOfThought
 from synalinks.src.saving import serialization_lib
 
 

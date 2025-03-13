@@ -27,8 +27,8 @@ class ReACTAgent(Program):
 
     The difference with DSPy or AdalFlow implementation is that each node in the DAG
     is a separate module with its own trainable variables, yielding better optimization
-    (specific for each step/tool). Which makes it more memory intensive, but since ReACT are
-    anyway limited to a small set of tools/functions, its ok.
+    (specific for each step/tool). Which makes it more memory intensive, but since ReACT
+    are anyway limited to a small set of tools/functions, its ok.
 
     **Note:** Each function **MUST** return a JSON object dict and be asynchrounous
 
@@ -88,10 +88,9 @@ class ReACTAgent(Program):
     if __name__ == "__main__":
         asyncio.run(main())
     ```
-    
+
     References:
-        - [ReAct: Synergizing Reasoning and Acting in Language Models]
-        (https://arxiv.org/abs/2210.03629)
+        - [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629)
 
     Args:
         schema (dict): The JSON schema to use for the final answer.
@@ -144,7 +143,7 @@ class ReACTAgent(Program):
             description=description,
             trainable=trainable,
         )
-        
+
         if not schema and data_model:
             schema = data_model.get_schema()
         self.schema = schema

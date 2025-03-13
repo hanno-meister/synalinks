@@ -31,8 +31,31 @@ class FewShotOptimizedVariable(DataModel):
 
 @synalinks_export("synalinks.optimizers.RandomFewShot")
 class RandomFewShot(Optimizer):
-    """
-    Select randomly the best predictions to populate the LM's prompt.
+    """Select randomly the best examples to populate the LM's prompt to make it
+        learn using Few Shot Learning.
+
+    Example:
+
+    ```python
+    import synalinks
+    import asyncio
+
+    async def main():
+        # ... your program definition
+
+        program.compile(
+            reward=synalinks.rewards.ExactMatch(),
+            optimizer=synalinks.optimizers.RandomFewShot(
+                k=3,
+                k_best=10,
+            ),
+        )
+
+        history = await program.fit(...)
+    ```
+
+    References:
+        - [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165)
 
     Args:
         k (int): The number of examples to select (default 3) among the best predictions.
