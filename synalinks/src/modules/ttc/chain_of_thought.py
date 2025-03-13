@@ -58,7 +58,7 @@ class ChainOfThought(Module):
             k=3,
         )(x0)
 
-        program = synalinks.Synalinks(
+        program = synalinks.Program(
             inputs=x0,
             outputs=x1,
             name="answer_with_chain_of_thought",
