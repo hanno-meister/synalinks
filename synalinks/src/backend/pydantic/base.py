@@ -23,21 +23,36 @@ from synalinks.src.backend.common.json_schema_utils import contains_schema
 from synalinks.src.backend.pydantic.core import DataModel
 
 
-@synalinks_export("synalinks.backend.GenericOutputs")
+@synalinks_export(
+    [
+        "synalinks.backend.GenericOutputs",
+        "synalinks.GenericOutputs",
+    ]
+)
 class GenericOutputs(DataModel):
     """A generic outputs"""
 
     outputs: Dict[str, Any]
 
 
-@synalinks_export("synalinks.backend.GenericInputs")
+@synalinks_export(
+    [
+        "synalinks.backend.GenericInputs",
+        "synalinks.GenericInputs",
+    ]
+)
 class GenericInputs(DataModel):
     """A generic inputs"""
 
     inputs: Dict[str, Any]
 
 
-@synalinks_export("synalinks.backend.GenericIO")
+@synalinks_export(
+    [
+        "synalinks.backend.GenericIO",
+        "synalinks.GenericIO",
+    ]
+)
 class GenericIO(DataModel):
     """A pair of generic inputs/outputs"""
 
@@ -45,7 +60,12 @@ class GenericIO(DataModel):
     outputs: Dict[str, Any]
 
 
-@synalinks_export("synalinks.backend.ChatRole")
+@synalinks_export(
+    [
+        "synalinks.backend.ChatRole",
+        "synalinks.ChatRole",
+    ]
+)
 class ChatRole(str, Enum):
     """The chat message roles"""
 
@@ -54,7 +74,12 @@ class ChatRole(str, Enum):
     ASSISTANT = "assistant"
 
 
-@synalinks_export("synalinks.backend.ChatMessage")
+@synalinks_export(
+    [
+        "synalinks.backend.ChatMessage",
+        "synalinks.ChatMessage",
+    ]
+)
 class ChatMessage(DataModel):
     """A chat message"""
 
@@ -62,7 +87,12 @@ class ChatMessage(DataModel):
     content: str
 
 
-@synalinks_export("synalinks.backend.is_chat_message")
+@synalinks_export(
+    [
+        "synalinks.backend.is_chat_message",
+        "synalinks.is_chat_message",
+    ]
+)
 def is_chat_message(x):
     """Checks if the given data model is a chat message
 
@@ -78,14 +108,24 @@ def is_chat_message(x):
     return False
 
 
-@synalinks_export("synalinks.backend.ChatMessages")
+@synalinks_export(
+    [
+        "synalinks.backend.ChatMessages",
+        "synalinks.ChatMessages",
+    ]
+)
 class ChatMessages(DataModel):
     """A list of chat messages"""
 
     messages: List[ChatMessage] = []
 
 
-@synalinks_export("synalinks.backend.is_chat_messages")
+@synalinks_export(
+    [
+        "synalinks.backend.is_chat_messages",
+        "synalinks.is_chat_messages",
+    ]
+)
 def is_chat_messages(x):
     """Checks if the given data model are chat messages
 
@@ -101,14 +141,24 @@ def is_chat_messages(x):
     return False
 
 
-@synalinks_export("synalinks.backend.Embedding")
+@synalinks_export(
+    [
+        "synalinks.backend.Embedding",
+        "synalinks.Embedding",
+    ]
+)
 class Embedding(DataModel):
     """An embedding vector"""
 
     embedding: List[float] = []
 
 
-@synalinks_export("synalinks.backend.is_embedding")
+@synalinks_export(
+    [
+        "synalinks.backend.is_embedding",
+        "synalinks.is_embedding",
+    ]
+)
 def is_embedding(x):
     """Checks if the given data model is an embedding
 
@@ -124,14 +174,24 @@ def is_embedding(x):
     return False
 
 
-@synalinks_export("synalinks.backend.Embeddings")
+@synalinks_export(
+    [
+        "synalinks.backend.Embeddings",
+        "synalinks.Embeddings",
+    ]
+)
 class Embeddings(DataModel):
     """A list of embeddings"""
 
     embeddings: List[List[float]] = []
 
 
-@synalinks_export("synalinks.backend.is_embeddings")
+@synalinks_export(
+    [
+        "synalinks.backend.is_embeddings",
+        "synalinks.is_embeddings",
+    ]
+)
 def is_embeddings(x):
     """Checks if the given data model are embeddings
 
@@ -184,14 +244,24 @@ class Stamp(DataModel):
     created_at: datetime = datetime.now()
 
 
-@synalinks_export("synalinks.backend.Entity")
+@synalinks_export(
+    [
+        "synalinks.backend.Entity",
+        "synalinks.Entity",
+    ]
+)
 class Entity(Unique, Embedding, Label, Stamp):
     """An entity data model"""
 
     pass
 
 
-@synalinks_export("synalinks.backend.is_entity")
+@synalinks_export(
+    [
+        "synalinks.backend.is_entity",
+        "synalinks.is_entity",
+    ]
+)
 def is_entity(x):
     """Checks if the given data model is an entity
 
@@ -207,14 +277,24 @@ def is_entity(x):
     return False
 
 
-@synalinks_export("synalinks.backend.Entities")
+@synalinks_export(
+    [
+        "synalinks.backend.Entities",
+        "synalinks.Entities",
+    ]
+)
 class Entities(DataModel):
     """A list of entities"""
 
     entities: List[Entity] = []
 
 
-@synalinks_export("synalinks.backend.is_entities")
+@synalinks_export(
+    [
+        "synalinks.backend.is_entities",
+        "synalinks.is_entities",
+    ]
+)
 def is_entities(x):
     """Checks if the given data model are entities
 
@@ -230,7 +310,12 @@ def is_entities(x):
     return False
 
 
-@synalinks_export("synalinks.backend.Edge")
+@synalinks_export(
+    [
+        "synalinks.backend.Edge",
+        "synalinks.Edge",
+    ]
+)
 class Edge(Entity, Weight):
     """An edge entity"""
 
@@ -238,7 +323,12 @@ class Edge(Entity, Weight):
     target: str
 
 
-@synalinks_export("synalinks.backend.is_edge")
+@synalinks_export(
+    [
+        "synalinks.backend.is_edge",
+        "synalinks.is_edge",
+    ]
+)
 def is_edge(x):
     """Checks if the given data model is an edge
 
@@ -254,7 +344,12 @@ def is_edge(x):
     return False
 
 
-@synalinks_export("synalinks.backend.KnowledgeGraph")
+@synalinks_export(
+    [
+        "synalinks.backend.KnowledgeGraph",
+        "synalinks.KnowledgeGraph",
+    ]
+)
 class KnowledgeGraph(DataModel):
     """A knowledge graph data model"""
 
@@ -262,7 +357,12 @@ class KnowledgeGraph(DataModel):
     edges: List[Edge] = []
 
 
-@synalinks_export("synalinks.backend.is_knowledge_graph")
+@synalinks_export(
+    [
+        "synalinks.backend.is_knowledge_graph",
+        "synalinks.is_knowledge_graph",
+    ]
+)
 def is_knowledge_graph(x):
     """Checks if the given data model is a knowledge graph
 
@@ -278,14 +378,24 @@ def is_knowledge_graph(x):
     return False
 
 
-@synalinks_export("synalinks.backend.KnowledgeGraphs")
+@synalinks_export(
+    [
+        "synalinks.backend.KnowledgeGraphs",
+        "synalinks.KnowledgeGraphs",
+    ]
+)
 class KnowledgeGraphs(DataModel):
     """A list of knowledge graphs"""
 
     knowledge_graphs: List[KnowledgeGraph] = []
 
 
-@synalinks_export("synalinks.backend.is_knowledge_graphs")
+@synalinks_export(
+    [
+        "synalinks.backend.is_knowledge_graphs",
+        "synalinks.is_knowledge_graphs",
+    ]
+)
 def is_knowledge_graphs(x):
     """Checks if the given data model are knowledge graphs
 
