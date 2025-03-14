@@ -20,6 +20,7 @@ from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
 from synalinks.src.utils import python_utils
 from synalinks.src.utils import tracking
 
+
 if backend.backend() == "pydantic":
     from synalinks.src.backend.pydantic.module import PydanticModule as BackendModule
 else:
@@ -252,11 +253,16 @@ class Module(BackendModule, Operation, SynalinksSaveable):
         Args:
             config (dict): Dict containing the input schema associated with this module.
         """
+        from synalinks.src.modules import Input
+        
         if config:
             if "input_schema" in config:
-                self.build(config["input_schema"])
+                self.build(Input(schema=config["input_schema"]))
             elif "schemas_dict" in config:
-                self.build(**config["schemas_dict"])
+                inputs = {}
+                for key, schema in config["schemas_dict"].items():
+                    inputs[key] = Input(schema=schema)
+                self.build(**inputs)
             self.built = True
 
     def _obj_type(self):
