@@ -6,6 +6,7 @@ since your modifications would be overwritten.
 
 from synalinks.src.modules import deserialize
 from synalinks.src.modules import serialize
+from synalinks.src.modules.agents.react import ReACTAgent
 from synalinks.src.modules.core.action import Action
 from synalinks.src.modules.core.branch import Branch
 from synalinks.src.modules.core.decision import Decision

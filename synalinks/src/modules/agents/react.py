@@ -1,6 +1,6 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
-
+from synalinks.src.api_export import synalinks_export
 from synalinks.src.modules.core.action import Action
 from synalinks.src.modules.core.branch import Branch
 from synalinks.src.modules.core.generator import Generator
@@ -22,6 +22,12 @@ def get_hints():
     ]
 
 
+@synalinks_export(
+    [
+        "synalinks.modules.ReACTAgent",
+        "synalinks.ReACTAgent",
+    ]
+)
 class ReACTAgent(Program):
     """ReACT agent as a directed acyclic graph that choose at each step the tool to use.
 
@@ -113,6 +119,8 @@ class ReACTAgent(Program):
             the decision prompt (Default to False) (see `Decision`).
         use_outputs_schema (bool): Optional. Whether or not use the outputs schema in
             the decision prompt (Default to False) (see `Decision`).
+        return_inputs (bool): Optional. Whether or not to concatenate the inputs to
+            the outputs (Default to False).
         max_iterations (int): The maximum number of steps to perform.
         name (str): Optional. The name of the module.
         description (str): Optional. The description of the module.
@@ -133,6 +141,7 @@ class ReACTAgent(Program):
         hints=None,
         use_inputs_schema=False,
         use_outputs_schema=False,
+        return_inputs=False,
         max_iterations=5,
         name=None,
         description=None,
@@ -167,6 +176,7 @@ class ReACTAgent(Program):
 
         self.use_inputs_schema = use_inputs_schema
         self.use_outputs_schema = use_outputs_schema
+        self.return_inputs = return_inputs
 
         assert max_iterations > 1
         self.max_iterations = max_iterations
@@ -206,6 +216,7 @@ class ReACTAgent(Program):
                             prompt_template=self.prompt_template,
                             use_inputs_schema=self.use_inputs_schema,
                             use_outputs_schema=self.use_outputs_schema,
+                            return_inputs=self.return_inputs,
                         )
                     )
                     branches = await Branch(
@@ -230,6 +241,9 @@ class ReACTAgent(Program):
                         schema=self.schema,
                         language_model=self.action_language_model,
                         prompt_template=self.prompt_template,
+                        use_inputs_schema=self.use_inputs_schema,
+                        use_outputs_schema=self.use_outputs_schema,
+                        return_inputs=self.return_inputs,
                     )(step)
                     finish_branches.append(last_step)
 

@@ -52,6 +52,7 @@ from synalinks.src.embedding_models.embedding_model import EmbeddingModel
 from synalinks.src.initializers.initializer import Initializer
 from synalinks.src.language_models.language_model import LanguageModel
 from synalinks.src.metrics.metric import Metric
+from synalinks.src.modules.agents.react import ReACTAgent
 from synalinks.src.modules.core.action import Action
 from synalinks.src.modules.core.branch import Branch
 from synalinks.src.modules.core.decision import Decision
