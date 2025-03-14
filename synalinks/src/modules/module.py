@@ -5,6 +5,7 @@
 import collections
 import inspect
 import warnings
+import asyncio
 from functools import wraps
 
 from synalinks.src import backend
@@ -19,6 +20,7 @@ from synalinks.src.ops.operation import Operation
 from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
 from synalinks.src.utils import python_utils
 from synalinks.src.utils import tracking
+
 
 if backend.backend() == "pydantic":
     from synalinks.src.backend.pydantic.module import PydanticModule as BackendModule
@@ -244,7 +246,7 @@ class Module(BackendModule, Operation, SynalinksSaveable):
     def build_from_config(self, config):
         """Builds the module's states with the supplied config dict.
 
-        By default, this method calls the `build(config["input_schema"])` method,
+        By default, this method calls the `build()` method,
         which creates variables based on the module's input schema in the supplied
         config. If your config contains other information needed to load the
         module's state, you should override this method.
@@ -254,12 +256,18 @@ class Module(BackendModule, Operation, SynalinksSaveable):
         """
         if config:
             if "input_schema" in config:
-                self.build(backend.SymbolicDataModel(schema=config["input_schema"]))
+                asyncio.get_event_loop().run_until_complete(
+                    self.build(
+                        backend.SymbolicDataModel(schema=config["input_schema"])
+                    )
+                )
             elif "schemas_dict" in config:
                 symbolic_inputs = {}
                 for key, schema in config["schemas_dict"].items():
                     symbolic_inputs[key] = backend.SymbolicDataModel(schema=schema)
-                self.build(**symbolic_inputs)
+                asyncio.get_event_loop().run_until_complete(
+                    self.build(**symbolic_inputs)
+                )
             self.built = True
 
     def _obj_type(self):
