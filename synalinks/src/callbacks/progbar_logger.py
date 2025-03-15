@@ -125,12 +125,13 @@ class ProgbarLogger(Callback):
         self._maybe_init_progbar()
         self.seen = batch + 1  # One-indexed.
 
-        if is_marimo_notebook_running():
-            self.progbar.progress.update(increment=self.seen, subtitle=format_logs(logs))
-            if finalize:
-                self.progbar.disabled = True
-        elif self.verbose == 1:
-            self.progbar.update(self.seen, list(logs.items()), finalize=False)
+        if self.verbose == 1:
+            if is_marimo_notebook_running():
+                self.progbar.progress.update(increment=self.seen, subtitle=format_logs(logs))
+                if finalize:
+                    self.progbar.disabled = True
+            else:
+                self.progbar.update(self.seen, list(logs.items()), finalize=False)
 
     def _finalize_progbar(self, logs):
         logs = logs or {}

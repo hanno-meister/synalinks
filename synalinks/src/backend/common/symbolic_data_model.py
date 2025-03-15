@@ -334,7 +334,7 @@ class SymbolicDataModel:
             ops.Suffix(suffix=suffix).symbolic_call(self)
         )
 
-    def get(self, key):
+    def get(self, key, default_value=None):
         """Get wrapper to make easier to access fields.
 
         Implemented to help the user to identifying issues.

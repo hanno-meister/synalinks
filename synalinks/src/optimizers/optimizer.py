@@ -135,8 +135,8 @@ class Optimizer(SynalinksSaveable):
         """Apply the backprop/optimization for each trainable variables
         that match the optimizer schema.
         """
-        iteration = self._iteration.get_json().get("iteration")
-        self._iteration.get_json().update({"iteration": iteration + 1})
+        iteration = self._iteration.get("iteration")
+        self._iteration.update({"iteration": iteration + 1})
         for variable in trainable_variables:
             if contains_schema(variable.get_schema(), self.get_schema()):
                 await self.optimize(variable, reward=reward)

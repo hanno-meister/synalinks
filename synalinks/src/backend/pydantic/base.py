@@ -250,7 +250,7 @@ class Stamp(DataModel):
         "synalinks.Entity",
     ]
 )
-class Entity(Unique, Embedding, Label, Stamp):
+class Entity(Unique, Embeddings, Label, Stamp):
     """An entity data model"""
 
     pass

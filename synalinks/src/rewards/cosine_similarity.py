@@ -41,8 +41,8 @@ async def cosine_similarity(y_true, y_pred, embedding_model=None, axis=-1):
     if y_pred is not None:
         y_true = await ops.embedding(y_true, embedding_model=embedding_model)
         y_pred = await ops.embedding(y_pred, embedding_model=embedding_model)
-        y_true = np.convert_to_tensor(y_true.get_json().get("embeddings"))
-        y_pred = np.convert_to_tensor(y_pred.get_json().get("embeddings"))
+        y_true = np.convert_to_tensor(y_true.get("embeddings"))
+        y_pred = np.convert_to_tensor(y_pred.get("embeddings"))
         y_true, y_pred = squeeze_or_expand_to_same_rank(y_true, y_pred)
         y_pred = np.normalize(y_pred, axis=axis)
         y_true = np.normalize(y_true, axis=axis)

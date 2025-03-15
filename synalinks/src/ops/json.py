@@ -238,6 +238,78 @@ async def logical_or(x1, x2, name=None, description=None):
         name=name,
         description=description,
     )(x1, x2)
+    
+
+class Xor(Operation):
+    """Perform a logical `Xor` operation between data models."""
+
+    def __init__(
+        self,
+        name=None,
+        description=None,
+    ):
+        super().__init__(
+            name=name,
+            description=description,
+        )
+
+    async def call(self, x1, x2):
+        if x1 and x2:
+            return None
+        elif x1 and not x2:
+            return JsonDataModel(
+                json=x1.get_json(), schema=x1.get_schema(), name=self.name
+            )
+        elif not x1 and x2:
+            return JsonDataModel(
+                json=x2.get_json(), schema=x2.get_schema(), name=self.name
+            )
+        else:
+            return None
+
+    async def compute_output_spec(self, x1, x2):
+        return SymbolicDataModel(schema=x1.get_schema(), name=self.name)
+
+
+async def logical_xor(x1, x2, name=None, description=None):
+    """Perform a logical `Xor` between two data models.
+
+    If one of the input is `None`, then output the other one.
+    If both inputs are provided, the output is `None`.
+
+    If any of the data models used is a metaclass or symbolic data model
+    the output is a symbolic data model.
+
+    This operation is implemented in the Python `^` operator.
+
+    Table:
+
+    | `x1`   | `x2`   | Logical Xor (`^`)|
+    | ------ | ------ | ---------------- |
+    | `x1`   | `x2`   | `None`           |
+    | `x1`   | `None` | `x1`             |
+    | `None` | `x2`   | `x2`             |
+    | `None` | `None` | `None`           |
+
+    Args:
+        x1 (JsonDataModel | SymbolicDataModel): The first input data model.
+        x2 (JsonDataModel | SymbolicDataModel): The second input data model.
+        name (str): Optional. The name of the operation.
+        description (str): Optional. The description of the operation.
+
+    Returns:
+        (JsonDataModel | SymbolicDataModel | None): The resulting data model or
+            None if the condition is not met.
+    """
+    if any_symbolic_data_models(x1, x2):
+        return await Xor(
+            name=name,
+            description=description,
+        ).symbolic_call(x1, x2)
+    return await Xor(
+        name=name,
+        description=description,
+    )(x1, x2)
 
 
 class Factorize(Operation):

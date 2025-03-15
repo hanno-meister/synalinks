@@ -94,4 +94,4 @@ class ReACTAgentTest(testing.TestCase):
                 )
             )
         )
-        self.assertEqual(result.get_json().get("answer"), 27.0)
+        self.assertEqual(result.get("answer"), 27.0)

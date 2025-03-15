@@ -20,7 +20,7 @@
 <div align="center">
 
 ![Beta](https://img.shields.io/badge/Release-Beta-blue.svg)
-![Coverage Badge](coverage-badge.svg)
+![Coverage Badge](https://raw.githubusercontent.com/SynaLinks/synalinks/refs/heads/main/coverage-badge.svg)
 ![Pypi Downloads](https://img.shields.io/pypi/dm/synalinks)
 [![Discord](https://img.shields.io/discord/1118241178723291219)](https://discord.gg/82nt97uXcM)
 [![Python package](https://github.com/SynaLinks/Synalinks/actions/workflows/tests.yml/badge.svg)](https://github.com/SynaLinks/SynaLinks/actions/workflows/tests.yml)

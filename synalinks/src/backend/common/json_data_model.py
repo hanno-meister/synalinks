@@ -342,13 +342,13 @@ class JsonDataModel:
             ops.Suffix(suffix=suffix).call(self),
         )
 
-    def get(self, key):
+    def get(self, key, default_value=None):
         """Get wrapper to make it easier to access fields.
 
         Args:
             key (str): The key to access.
         """
-        return self._json.get(key)
+        return self._json.get(key, default_value)
 
     def update(self, kv_dict):
         """Update wrapper to make it easier to modify fields.
