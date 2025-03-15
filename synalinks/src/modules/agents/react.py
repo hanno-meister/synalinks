@@ -119,9 +119,9 @@ class ReACTAgent(Program):
             the decision prompt (Default to False) (see `Decision`).
         use_outputs_schema (bool): Optional. Whether or not use the outputs schema in
             the decision prompt (Default to False) (see `Decision`).
-        return_inputs_with_trajectory (bool): Optional. Whether or not to concatenate the inputs along 
-            with the agent trajectory to the outputs (Default to False).
-        return_inputs_only (bool): Optional. Whether or not to concatenate the inputs 
+        return_inputs_with_trajectory (bool): Optional. Whether or not to concatenate the
+            inputs along with the agent trajectory to the outputs (Default to False).
+        return_inputs_only (bool): Optional. Whether or not to concatenate the inputs
             to the outputs (Default to False).
         max_iterations (int): The maximum number of steps to perform.
         name (str): Optional. The name of the module.
@@ -258,10 +258,10 @@ class ReACTAgent(Program):
                     finish_branches.append(last_step)
 
         final = await Or()(finish_branches)
-        
+
         if self.return_inputs_with_trajectory:
             final.factorize()
-            
+
         if self.return_inputs_only:
             final = inputs + final
 

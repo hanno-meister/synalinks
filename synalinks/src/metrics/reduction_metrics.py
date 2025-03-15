@@ -105,9 +105,7 @@ class Mean(Metric):
     async def update_state(self, values):
         values = reduce_to_samplewise_values(values, reduce_fn=numpy.mean)
         total = self.total_with_count.get("total")
-        self.total_with_count.update(
-            {"total": float(total + numpy.sum(values))}
-        )
+        self.total_with_count.update({"total": float(total + numpy.sum(values))})
         if len(values.shape) >= 1:
             num_samples = numpy.shape(values)[0]
         else:

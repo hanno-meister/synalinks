@@ -127,7 +127,9 @@ class ProgbarLogger(Callback):
 
         if self.verbose == 1:
             if is_marimo_notebook_running():
-                self.progbar.progress.update(increment=self.seen, subtitle=format_logs(logs))
+                self.progbar.progress.update(
+                    increment=self.seen, subtitle=format_logs(logs)
+                )
                 if finalize:
                     self.progbar.disabled = True
             else:

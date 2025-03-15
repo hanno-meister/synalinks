@@ -238,7 +238,7 @@ async def logical_or(x1, x2, name=None, description=None):
         name=name,
         description=description,
     )(x1, x2)
-    
+
 
 class Xor(Operation):
     """Perform a logical `Xor` operation between data models."""

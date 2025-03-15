@@ -11,10 +11,10 @@ from synalinks.src.modules import Input
 from synalinks.src.ops.json import concat
 from synalinks.src.ops.json import factorize
 from synalinks.src.ops.json import in_mask
-from synalinks.src.ops.json import out_mask
 from synalinks.src.ops.json import logical_and
 from synalinks.src.ops.json import logical_or
 from synalinks.src.ops.json import logical_xor
+from synalinks.src.ops.json import out_mask
 from synalinks.src.programs import Program
 from synalinks.src.utils.nlp_utils import remove_numerical_suffix
 
@@ -179,27 +179,27 @@ class FactorizeTest(testing.TestCase):
             for var2 in new_program.variables:
                 if remove_numerical_suffix(var2.path) == var1.path:
                     self.assertEqual(var2.get_json(), var1.get_json())
-                    
+
 
 class LogicalAndTest(testing.TestCase):
     async def test_and_table(self):
         class Answer(DataModel):
             answer: str
-            
+
         class Result(DataModel):
             answer: str
             answer_1: str
-        
+
         i0 = Input(data_model=Answer)
         i1 = Input(data_model=Answer)
-        
+
         x0 = await logical_and(i0, i1)
-        
+
         program = Program(
             inputs=[i0, i1],
             outputs=x0,
         )
-        
+
         result = await program([Answer(answer="Paris"), Answer(answer="Toulouse")])
         self.assertEqual(
             result.get_json(),
@@ -208,36 +208,36 @@ class LogicalAndTest(testing.TestCase):
                 answer_1="Toulouse",
             ).get_json(),
         )
-        
+
         result = await program([Answer(answer="Paris"), None])
         self.assertEqual(result, None)
-        
+
         result = await program([None, Answer(answer="Toulouse")])
         self.assertEqual(result, None)
-        
+
         result = await program([None, None])
         self.assertEqual(result, None)
-        
+
 
 class LogicalOrTest(testing.TestCase):
     async def test_or_table(self):
         class Answer(DataModel):
             answer: str
-            
+
         class Result(DataModel):
             answer: str
             answer_1: str
-        
+
         i0 = Input(data_model=Answer)
         i1 = Input(data_model=Answer)
-        
+
         x0 = await logical_or(i0, i1)
-        
+
         program = Program(
             inputs=[i0, i1],
             outputs=x0,
         )
-        
+
         result = await program([Answer(answer="Paris"), Answer(answer="Toulouse")])
         self.assertEqual(
             result.get_json(),
@@ -246,45 +246,45 @@ class LogicalOrTest(testing.TestCase):
                 answer_1="Toulouse",
             ).get_json(),
         )
-        
+
         result = await program([Answer(answer="Paris"), None])
         self.assertEqual(result.get_json(), Answer(answer="Paris").get_json())
-        
+
         result = await program([None, Answer(answer="Toulouse")])
         self.assertEqual(result.get_json(), Answer(answer="Toulouse").get_json())
-        
+
         result = await program([None, None])
         self.assertEqual(result, None)
-        
-        
+
+
 class LogicalXorTest(testing.TestCase):
     async def test_xor_table(self):
         class Answer(DataModel):
             answer: str
-            
+
         class Result(DataModel):
             answer: str
             answer_1: str
-        
+
         i0 = Input(data_model=Answer)
         i1 = Input(data_model=Answer)
-        
+
         x0 = await logical_xor(i0, i1)
-        
+
         program = Program(
             inputs=[i0, i1],
             outputs=x0,
         )
-        
+
         result = await program([Answer(answer="Paris"), Answer(answer="Toulouse")])
         self.assertEqual(result, None)
-        
+
         result = await program([Answer(answer="Paris"), None])
         self.assertEqual(result.get_json(), Answer(answer="Paris").get_json())
-        
+
         result = await program([None, Answer(answer="Toulouse")])
         self.assertEqual(result.get_json(), Answer(answer="Toulouse").get_json())
-        
+
         result = await program([None, None])
         self.assertEqual(result, None)
 
