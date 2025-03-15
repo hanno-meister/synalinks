@@ -14,9 +14,9 @@ from synalinks.src.modules.module import Module
 class Or(Module):
     """Perform a logical Or operation.
 
-    It takes as input a list of data models, all of the same schema
-    and returns a concatenation of them (if all are provided) otherwise it
-    output the one that is not None.
+    It takes as input a list of data models,
+    and returns a concatenation of them (if all are provided)
+    otherwise it output the one that is not None.
 
     If any input is None, it is ignored.
 

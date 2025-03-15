@@ -56,7 +56,7 @@ class MetaDataModel(type(pydantic.BaseModel)):
     def __and__(cls, other):
         """Perform a `logical_and` with another data model.
 
-        If one of them is None, output None. If both are provided,
+        If one of them is `None`, output `None`. If both are provided,
         then concatenates this data model with the other.
 
         Args:
@@ -64,7 +64,7 @@ class MetaDataModel(type(pydantic.BaseModel)):
                 with.
 
         Returns:
-            (SymbolicDataModel | None): The concatenated data model or None
+            (SymbolicDataModel | None): The concatenated data model or `None`
                 based on the `logical_and` table.
         """
         from synalinks.src import ops
@@ -76,7 +76,7 @@ class MetaDataModel(type(pydantic.BaseModel)):
     def __rand__(cls, other):
         """Perform a `logical_and` (reverse) with another data model.
 
-        If one of them is None, output None. If both are provided,
+        If one of them is `None`, output `None`. If both are provided,
         then concatenates the other data model with this one.
 
         Args:
@@ -84,7 +84,7 @@ class MetaDataModel(type(pydantic.BaseModel)):
                 with.
 
         Returns:
-            (SymbolicDataModel | None): The concatenated data model or None
+            (SymbolicDataModel | None): The concatenated data model or `None`
                 based on the `logical_and` table.
         """
         from synalinks.src import ops
@@ -94,9 +94,9 @@ class MetaDataModel(type(pydantic.BaseModel)):
         )
 
     def __or__(cls, other):
-        """Perform a `logical_or` with another data model
+        """Perform a `logical_or` with another data model.
 
-        If one of them is None, output the other one. If both are provided,
+        If one of them is `None`, output the other one. If both are provided,
         then concatenates this data model with the other.
 
         Args:
@@ -114,9 +114,9 @@ class MetaDataModel(type(pydantic.BaseModel)):
         )
 
     def __ror__(cls, other):
-        """Perform a `logical_or` (reverse) with another data model
+        """Perform a `logical_or` (reverse) with another data model.
 
-        If one of them is None, output the other one. If both are provided,
+        If one of them is `None`, output the other one. If both are provided,
         then concatenates the other data model with this one.
 
         Args:
@@ -132,6 +132,47 @@ class MetaDataModel(type(pydantic.BaseModel)):
 
         return asyncio.get_event_loop().run_until_complete(
             ops.Or().symbolic_call(other, cls)
+        )
+
+    def __xor__(cls, other):
+        """Perform a `logical_xor` with another data model.
+
+        If one of them is `None`, output the other one. If both are provided,
+        then the output is `None`.
+
+        Args:
+            other (SymbolicDataModel): The other data model to concatenate with.
+
+        Returns:
+            (SymbolicDataModel | None): `None` if both are
+                provided, or the non-None data model if one is provided
+                or `None` if none are provided. (See `logical_xor` table).
+        """
+        from synalinks.src import ops
+
+        return asyncio.get_event_loop().run_until_complete(
+            ops.Xor().symbolic_call(cls, other)
+        )
+
+    def __rxor__(cls, other):
+        """Perform a `logical_xor` (reverse) with another data model.
+
+        If one of them is None, output the other one. If both are provided,
+        then concatenates the other data model with this one.
+
+        Args:
+            other (SymbolicDataModel | DataModel): The other data model to concatenate
+                with.
+
+        Returns:
+            (SymbolicDataModel | None): `None` if both are
+                provided, or the non-None data model if one is provided
+                or `None` if none are provided. (See `logical_xor` table).
+        """
+        from synalinks.src import ops
+
+        return asyncio.get_event_loop().run_until_complete(
+            ops.Xor().symbolic_call(other, cls)
         )
 
 
@@ -378,6 +419,57 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
         else:
             return asyncio.get_event_loop().run_until_complete(
                 ops.Or()(other, self),
+            )
+
+    def __xor__(self, other):
+        """Perform a `logical_xor` with another data model.
+
+        If one of them is `None`, output the other one. If both are provided,
+        then the output is `None`.
+
+        Args:
+            other (SymbolicDataModel): The other data model to concatenate with.
+
+        Returns:
+            (SymbolicDataModel | None): `None` if both are
+                provided, or the non-None data model if one is provided
+                or `None` if none are provided. (See `logical_xor` table).
+        """
+        from synalinks.src import ops
+
+        if any_meta_class(self, other):
+            return asyncio.get_event_loop().run_until_complete(
+                ops.Xor().symbolic_call(self, other),
+            )
+        else:
+            return asyncio.get_event_loop().run_until_complete(
+                ops.Xor()(self, other),
+            )
+
+    def __rxor__(self, other):
+        """Perform a `logical_xor` (reverse) with another data model.
+
+        If one of them is None, output the other one. If both are provided,
+        then concatenates the other data model with this one.
+
+        Args:
+            other (SymbolicDataModel | DataModel): The other data model to concatenate
+                with.
+
+        Returns:
+            (SymbolicDataModel | None): `None` if both are
+                provided, or the non-None data model if one is provided
+                or `None` if none are provided. (See `logical_xor` table).
+        """
+        from synalinks.src import ops
+
+        if any_meta_class(other, self):
+            return asyncio.get_event_loop().run_until_complete(
+                ops.Xor().symbolic_call(other, self),
+            )
+        else:
+            return asyncio.get_event_loop().run_until_complete(
+                ops.Xor()(other, self),
             )
 
 

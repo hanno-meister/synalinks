@@ -46,7 +46,7 @@ class Concat(Operation):
         return SymbolicDataModel(schema=schema, name=self.name)
 
 
-@synalinks_export(["synalinks.ops.concatenate", "synalinks.ops.json.concatenate"])
+@synalinks_export(["synalinks.ops.concat", "synalinks.ops.json.concat"])
 async def concat(x1, x2, name=None, description=None):
     """Concatenate two data models together.
 
@@ -123,6 +123,7 @@ class And(Operation):
         return SymbolicDataModel(schema=schema, name=self.name)
 
 
+@synalinks_export(["synalinks.ops.logical_and", "synalinks.ops.json.logical_and"])
 async def logical_and(x1, x2, name=None, description=None):
     """Perform a logical `And` operation between two data models.
 
@@ -198,6 +199,7 @@ class Or(Operation):
         return SymbolicDataModel(schema=x1.get_schema(), name=self.name)
 
 
+@synalinks_export(["synalinks.ops.logical_or", "synalinks.ops.json.logical_or"])
 async def logical_or(x1, x2, name=None, description=None):
     """Perform a logical `Or` between two data models.
 
@@ -271,6 +273,7 @@ class Xor(Operation):
         return SymbolicDataModel(schema=x1.get_schema(), name=self.name)
 
 
+@synalinks_export(["synalinks.ops.logical_xor", "synalinks.ops.json.logical_xor"])
 async def logical_xor(x1, x2, name=None, description=None):
     """Perform a logical `Xor` between two data models.
 

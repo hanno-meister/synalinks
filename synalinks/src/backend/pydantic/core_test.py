@@ -43,7 +43,7 @@ class CoreTest(testing.TestCase):
 
         self.assertEqual(TestDataModel(foo="bar").get_json(), expected_json)
 
-    async def test_concatenate_meta_data_model(self):
+    def test_concatenate_meta_data_model(self):
         class Foo(DataModel):
             foo: str
 
@@ -58,6 +58,57 @@ class CoreTest(testing.TestCase):
 
         schema = x.get_schema()
         expected_schema = standardize_schema(Result.get_schema())
+        self.assertEqual(schema, expected_schema)
+
+    def test_and_meta_data_model(self):
+        class Foo(DataModel):
+            foo: str
+
+        class Bar(DataModel):
+            bar: str
+
+        class Result(DataModel):
+            foo: str
+            bar: str
+
+        x = Foo & Bar
+
+        schema = x.get_schema()
+        expected_schema = standardize_schema(Result.get_schema())
+        self.assertEqual(schema, expected_schema)
+
+    def test_or_meta_data_model(self):
+        class Foo(DataModel):
+            foo: str
+
+        class Bar(DataModel):
+            bar: str
+
+        class Result(DataModel):
+            foo: str
+            bar: str
+
+        x = Foo | Bar
+
+        schema = x.get_schema()
+        expected_schema = standardize_schema(Foo.get_schema())
+        self.assertEqual(schema, expected_schema)
+
+    def test_xor_meta_data_model(self):
+        class Foo(DataModel):
+            foo: str
+
+        class Bar(DataModel):
+            bar: str
+
+        class Result(DataModel):
+            foo: str
+            bar: str
+
+        x = Foo ^ Bar
+
+        schema = x.get_schema()
+        expected_schema = standardize_schema(Foo.get_schema())
         self.assertEqual(schema, expected_schema)
 
     def test_is_meta_class(self):

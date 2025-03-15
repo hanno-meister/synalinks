@@ -266,6 +266,47 @@ class JsonDataModel:
             ops.Or().call(other, self),
         )
 
+    def __xor__(self, other):
+        """Perform a `logical_xor` with another data model.
+
+        If one of them is `None`, output the other one. If both are provided,
+        then the output is `None`.
+
+        Args:
+            other (SymbolicDataModel): The other data model to concatenate with.
+
+        Returns:
+            (SymbolicDataModel | None): `None` if both are
+                provided, or the non-None data model if one is provided
+                or `None` if none are provided. (See `logical_xor` table).
+        """
+        from synalinks.src import ops
+
+        return asyncio.get_event_loop().run_until_complete(
+            ops.Xor().call(self, other),
+        )
+
+    def __rxor__(self, other):
+        """Perform a `logical_xor` (reverse) with another data model.
+
+        If one of them is None, output the other one. If both are provided,
+        then concatenates the other data model with this one.
+
+        Args:
+            other (SymbolicDataModel | DataModel): The other data model to concatenate
+                with.
+
+        Returns:
+            (SymbolicDataModel | None): `None` if both are
+                provided, or the non-None data model if one is provided
+                or `None` if none are provided. (See `logical_xor` table).
+        """
+        from synalinks.src import ops
+
+        return asyncio.get_event_loop().run_until_complete(
+            ops.Xor().call(other, self),
+        )
+
     def factorize(self):
         """Factorizes the data model.
 
