@@ -41,6 +41,7 @@ from synalinks.api import __version__
 from synalinks.api import backend
 from synalinks.api import callbacks
 from synalinks.api import chat_prompt_template
+from synalinks.api import clear_session
 from synalinks.api import config
 from synalinks.api import datasets
 from synalinks.api import default_prompt_template

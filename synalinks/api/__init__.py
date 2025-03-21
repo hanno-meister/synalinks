@@ -22,6 +22,7 @@ from synalinks.api import tree
 from synalinks.api import utils
 from synalinks.src.backend import DataModel
 from synalinks.src.backend import name_scope
+from synalinks.src.backend.common.global_state import clear_session
 from synalinks.src.backend.common.json_data_model import JsonDataModel
 from synalinks.src.backend.common.stateless_scope import StatelessScope
 from synalinks.src.backend.common.symbolic_data_model import SymbolicDataModel
