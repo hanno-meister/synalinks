@@ -490,6 +490,22 @@ class JsonInMaskTest(testing.TestCase):
 
         result = in_mask_json(json, mask=["foo"])
         self.assertEqual(result, expected)
+        
+    def test_mask_keep_all(self):
+        json = {
+            "foo": "test",
+            "foos": "test",
+            "bar": "test",
+        }
+
+        expected = {
+            "foo": "test",
+            "foos": "test",
+            "bar": "test",
+        }
+
+        result = in_mask_json(json, mask=["foos", "bar"])
+        self.assertEqual(result, expected)
 
     def test_mask_multiple_fields_with_same_base_name(self):
         json = {"foo": "test", "foo_1": "test", "bar": "test", "bar_1": "test"}
