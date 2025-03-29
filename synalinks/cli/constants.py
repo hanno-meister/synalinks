@@ -200,7 +200,7 @@ DOCKER_COMPOSE_TEMPLATE = """services:
 """
 
 VERSION_TEMPLATE = """
-# Unique source of truth for {{config.package_name}} version
+# Unique source of truth for the version number.
 __version__ = "0.1.0"
 """
 
