@@ -59,7 +59,7 @@ class Program(Trainer, Module):
         asyncio.run(main())
     ```
 
-    Note: Only dicts, lists, and tuples of input data_models are supported. Nested
+    Note: Only dicts, lists, and tuples of input data models are supported. Nested
     inputs are not supported (e.g. lists of list or dicts of dict).
 
     ## By subclassing the `Program` class
@@ -112,6 +112,9 @@ class Program(Trainer, Module):
     Once the program is created, you can config the program with rewards and metrics
     with `program.compile()`, train the program with `program.fit()`, or use the program
     to do prediction with `program.predict()` or `program()`.
+    
+    To understand the difference between `program.predict()` or `program()`, read the 
+    [FAQ](https://synalinks.github.io/synalinks/FAQ/#whats-the-difference-between-program-methods-predict-and-__call__).
 
     ## With the `Sequential` class
 
@@ -604,7 +607,7 @@ class Program(Trainer, Module):
                 f"received filepath={filepath}"
             )
         with open(filepath, "r") as f:
-            state_tree_config = f.read()
+            state_tree_config = json.loads(f.read())
         self.set_state_tree(state_tree_config)
 
     @classmethod

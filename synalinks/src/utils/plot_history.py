@@ -78,16 +78,16 @@ def plot_history(
     plt.savefig(to_file)
     plt.close()
     try:
-        from IPython import display
-
-        return display.Image(filename=to_file)
-    except ImportError:
-        pass
-    try:
         import marimo as mo
 
         if mo.running_in_notebook():
             return mo.image(src=to_file).center()
+    except ImportError:
+        pass
+    try:
+        from IPython import display
+
+        return display.Image(filename=to_file)
     except ImportError:
         pass
     return to_file

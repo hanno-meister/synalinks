@@ -30,6 +30,7 @@ from synalinks.src.backend.common.symbolic_scope import SymbolicScope
 from synalinks.src.backend.pydantic.base import ChatMessage
 from synalinks.src.backend.pydantic.base import ChatMessages
 from synalinks.src.backend.pydantic.base import ChatRole
+from synalinks.src.backend.pydantic.base import Document
 from synalinks.src.backend.pydantic.base import Edge
 from synalinks.src.backend.pydantic.base import Embedding
 from synalinks.src.backend.pydantic.base import Embeddings
@@ -42,6 +43,7 @@ from synalinks.src.backend.pydantic.base import KnowledgeGraph
 from synalinks.src.backend.pydantic.base import KnowledgeGraphs
 from synalinks.src.backend.pydantic.base import is_chat_message
 from synalinks.src.backend.pydantic.base import is_chat_messages
+from synalinks.src.backend.pydantic.base import is_document
 from synalinks.src.backend.pydantic.base import is_edge
 from synalinks.src.backend.pydantic.base import is_embedding
 from synalinks.src.backend.pydantic.base import is_embeddings

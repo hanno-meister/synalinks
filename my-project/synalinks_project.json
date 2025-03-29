@@ -1,0 +1,9 @@
+{
+  "project_name": "my-project",
+  "project_description": "My awesome project",
+  "package_name": "my_project",
+  "synalinks_version": "0.2.011",
+  "model_provider": "ollama",
+  "language_model": "deepseek-r1",
+  "embedding_model": "all-minilm"
+}

@@ -126,7 +126,7 @@ def out_mask_json(json, mask=None, recursive=True):
         return json
 
     stack = collections.deque([json])
-    
+
     # Ensure that the mask keys are in singular form
     mask = [to_singular_without_numerical_suffix(k) for k in mask]
 
@@ -175,7 +175,7 @@ def in_mask_json(json, mask=None, recursive=True):
         return {}
 
     stack = collections.deque([json])
-    
+
     # Ensure that the mask keys are in singular form
     mask = [to_singular_without_numerical_suffix(k) for k in mask]
 

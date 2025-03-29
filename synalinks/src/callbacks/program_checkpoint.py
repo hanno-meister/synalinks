@@ -69,7 +69,7 @@ class ProgramCheckpoint(Callback):
 
     # Alternatively, one could checkpoint just the program variables as -
     checkpoint_filepath = '/tmp/synalinks/checkpoint.variables.json'
-    program_checkpoint_callback = keras.callbacks.ProgramCheckpoint(
+    program_checkpoint_callback = synalinks.callbacks.ProgramCheckpoint(
         filepath=checkpoint_filepath,
         save_variables_only=True,
         monitor='val_accuracy',

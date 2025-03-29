@@ -15,9 +15,12 @@ from synalinks.src.backend import ChatMessage
 from synalinks.src.backend import ChatMessages
 from synalinks.src.backend import ChatRole
 from synalinks.src.backend import DataModel
+from synalinks.src.backend import Prediction
+from synalinks.src.backend import Hints
 from synalinks.src.backend import SymbolicDataModel
 from synalinks.src.modules.module import Module
 from synalinks.src.saving import serialization_lib
+
 
 XML_TAGS_REGEX = re.compile(
     r"<("
@@ -29,27 +32,20 @@ XML_TAGS_REGEX = re.compile(
 
 @synalinks_export("synalinks.default_prompt_template")
 def default_prompt_template():
-    """
-    Returns the default prompt template
+    """Returns the default prompt template.
 
     Returns:
         (str): The default prompt template.
     """
     return """
 <system>
-{% if inputs_schema %}
-You will be given an input JSON object with the following schema. 
+{% if inputs_schema %}You will be given an input JSON object with the following schema. 
 Input JSON Schema:
 {{ inputs_schema }}
-{% else %}
-You will be given an input JSON object.
 {% endif %}
-{% if outputs_schema %}
-Your task is to answer with a JSON object and follow this output JSON schema.
+{% if outputs_schema %}Your task is to answer with a JSON object following this output JSON schema.
 Output JSON Schema:
 {{ outputs_schema }}
-{% else %}
-Your task is to answer with a JSON object.
 {% endif %}
 {% if examples %}
 Examples:
@@ -76,21 +72,19 @@ Output:
 
 @synalinks_export("synalinks.chat_prompt_template")
 def chat_prompt_template():
-    """
-    Returns the default chat prompt template
+    """Returns the default chat prompt template.
 
     Returns:
         (str): The default chat prompt template.
     """
     return """
-{% if hints %}
 <system>
+{% if hints %}
 Hints:
 {% for hint in hints %}
  - {{ hint }}
-{% endfor %}
+{% endfor %}{% endif %}
 </system>
-{% endif %}
 {% for message in inputs.messages %}
 {% if message.role == "assistant" %}
 <assistant>
@@ -106,24 +100,13 @@ Hints:
 
 
 class GeneratorState(DataModel):
-    """The Generator variables."""
+    """The generator variables."""
 
     prompt_template: str = None
-    examples: List[
-        Tuple[
-            Dict[str, Any],  # input JSON value
-            Dict[str, Any],  # output JSON value
-            Optional[float],  # reward
-        ]
-    ] = []
-    hints: List[str] = []
-    predictions: List[
-        Tuple[
-            Dict[str, Any],  # input JSON value
-            Dict[str, Any],  # output JSON value
-            Optional[float],  # reward (None if not yet backpropagated)
-        ],
-    ] = []
+    examples: List[Prediction] = []
+    predictions: List[Prediction] = []
+    hints: Hints
+    hints_predictions: List[Hints] = []
 
 
 @synalinks_export(["synalinks.modules.Generator", "synalinks.Generator"])
@@ -179,11 +162,12 @@ class Generator(Module):
     Args:
         schema (dict): The target JSON schema.
             If not provided use the `data_model` to infer it.
-        data_model (DataModel | SymbolicDataModel | JsonDataModel): The target data_model.
+        data_model (DataModel | SymbolicDataModel | JsonDataModel): The target data 
+            model for structured output.
         language_model (LanguageModel): The language model to use.
         prompt_template (str): The jinja2 prompt template.
         examples (list): The default list of examples, the examples
-            are a list of tuples containing input/output JSON pairs and reward.
+            are a list of tuples containing input/output JSON pairs.
         hints (list): The default hints being a list of string containing
             addtional hints for the language model.
         use_inputs_schema (bool): Optional. Whether or not use the inputs schema in
@@ -228,11 +212,22 @@ class Generator(Module):
             prompt_template = default_prompt_template()
         self.prompt_template = prompt_template
         if not examples:
-            examples = []
+            examples = []            
         self.examples = examples
         if not hints:
             hints = []
         self.hints = hints
+        
+        predictions = []
+        for example in examples:
+            prediction = Prediction(
+                inputs=example[0],
+                outputs=example[1],
+            )
+            predictions.append(prediction)
+            
+        hints_predictions = [Hints(hints=hints)]
+        
         self.return_inputs = return_inputs
         self.use_inputs_schema = use_inputs_schema
         self.use_outputs_schema = use_outputs_schema
@@ -242,8 +237,10 @@ class Generator(Module):
         self.state = self.add_variable(
             initializer=GeneratorState(
                 prompt_template=prompt_template,
-                examples=examples,
-                hints=hints,
+                examples=predictions,
+                predictions=predictions,
+                hints=hints_predictions[0],
+                hints_predictions=hints_predictions,
             ).get_json(),
             data_model=GeneratorState,
             name=self.name + "_state",
@@ -270,11 +267,10 @@ class Generator(Module):
         if result:
             if training:
                 self.state.get("predictions").append(
-                    (
-                        inputs.get_json(),
-                        result.get_json(),
-                        None,
-                    )
+                    Prediction(
+                        inputs=inputs.get_json(),
+                        outputs=result.get_json(),
+                    ).get_json()
                 )
             if self.return_inputs:
                 return await ops.concat(
@@ -351,7 +347,7 @@ class Generator(Module):
         }
         language_model_config = {
             "language_model": serialization_lib.serialize_synalinks_object(
-                self.language_model
+                self.language_model,
             )
         }
         return {**config, **language_model_config}
@@ -359,6 +355,6 @@ class Generator(Module):
     @classmethod
     def from_config(cls, config):
         language_model = serialization_lib.deserialize_synalinks_object(
-            config.pop("language_model")
+            config.pop("language_model"),
         )
         return cls(language_model=language_model, **config)

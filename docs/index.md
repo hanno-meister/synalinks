@@ -3,13 +3,13 @@
 ## Install
 
 ```shell
-pip install synalinks
+uv pip install synalinks
 ```
 
-or (recommended)
+Start your project with
 
 ```shell
-uv pip install synalinks
+uv run synalinks init
 ```
 
 ## Programming your application: 4 ways

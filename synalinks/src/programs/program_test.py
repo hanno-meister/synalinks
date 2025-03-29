@@ -6,6 +6,8 @@ from synalinks.src import optimizers
 from synalinks.src import rewards
 from synalinks.src import testing
 from synalinks.src.backend import DataModel
+from synalinks.src.backend import Hints
+from synalinks.src.backend import Prediction
 from synalinks.src.language_models import LanguageModel
 from synalinks.src.modules import Generator
 from synalinks.src.modules import Input
@@ -40,21 +42,34 @@ class ProgramTest(testing.TestCase):
 
         state_tree = program.get_state_tree()
 
+        hints_uuid = state_tree["trainable_variables"]["generator"]["generator_state"]["hints"]["uuid"]
+        hints_created_at = state_tree["trainable_variables"]["generator"]["generator_state"]["hints"]["created_at"]
+        
         expected_tree = {
             "trainable_variables": {
                 "generator": {
                     "generator_state": {
                         "prompt_template": default_prompt_template(),
                         "examples": [],
-                        "hints": [],
+                        "hints": Hints(
+                            uuid=hints_uuid,
+                            hints=[],
+                            created_at=hints_created_at,
+                        ).get_json(),
                         "predictions": [],
+                        "hints_predictions": [
+                            Hints(
+                                uuid=hints_uuid,
+                                hints=[],
+                                created_at=hints_created_at,
+                            ).get_json()
+                        ]
                     }
                 }
             },
             "non_trainable_variables": {},
             "metrics_variables": {},
         }
-        self.maxDiff = None
         self.assertEqual(state_tree, expected_tree)
 
     async def test_recover_state(self):
@@ -116,6 +131,9 @@ class ProgramTest(testing.TestCase):
         )
 
         state_tree = program.get_state_tree()
+        
+        hints_uuid = state_tree["trainable_variables"]["generator"]["generator_state"]["hints"]["uuid"]
+        hints_created_at = state_tree["trainable_variables"]["generator"]["generator_state"]["hints"]["created_at"]
 
         expected_tree = {
             "trainable_variables": {
@@ -123,8 +141,19 @@ class ProgramTest(testing.TestCase):
                     "generator_state": {
                         "prompt_template": default_prompt_template(),
                         "examples": [],
-                        "hints": [],
+                        "hints": Hints(
+                            uuid=hints_uuid,
+                            hints=[],
+                            created_at=hints_created_at,
+                        ).get_json(),
                         "predictions": [],
+                        "hints_predictions": [
+                            Hints(
+                                uuid=hints_uuid,
+                                hints=[],
+                                created_at=hints_created_at,
+                            ).get_json()
+                        ]
                     }
                 }
             },

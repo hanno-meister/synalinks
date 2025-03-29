@@ -1,0 +1,26 @@
+[project]
+name = "my_project"
+description = "My awesome project"
+readme = "README.md"
+requires-python = ">=3.9"
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: Unix",
+    "Operating System :: MacOS",
+]
+dependencies = [
+    "synalinks"
+]
+[tool.setuptools.dynamic]
+version = {attr = "my_project.src.version.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["my_project.src", "my_project.src.*"]

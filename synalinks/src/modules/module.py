@@ -715,13 +715,12 @@ class Module(BackendModule, Operation, SynalinksSaveable):
                     "to `__call__()` the module eagerly on some test input "
                     "first to see if it works. "
                     "2. If the `call()` method is correct, then you may need "
-                    "to implement the `def build(self, inputs)` method on "
-                    "your module. It should create all variables used by the "
-                    "module (e.g. by calling `module.build()` on all its "
-                    "children modules).\n"
+                    "to implement the `def build(self, inputs)` or "
+                    "`def compute_output_spec(inputs, training=False)` method on "
+                    "your module."
                     f"Exception encountered: ''{e}''"
                 )
-        await self.build(call_spec.first_arg)
+        self.built=True
 
 
 def is_json_data_model_or_symbolic_data_model(x, allow_none=False):

@@ -35,6 +35,13 @@ def to_snake_case(name):
     return name
 
 
+def to_pkg_name(name):
+    name = to_snake_case(name)
+    name = name.replace("-", "_")
+    name = name.replace(" ", "_")
+    return name
+
+
 @synalinks_export("synalinks.backend.get_uid")
 def get_uid(prefix=""):
     """Associates a string prefix with an integer counter.

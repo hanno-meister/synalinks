@@ -84,7 +84,7 @@ class LanguageModel(SynalinksSaveable):
     import os
 
     language_model = synalinks.LanguageModel(
-        model="ollama_chat/deepseek-r1",
+        model="ollama/deepseek-r1",
     )
     ```
 
@@ -102,6 +102,11 @@ class LanguageModel(SynalinksSaveable):
     ):
         if model is None:
             raise ValueError("You need to set the `model` argument for any LanguageModel")
+        model_provider = model.split("/")[0]
+        if model_provider == "ollama":
+            # Switch from `ollama` to `ollama_chat`
+            # because it have better performance due to the chat prompts
+            model = model.replace("ollama", "ollama_chat")
         self.model = model
         if self.model.startswith("ollama") and not api_base:
             self.api_base = "http://localhost:11434"

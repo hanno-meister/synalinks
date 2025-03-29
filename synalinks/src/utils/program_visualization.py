@@ -450,16 +450,16 @@ def plot_program(
     # Jupyter is available.
     if extension != "pdf":
         try:
-            from IPython import display
-
-            return display.Image(filename=to_file)
-        except ImportError:
-            pass
-        try:
             import marimo as mo
 
             if mo.running_in_notebook():
                 return mo.image(src=to_file).center()
+        except ImportError:
+            pass
+        try:
+            from IPython import display
+
+            return display.Image(filename=to_file)
         except ImportError:
             pass
     else:

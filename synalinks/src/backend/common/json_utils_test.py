@@ -490,7 +490,7 @@ class JsonInMaskTest(testing.TestCase):
 
         result = in_mask_json(json, mask=["foo"])
         self.assertEqual(result, expected)
-        
+
     def test_mask_keep_all(self):
         json = {
             "foo": "test",

@@ -173,6 +173,6 @@ class ChainOfThought(Module):
     @classmethod
     def from_config(cls, config):
         language_model = serialization_lib.deserialize_synalinks_object(
-            config.pop("language_model")
+            config.pop("language_model"),
         )
         return cls(language_model=language_model, **config)

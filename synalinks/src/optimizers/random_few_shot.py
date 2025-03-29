@@ -9,24 +9,13 @@ from typing import Tuple
 
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.backend import DataModel
+from synalinks.src.backend import Prediction
 from synalinks.src.optimizers.optimizer import Optimizer
 
 
 class FewShotOptimizedVariable(DataModel):
-    examples: List[
-        Tuple[
-            Dict[str, Any],
-            Dict[str, Any],
-            Optional[float],
-        ]
-    ] = []
-    predictions: List[
-        Tuple[
-            Dict[str, Any],
-            Dict[str, Any],
-            Optional[float],
-        ],
-    ] = []
+    examples: List[Prediction] = []
+    predictions: List[Prediction] = []
 
 
 @synalinks_export("synalinks.optimizers.RandomFewShot")
@@ -46,8 +35,8 @@ class RandomFewShot(Optimizer):
         program.compile(
             reward=synalinks.rewards.ExactMatch(),
             optimizer=synalinks.optimizers.RandomFewShot(
-                k=3,
-                k_best=10,
+                k=3, # The number of examples to provide to the prompt
+                k_best=10, # The number of best examples to select from
             ),
         )
 
@@ -84,12 +73,16 @@ class RandomFewShot(Optimizer):
         """Perform a backprop/optimization on a single variable."""
         # Reward backpropagation
         predictions = trainable_variable.get("predictions")
-        predictions = backpropagate_reward_to_predictions(predictions, reward)
-        trainable_variable.update({"predictions": predictions})
+        backpropagated_predictions = []
+        for p in predictions:
+            if p["reward"] is None:
+                p["reward"] = reward
+            backpropagated_predictions.append(p)
+        trainable_variable.update({"predictions": backpropagated_predictions})
         # Get the k best predictions (sorted by reward)
         sorted_predictions = sorted(
-            predictions,
-            key=lambda x: x[2] if x[2] is not None else float("-inf"),
+            backpropagated_predictions,
+            key=lambda x: x["reward"] if x["reward"] is not None else float("-inf"),
             reverse=True,
         )
         top_k_predictions = sorted_predictions[: self.k_best]
@@ -110,14 +103,3 @@ class RandomFewShot(Optimizer):
             "name": self.name,
             "description": self.description,
         }
-
-
-def backpropagate_reward_to_predictions(predictions, reward):
-    assigned_prediction = []
-    for p in predictions:
-        if p[2] is None:
-            p = list(p)
-            p[2] = reward
-            p = tuple(p)
-        assigned_prediction.append(p)
-    return assigned_prediction

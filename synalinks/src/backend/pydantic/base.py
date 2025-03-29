@@ -17,6 +17,7 @@ from enum import Enum
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import Optional
 
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.backend.common.json_schema_utils import contains_schema
@@ -240,7 +241,6 @@ class Reward(DataModel):
 class Stamp(DataModel):
     """A stamped data model"""
 
-    updated_at: datetime = datetime.now()
     created_at: datetime = datetime.now()
 
 
@@ -306,6 +306,109 @@ def is_entities(x):
         (bool): True if the condition is met
     """
     if contains_schema(x.get_schema(), Entities.get_schema()):
+        return True
+    return False
+
+
+@synalinks_export(
+    [
+        "synalinks.backend.Document",
+        "synalinks.Document",
+    ]
+)
+class Document(Entity):
+    """A document"""
+
+    label: str = "Document"
+    text: str
+
+
+@synalinks_export(
+    [
+        "synalinks.backend.is_document",
+        "synalinks.is_document",
+    ]
+)
+def is_document(x):
+    """Checks if the given data model is a document
+
+    Args:
+        x (DataModel | JsonDataModel | SymbolicDataModel | Variable):
+            The data model to check.
+
+    Returns:
+        (bool): True if the condition is met
+    """
+    if contains_schema(x.get_schema(), Document.get_schema()):
+        return True
+    return False
+
+
+@synalinks_export(
+    [
+        "synalinks.backend.Prediction",
+        "synalinks.Prediction",
+    ]
+)
+class Prediction(Entity, GenericIO):
+    """The generator's prediction"""
+    
+    label: str = "Prediction"
+    reward: Optional[float] = None # None if not yet backpropagated
+
+
+@synalinks_export(
+    [
+        "synalinks.backend.is_prediction",
+        "synalinks.is_prediction",
+    ]
+)
+def is_prediction(x):
+    """Checks if the given data model is a prediction
+
+    Args:
+        x (DataModel | JsonDataModel | SymbolicDataModel | Variable):
+            The data model to check.
+
+    Returns:
+        (bool): True if the condition is met
+    """
+    if contains_schema(x.get_schema(), Prediction.get_schema()):
+        return True
+    return False
+
+
+@synalinks_export(
+    [
+        "synalinks.backend.Hints",
+        "synalinks.Hints",
+    ]
+)
+class Hints(Entity):
+    """The generator's hints"""
+    
+    label: str = "Hints"
+    hints: List[str]
+    reward: Optional[float] = None # None if not yet backpropagated
+
+
+@synalinks_export(
+    [
+        "synalinks.backend.is_hints",
+        "synalinks.is_hints",
+    ]
+)
+def is_hints(x):
+    """Checks if the given data model is a hints
+
+    Args:
+        x (DataModel | JsonDataModel | SymbolicDataModel | Variable):
+            The data model to check.
+
+    Returns:
+        (bool): True if the condition is met
+    """
+    if contains_schema(x.get_schema(), Hints.get_schema()):
         return True
     return False
 

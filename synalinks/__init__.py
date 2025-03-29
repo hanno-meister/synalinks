@@ -9,6 +9,7 @@ from synalinks.api import ChatRole
 from synalinks.api import Concat
 from synalinks.api import DataModel
 from synalinks.api import Decision
+from synalinks.api import Document
 from synalinks.api import Edge
 from synalinks.api import Embedding
 from synalinks.api import EmbeddingModel
@@ -49,6 +50,7 @@ from synalinks.api import embedding_models
 from synalinks.api import initializers
 from synalinks.api import is_chat_message
 from synalinks.api import is_chat_messages
+from synalinks.api import is_document
 from synalinks.api import is_edge
 from synalinks.api import is_embedding
 from synalinks.api import is_embeddings
@@ -70,6 +72,7 @@ from synalinks.api import utils
 from synalinks.api import version
 
 # END DO NOT EDIT.
+from synalinks.cli.magic_cli import magic_cli
 
 import os  # isort: skip
 
@@ -88,11 +91,11 @@ def __dir__():
     return list(keys)
 
 
-# Don't import `.src` or `.api` during `from synalinks import *`.
+# Don't import `.src`, `.api` or `.cli` during `from synalinks import *`.
 __all__ = [
     name
     for name in globals().keys()
-    if not (name.startswith("_") or name in ("src", "api"))
+    if not (name.startswith("_") or name in ("src", "api", "cli"))
 ]
 
 if backend.backend() == "pydantic":
