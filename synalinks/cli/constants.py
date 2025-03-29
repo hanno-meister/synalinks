@@ -114,6 +114,7 @@ wheels/
 
 MAIN_TEMPLATE = """import os
 import synalinks
+import psutil
 from dotenv import load_dotenv
 from fastapi import FastAPI
 # Uncomment for streaming apps
@@ -161,9 +162,22 @@ if os.path.exists(program_variables_filepath):
 # Setup FastAPI
 app = FastAPI()
 
-@app.get("/v1/{{config.package_name}}/health")
+@app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+
+@app.get("/system_check")
+def system_check():
+    cpu_usage = psutil.cpu_percent(interval=1)
+    memory_info = psutil.virtual_memory()
+    disk_usage = psutil.disk_usage("/")
+    return {
+        "cpu_usage": cpu_usage,
+        "memory_usage": memory_info.percent,
+        "disk_usage": disk_usage.percent,
+    }
+
 
 @app.post("/v1/{{config.package_name}}")
 async def {{config.package_name}}(inputs: Query):
@@ -219,6 +233,7 @@ MODULES_INIT_TEMPLATE = \
 """
 
 REQUIREMENTS_TEMPLATE = """fastapi[standard]
+psutil
 synalinks
 """
 
@@ -277,6 +292,9 @@ class AnswerWithChainOfThought(synalinks.Program):
         super().__init__(
             inputs=inputs,
             outputs=outputs,
+            name=self.name,
+            description=self.description,
+            trainable=self.trainable,
         )
 """
 
