@@ -67,9 +67,8 @@ def base_setup_config() -> Dict[str, Any]:
     if answers:
         for key, answer in answers.items():
             if answer:
-                if key == "project_type":
-                    config[key] = answer.split()[0]
-                elif key == "project_name":
+                if key == "project_name":
+                    config[key] = answer
                     config["package_name"] = to_pkg_name(answer)
                 else:
                     config[key] = answer

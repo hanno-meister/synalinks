@@ -36,9 +36,9 @@ def to_snake_case(name):
 
 
 def to_pkg_name(name):
-    name = to_snake_case(name)
     name = name.replace("-", "_")
     name = name.replace(" ", "_")
+    name = to_snake_case(name)
     return name
 
 
