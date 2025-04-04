@@ -542,7 +542,8 @@ class Program(Trainer, Module):
                     self.non_trainable_variables, path_value_dict
                 )
             elif k == "optimizer_variables":
-                self._assign_variable_values(self.optimizer.variables, path_value_dict)
+                if self.optimizer:
+                    self._assign_variable_values(self.optimizer.variables, path_value_dict)
             elif k == "metrics_variables":
                 self._assign_variable_values(self.metrics_variables, path_value_dict)
             else:
