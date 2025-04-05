@@ -22,7 +22,7 @@ class Xor(Module):
 
     | `x1`   | `x2`   | Logical Xor (`^`)|
     | ------ | ------ | ---------------- |
-    | `x1`   | `x2`   | None             |
+    | `x1`   | `x2`   | `None`           |
     | `x1`   | `None` | `x1`             |
     | `None` | `x2`   | `x2`             |
     | `None` | `None` | `None`           |
