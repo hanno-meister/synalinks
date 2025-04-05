@@ -46,6 +46,7 @@ if __name__ == "__main__":
 ### Core Modules
 
 - [Input module](Core Modules/Input module.md)
+- [Identity module](Identity module.md)
 - [Generator module](Core Modules/Generator module.md)
 - [Decision module](Core Modules/Decision module.md)
 - [Action module](Core Modules/Action module.md)
@@ -58,6 +59,7 @@ if __name__ == "__main__":
 - [Concat module](Merging Modules/Concat module.md)
 - [And module](Merging Modules/And module.md)
 - [Or module](Merging Modules/Or module.md)
+- [Xor module](Merging Modules/Xor module.md)
 
 ---
 

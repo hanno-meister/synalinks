@@ -28,7 +28,7 @@ class Reward(SynalinksSaveable):
     def __init__(
         self,
         name=None,
-        reduction="sum_over_batch_size",
+        reduction="mean",
         in_mask=None,
         out_mask=None,
     ):
@@ -88,7 +88,6 @@ class Reward(SynalinksSaveable):
 
 def standardize_reduction(reduction):
     allowed = {
-        "sum_over_batch_size",
         "sum",
         None,
         "none",
@@ -124,11 +123,11 @@ def squeeze_or_expand_to_same_rank(x1, x2, expand_rank_1=True):
     return x1, x2
 
 
-def reduce_values(values, reduction="sum_over_batch_size"):
+def reduce_values(values, reduction="mean"):
     if reduction is None or reduction == "none" or not hasattr(values, "__len__"):
-        return values
+        return float(values)
     reward = np.sum(values)
-    if reduction in ("sum_over_batch_size", "mean"):
+    if reduction ==  "mean":
         divisor = np.prod(np.convert_to_tensor(np.shape(values)))
         reward = np.divide_no_nan(reward, divisor)
     return float(reward)

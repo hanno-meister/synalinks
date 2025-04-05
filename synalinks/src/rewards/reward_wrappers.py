@@ -40,7 +40,7 @@ class RewardFunctionWrapper(Reward):
     def __init__(
         self,
         fn,
-        reduction="sum_over_batch_size",
+        reduction="mean",
         name=None,
         in_mask=None,
         out_mask=None,
@@ -109,7 +109,7 @@ class ProgramAsJudge(Reward):
     def __init__(
         self,
         program,
-        reduction="sum_over_batch_size",
+        reduction="mean",
         name=None,
         in_mask=None,
         out_mask=None,

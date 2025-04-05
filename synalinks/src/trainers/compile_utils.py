@@ -316,7 +316,7 @@ class CompileReward(rewards_module.Reward):
         self,
         reward,
         reward_weights=None,
-        reduction="sum_over_batch_size",
+        reduction="mean",
         output_names=None,
     ):
         if reward_weights and not isinstance(reward_weights, (list, tuple, dict, float)):

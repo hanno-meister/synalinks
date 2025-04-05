@@ -57,6 +57,7 @@ nav:
       - Core Modules:
         - Synalinks API/Modules API/Core Modules/index.md
         - Synalinks API/Modules API/Core Modules/Input module.md
+        - Synalinks API/Modules API/Core Modules/Identity module.md
         - Synalinks API/Modules API/Core Modules/Generator module.md
         - Synalinks API/Modules API/Core Modules/Decision module.md
         - Synalinks API/Modules API/Core Modules/Action module.md
@@ -66,6 +67,7 @@ nav:
         - Synalinks API/Modules API/Merging Modules/Concat module.md
         - Synalinks API/Modules API/Merging Modules/And module.md
         - Synalinks API/Modules API/Merging Modules/Or module.md
+        - Synalinks API/Modules API/Merging Modules/Xor module.md
       - Test Time Compute Modules:
         - Synalinks API/Modules API/Test Time Compute Modules/index.md
         - Synalinks API/Modules API/Test Time Compute Modules/ChainOfThought module.md

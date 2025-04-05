@@ -410,6 +410,18 @@ class SymbolicDataModel:
             "is correctly implemented, if so then you likely need to implement "
             " `compute_output_spec()` in your subclassed module."
         )
+        
+    def clone(self, name=None):
+        """Clone a symbolic data model and give it a different name.
+        """
+        import copy
+        
+        clone = copy.deepcopy(self)
+        if name:
+            clone.name = name
+        else:
+            clone.name = auto_name(self.name+"_clone")
+        return clone
 
 
 def any_symbolic_data_models(args=None, kwargs=None):

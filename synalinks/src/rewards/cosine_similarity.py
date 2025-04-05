@@ -47,7 +47,7 @@ async def cosine_similarity(y_true, y_pred, embedding_model=None, axis=-1):
         y_pred = np.normalize(y_pred, axis=axis)
         y_true = np.normalize(y_true, axis=axis)
         reward = (np.sum(y_true * y_pred, axis=axis) + 1) / 2
-    return float(reward)
+    return reward
 
 
 @synalinks_export("synalinks.rewards.CosineSimilarity")

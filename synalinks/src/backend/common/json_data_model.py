@@ -398,6 +398,19 @@ class JsonDataModel:
             kv_dict (dict): The key/json dict to update.
         """
         self._json.update(kv_dict)
+        
+    def clone(self, name=None):
+        """Clone a data model and give it a different name.
+        """
+        import copy
+        
+        clone = copy.deepcopy(self)
+        if name:
+            clone.name = name
+        else:
+            clone.name = auto_name(self.name+"_clone")
+        return clone
+        
 
     def __repr__(self):
         return f"<JsonDataModel schema={self._schema}, json={self._json}>"
