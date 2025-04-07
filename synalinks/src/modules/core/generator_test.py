@@ -31,7 +31,7 @@ class GeneratorModuleTest(testing.TestCase):
         )
         self.assertTrue(len(msgs) == 1)
         
-    def test_format_message(self):
+    def test_format_message_with_instructions(self):
         class Query(DataModel):
             query: str
 
@@ -45,6 +45,60 @@ class GeneratorModuleTest(testing.TestCase):
             data_model=AnswerWithRationale,
             language_model=language_model,
             instructions=["You are an helpfull assistant"],
+        ).format_messages(
+            Query(query="What is the french city of aerospace and robotics?")
+        )
+        self.assertTrue(len(msgs) == 2)
+        
+    def test_format_message_with_examples(self):
+        class Query(DataModel):
+            query: str
+
+        class AnswerWithRationale(DataModel):
+            rationale: str
+            answer: str
+
+        language_model = LanguageModel(model="ollama_chat/deepseek-r1")
+
+        msgs = Generator(
+            data_model=AnswerWithRationale,
+            language_model=language_model,
+            examples=\
+                [
+                    (
+                        {"query": "What is the capital of France?"},
+                        {"rationale": "The capital of France is well known", "answer": "Paris"},
+                    )
+                ],
+        ).format_messages(
+            Query(query="What is the french city of aerospace and robotics?")
+        )
+        self.assertTrue(len(msgs) == 2)
+        
+    def test_format_message_with_examples_and_instructions(self):
+        class Query(DataModel):
+            query: str
+
+        class AnswerWithRationale(DataModel):
+            rationale: str
+            answer: str
+
+        language_model = LanguageModel(model="ollama_chat/deepseek-r1")
+
+        msgs = Generator(
+            data_model=AnswerWithRationale,
+            language_model=language_model,
+            examples=\
+            [
+                (
+                    {"query": "What is the capital of France?"},
+                    {"rationale": "The capital of France is well known", "answer": "Paris"},
+                )
+            ],
+            instructions=\
+            [
+                "You are an helpfull assistant",
+            ],
         ).format_messages(
             Query(query="What is the french city of aerospace and robotics?")
         )
