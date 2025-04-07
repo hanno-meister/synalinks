@@ -8,7 +8,7 @@ from synalinks.src.backend.pydantic.base import Entities
 from synalinks.src.backend.pydantic.base import Entity
 from synalinks.src.backend.pydantic.base import Document
 from synalinks.src.backend.pydantic.base import Prediction
-from synalinks.src.backend.pydantic.base import Hints
+from synalinks.src.backend.pydantic.base import Instructions
 from synalinks.src.backend.pydantic.base import KnowledgeGraph
 from synalinks.src.backend.pydantic.base import KnowledgeGraphs
 from synalinks.src.backend.pydantic.base import Label
@@ -24,7 +24,7 @@ from synalinks.src.backend.pydantic.base import is_embeddings
 from synalinks.src.backend.pydantic.base import is_entities
 from synalinks.src.backend.pydantic.base import is_entity
 from synalinks.src.backend.pydantic.base import is_document
-from synalinks.src.backend.pydantic.base import is_hints
+from synalinks.src.backend.pydantic.base import is_instructions
 from synalinks.src.backend.pydantic.base import is_prediction
 from synalinks.src.backend.pydantic.base import is_knowledge_graph
 from synalinks.src.backend.pydantic.base import is_knowledge_graphs

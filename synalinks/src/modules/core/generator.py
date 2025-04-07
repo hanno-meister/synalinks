@@ -16,7 +16,7 @@ from synalinks.src.backend import ChatMessages
 from synalinks.src.backend import ChatRole
 from synalinks.src.backend import DataModel
 from synalinks.src.backend import Prediction
-from synalinks.src.backend import Hints
+from synalinks.src.backend import Instructions
 from synalinks.src.backend import SymbolicDataModel
 from synalinks.src.modules.module import Module
 from synalinks.src.saving import serialization_lib
@@ -56,10 +56,10 @@ Output:
 {{ example[1] }}
 {% endfor %}
 {% endif %}
-{% if hints %}
-Hints:
-{% for hint in hints %}
- - {{ hint }}
+{% if instructions %}
+Instructions:
+{% for instruction in instructions %}
+ - {{ instruction }}
 {% endfor %}
 {% endif %}
 </system>
@@ -79,10 +79,10 @@ def chat_prompt_template():
     """
     return """
 <system>
-{% if hints %}
-Hints:
-{% for hint in hints %}
- - {{ hint }}
+{% if instructions %}
+Instructions:
+{% for instruction in instructions %}
+ - {{ instruction }}
 {% endfor %}{% endif %}
 </system>
 {% for message in inputs.messages %}
@@ -105,8 +105,8 @@ class GeneratorState(DataModel):
     prompt_template: str = None
     examples: List[Prediction] = []
     predictions: List[Prediction] = []
-    hints: Hints
-    hints_predictions: List[Hints] = []
+    instructions: Instructions
+    instructions_predictions: List[Instructions] = []
 
 
 @synalinks_export(["synalinks.modules.Generator", "synalinks.Generator"])
@@ -168,8 +168,8 @@ class Generator(Module):
         prompt_template (str): The jinja2 prompt template.
         examples (list): The default list of examples, the examples
             are a list of tuples containing input/output JSON pairs.
-        hints (list): The default hints being a list of string containing
-            addtional hints for the language model.
+        instructions (list): The default instructions being a list of string containing
+            addtional instructions for the language model.
         use_inputs_schema (bool): Optional. Whether or not use the inputs schema in
             the prompt (Default to False).
         use_outputs_schema (bool): Optional. Whether or not use the outputs schema in
@@ -190,7 +190,7 @@ class Generator(Module):
         language_model=None,
         prompt_template=None,
         examples=None,
-        hints=None,
+        instructions=None,
         use_inputs_schema=False,
         use_outputs_schema=False,
         return_inputs=False,
@@ -214,9 +214,9 @@ class Generator(Module):
         if not examples:
             examples = []            
         self.examples = examples
-        if not hints:
-            hints = []
-        self.hints = hints
+        if not instructions:
+            instructions = []
+        self.instructions = instructions
         
         predictions = []
         for example in examples:
@@ -226,7 +226,7 @@ class Generator(Module):
             )
             predictions.append(prediction)
             
-        hints_predictions = [Hints(hints=hints)]
+        instructions_predictions = [Instructions(instructions=instructions)]
         
         self.return_inputs = return_inputs
         self.use_inputs_schema = use_inputs_schema
@@ -239,8 +239,8 @@ class Generator(Module):
                 prompt_template=prompt_template,
                 examples=predictions,
                 predictions=predictions,
-                hints=hints_predictions[0],
-                hints_predictions=hints_predictions,
+                instructions=instructions_predictions[0],
+                instructions_predictions=instructions_predictions,
             ).get_json(),
             data_model=GeneratorState,
             name=self.name + "_state",
@@ -319,8 +319,8 @@ class Generator(Module):
         rendered_prompt = template.render(
             inputs_schema=inputs.get_schema() if self.use_inputs_schema else None,
             outputs_schema=self.schema if self.use_outputs_schema else None,
-            examples=self.state.get("examples"),
-            hints=self.state.get("hints"),
+            examples=[(pred.get("inputs"), pred.get("outputs")) for pred in self.state.get("examples")],
+            instructions=self.state.get("instructions").get("instructions"),
             inputs=inputs.get_json(),
         )
         matches = XML_TAGS_REGEX.findall(rendered_prompt)
@@ -337,7 +337,7 @@ class Generator(Module):
             "schema": self.schema,
             "prompt_template": self.prompt_template,
             "examples": self.examples,
-            "hints": self.hints,
+            "instructions": self.instructions,
             "use_inputs_schema": self.use_inputs_schema,
             "use_outputs_schema": self.use_outputs_schema,
             "return_inputs": self.return_inputs,

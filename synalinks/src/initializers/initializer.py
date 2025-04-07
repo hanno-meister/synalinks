@@ -83,10 +83,10 @@ class Initializer(SynalinksSaveable):
         # Note that the data_models used in the initializer **must**
         # have a default value for each field
 
-        class Hints(synalinks.DataModel)
-            hints: List[str] = []
+        class Instructions(synalinks.DataModel)
+            instructions: List[str] = []
 
-        initializer = synalinks.initializers.Empty(data_model=Hints)
+        initializer = synalinks.initializers.Empty(data_model=Instructions)
         config = initializer.get_config()
         initializer = Empty.from_config(config)
         ```

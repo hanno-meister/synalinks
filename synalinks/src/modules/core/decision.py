@@ -70,7 +70,7 @@ class Decision(Module):
             to use (see `Generator`).
         examples (list): The default examples to use in the prompt
             (see `Generator`).
-        hints (list): The default hints to use (see `Generator`).
+        instructions (list): The default instructions to use (see `Generator`).
         use_inputs_schema (bool): Optional. Whether or not use the inputs schema in
             the prompt (Default to False) (see `Generator`).
         use_outputs_schema (bool): Optional. Whether or not use the outputs schema in
@@ -87,7 +87,7 @@ class Decision(Module):
         language_model=None,
         prompt_template=None,
         examples=None,
-        hints=None,
+        instructions=None,
         use_inputs_schema=False,
         use_outputs_schema=False,
         name=None,
@@ -112,7 +112,7 @@ class Decision(Module):
         self.language_model = language_model
         self.prompt_template = prompt_template
         self.examples = examples
-        self.hints = hints
+        self.instructions = instructions
         self.use_inputs_schema = use_inputs_schema
         self.use_outputs_schema = use_outputs_schema
         self.decision = Generator(
@@ -120,7 +120,7 @@ class Decision(Module):
             language_model=language_model,
             prompt_template=prompt_template,
             examples=examples,
-            hints=hints,
+            instructions=instructions,
             use_inputs_schema=use_inputs_schema,
             use_outputs_schema=use_outputs_schema,
             name=self.name + "_generator",
@@ -143,7 +143,7 @@ class Decision(Module):
             "labels": self.labels,
             "prompt_template": self.prompt_template,
             "examples": self.examples,
-            "hints": self.hints,
+            "instructions": self.instructions,
             "use_inputs_schema": self.use_inputs_schema,
             "use_outputs_schema": self.use_outputs_schema,
             "name": self.name,

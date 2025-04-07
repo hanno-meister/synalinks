@@ -77,7 +77,7 @@ class Branch(Module):
             to use (see `Generator`).
         examples (list): The default examples to use in the prompt
             (see `Decision`).
-        hints (list): The default hints to use (see `Decision`).
+        instructions (list): The default instructions to use (see `Decision`).
         use_inputs_schema (bool): Optional. Whether or not use the inputs
             schema in the decision prompt (Default to False) (see `Decision`).
         use_outputs_schema (bool): Optional. Whether or not use the outputs
@@ -97,7 +97,7 @@ class Branch(Module):
         language_model=None,
         prompt_template=None,
         examples=None,
-        hints=None,
+        instructions=None,
         use_inputs_schema=False,
         use_outputs_schema=False,
         decision_type=Decision,
@@ -124,7 +124,7 @@ class Branch(Module):
         self.return_decision = return_decision
         self.prompt_template = prompt_template
         self.examples = examples
-        self.hints = hints
+        self.instructions = instructions
         self.use_inputs_schema = use_inputs_schema
         self.use_outputs_schema = use_outputs_schema
         self.decision = decision_type(
@@ -133,7 +133,7 @@ class Branch(Module):
             language_model=language_model,
             prompt_template=prompt_template,
             examples=examples,
-            hints=hints,
+            instructions=instructions,
             use_inputs_schema=use_inputs_schema,
             use_outputs_schema=use_outputs_schema,
             name=self.name + "_decision",
@@ -262,7 +262,7 @@ class Branch(Module):
             "return_decision": self.return_decision,
             "prompt_template": self.prompt_template,
             "examples": self.examples,
-            "hints": self.hints,
+            "instructions": self.instructions,
             "use_inputs_schema": self.use_inputs_schema,
             "use_outputs_schema": self.use_outputs_schema,
             "name": self.name,

@@ -33,18 +33,18 @@ class Variable:
     from typing import List
     import synalinks
 
-    class Hints(synalinks.DataModel):
-        hints: List[str] = []
+    class Instructions(synalinks.DataModel):
+        instructions: List[str] = []
 
     initial_data = {
-        "hints": [
+        "instructions": [
             "For any problem involving division, always round the quotient to "
             "the nearest even number, regardless of the remainder."
         ],
     }
     variable_from_dict = synalinks.Variable(
         initializer=initial_data,
-        data_model=Hints,
+        data_model=Instructions,
     )
     ```
 
@@ -54,13 +54,13 @@ class Variable:
     from typing import List
     import synalinks
 
-    class Hints(synalinks.DataModel):
-        hints: List[str] = []
+    class Instructions(synalinks.DataModel):
+        instructions: List[str] = []
 
     from synalinks.initializers import Empty
 
     variable_from_initializer = synalinks.Variable(
-        initializer=Empty(data_model=Hints)
+        initializer=Empty(data_model=Instructions)
     )
     ```
 
@@ -68,7 +68,7 @@ class Variable:
 
     ```python
     new_json = {
-        "hints": [
+        "instructions": [
             "When performing division, always check if the division results "
             "in a whole number. If not, express the result as a fraction or "
             "a decimal, depending on the context of the problem."
@@ -83,13 +83,13 @@ class Variable:
     from typing import List
     import synalinks
 
-    class Hints(synalinks.DataModel):
-        hints: List[str] = []
+    class Instructions(synalinks.DataModel):
+        instructions: List[str] = []
 
     from synalinks.initializers import Empty
 
     non_trainable_variable = synalinks.Variable(
-        initializer=Empty(data_model=Hints), trainable=False
+        initializer=Empty(data_model=Instructions), trainable=False
     )
     ```
 

@@ -9,21 +9,21 @@ from synalinks.src.initializers.empty_initializer import Empty
 
 class EmptyInitializerTest(testing.TestCase):
     def test_empty_initializer(self):
-        class Hints(DataModel):
-            hints: List[str] = []
+        class Instructions(DataModel):
+            instructions: List[str] = []
 
-        initializer = Empty(data_model=Hints)
+        initializer = Empty(data_model=Instructions)
         empty_data_model = initializer()
-        self.assertEqual(initializer.get_schema(), Hints.get_schema())
-        self.assertEqual(empty_data_model, Hints().get_json())
+        self.assertEqual(initializer.get_schema(), Instructions.get_schema())
+        self.assertEqual(empty_data_model, Instructions().get_json())
 
     def test_empty_initializer_from_config(self):
-        class Hints(DataModel):
-            hints: List[str] = []
+        class Instructions(DataModel):
+            instructions: List[str] = []
 
-        initializer = Empty(data_model=Hints)
+        initializer = Empty(data_model=Instructions)
         config = initializer.get_config()
         initializer = Empty.from_config(config)
         empty_data_model = initializer()
-        self.assertEqual(initializer.get_schema(), Hints.get_schema())
-        self.assertEqual(empty_data_model, Hints().get_json())
+        self.assertEqual(initializer.get_schema(), Instructions.get_schema())
+        self.assertEqual(empty_data_model, Instructions().get_json())

@@ -32,7 +32,7 @@ class LMAsJudgeProgram(Program):
             to use (see `Generator`).
         examples (list): The default examples to use in the prompt
             (see `Generator`).
-        hints (list): The default hints to use (see `Generator`).
+        instructions (list): The default instructions to use (see `Generator`).
         name (str): Optional. The name of the program.
         description (str): Optional. The description of the program.
         trainable (bool): Whether the program's variables should be trainable.
@@ -43,7 +43,7 @@ class LMAsJudgeProgram(Program):
         language_model=None,
         prompt_template=None,
         examples=None,
-        hints=None,
+        instructions=None,
         name=None,
         description=None,
         trainable=True,
@@ -58,13 +58,13 @@ class LMAsJudgeProgram(Program):
             language_model=language_model,
             prompt_template=prompt_template,
             examples=examples,
-            hints=hints,
+            instructions=instructions,
             name=self.name + "_generator",
         )
         self.language_model = language_model
         self.prompt_template = prompt_template
         self.examples = examples
-        self.hints = hints
+        self.instructions = instructions
 
     async def call(self, inputs):
         if not isinstance(inputs, (list, tuple)):
@@ -93,7 +93,7 @@ class LMAsJudgeProgram(Program):
         config = {
             "prompt_template": self.prompt_template,
             "examples": self.examples,
-            "hints": self.hints,
+            "instructions": self.instructions,
         }
         language_model_config = {
             "language_model": serialization_lib.serialize_synalinks_object(
@@ -128,7 +128,7 @@ class LMAsJudge(ProgramAsJudge):
             to use (see `Generator`).
         examples (list): The default examples to use in the prompt
             (see `Generator`).
-        hints (list): The default hints to use (see `Generator`).
+        instructions (list): The default instructions to use (see `Generator`).
         name (str): Optional. string name of the reward instance.
         in_mask (list): Optional. list of keys to keep to compute the reward.
         out_mask (list): Optional. list of keys to remove to compute the reward.
@@ -139,7 +139,7 @@ class LMAsJudge(ProgramAsJudge):
         language_model=None,
         prompt_template=None,
         examples=None,
-        hints=None,
+        instructions=None,
         name="lm_as_judge",
         in_mask=None,
         out_mask=None,
@@ -148,7 +148,7 @@ class LMAsJudge(ProgramAsJudge):
             language_model=language_model,
             prompt_template=prompt_template,
             examples=examples,
-            hints=hints,
+            instructions=instructions,
         )
         super().__init__(
             program=program,

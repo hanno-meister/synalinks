@@ -54,7 +54,7 @@ if backend() == "pydantic":
     from synalinks.src.backend.pydantic.base import Weight
     from synalinks.src.backend.pydantic.base import Document
     from synalinks.src.backend.pydantic.base import Prediction
-    from synalinks.src.backend.pydantic.base import Hints
+    from synalinks.src.backend.pydantic.base import Instructions
     from synalinks.src.backend.pydantic.base import is_chat_message
     from synalinks.src.backend.pydantic.base import is_chat_messages
     from synalinks.src.backend.pydantic.base import is_edge
@@ -63,7 +63,7 @@ if backend() == "pydantic":
     from synalinks.src.backend.pydantic.base import is_entities
     from synalinks.src.backend.pydantic.base import is_entity
     from synalinks.src.backend.pydantic.base import is_document
-    from synalinks.src.backend.pydantic.base import is_hints
+    from synalinks.src.backend.pydantic.base import is_instructions
     from synalinks.src.backend.pydantic.base import is_prediction
     from synalinks.src.backend.pydantic.base import is_knowledge_graph
     from synalinks.src.backend.pydantic.base import is_knowledge_graphs

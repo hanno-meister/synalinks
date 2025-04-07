@@ -380,26 +380,26 @@ def is_prediction(x):
 
 @synalinks_export(
     [
-        "synalinks.backend.Hints",
-        "synalinks.Hints",
+        "synalinks.backend.Instructions",
+        "synalinks.Instructions",
     ]
 )
-class Hints(Entity):
-    """The generator's hints"""
+class Instructions(Entity):
+    """The generator's instructions"""
     
-    label: str = "Hints"
-    hints: List[str]
+    label: str = "Instructions"
+    instructions: List[str]
     reward: Optional[float] = None # None if not yet backpropagated
 
 
 @synalinks_export(
     [
-        "synalinks.backend.is_hints",
-        "synalinks.is_hints",
+        "synalinks.backend.is_instructions",
+        "synalinks.is_instructions",
     ]
 )
-def is_hints(x):
-    """Checks if the given data model is a hints
+def is_instructions(x):
+    """Checks if the given data model is a instructions
 
     Args:
         x (DataModel | JsonDataModel | SymbolicDataModel | Variable):
@@ -408,7 +408,7 @@ def is_hints(x):
     Returns:
         (bool): True if the condition is met
     """
-    if contains_schema(x.get_schema(), Hints.get_schema()):
+    if contains_schema(x.get_schema(), Instructions.get_schema()):
         return True
     return False
 

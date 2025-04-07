@@ -14,8 +14,8 @@ def get_decision_question():
     return "Choose the next function to use based on its name."
 
 
-def get_hints():
-    """The default hints for decision-making"""
+def get_instructions():
+    """The default instructions for decision-making"""
     return [
         "Always reflect on your previous actions to know what to do.",
         "As soon as you know the answer, or the task is finished, choose `finish`.",
@@ -114,7 +114,7 @@ class ReACTAgent(Program):
         prompt_template (str): Optional. The jinja2 prompt template to use
             (See `Generator`).
         examples (list): A default list of examples for decision-making (See `Decision`).
-        hints (list): A default list of hints for decision-making (See `Decision`).
+        instructions (list): A default list of instructions for decision-making (See `Decision`).
         use_inputs_schema (bool): Optional. Whether or not use the inputs schema in
             the decision prompt (Default to False) (see `Decision`).
         use_outputs_schema (bool): Optional. Whether or not use the outputs schema in
@@ -140,7 +140,7 @@ class ReACTAgent(Program):
         action_language_model=None,
         prompt_template=None,
         examples=None,
-        hints=None,
+        instructions=None,
         use_inputs_schema=False,
         use_outputs_schema=False,
         return_inputs_with_trajectory=False,
@@ -173,9 +173,9 @@ class ReACTAgent(Program):
             examples = []
         self.examples = examples
 
-        if not hints:
-            hints = get_hints()
-        self.hints = hints
+        if not instructions:
+            instructions = get_instructions()
+        self.instructions = instructions
 
         self.use_inputs_schema = use_inputs_schema
         self.use_outputs_schema = use_outputs_schema
@@ -236,7 +236,7 @@ class ReACTAgent(Program):
                         language_model=self.decision_language_model,
                         prompt_template=self.prompt_template,
                         examples=self.examples,
-                        hints=self.hints,
+                        instructions=self.instructions,
                         use_inputs_schema=self.use_inputs_schema,
                         use_outputs_schema=self.use_outputs_schema,
                         return_decision=False,

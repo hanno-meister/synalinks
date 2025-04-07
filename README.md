@@ -42,7 +42,7 @@ Synalinks is designed for a diverse range of users, from professionals and AI re
 
 Developping a successful LM application in a profesional context, beyond stateless chatbots, is difficult and typically include:
 
-- **Building optimized prompts with examples/hints at each step**: Synalinks uses advanced In-Context Reinforcement Learning techniques to optimize each prompt.
+- **Building optimized prompts with examples/instructions at each step**: Synalinks uses advanced In-Context Reinforcement Learning techniques to optimize each prompt.
 - **Pipelines that change over time**: Easily edit your pipelines, re-run your training, and you're good to go.
 - **Ensuring the correctness of the LMs output**: Synalinks combines constrained structured output with In-Context RL to ensure both format and content correctness.
 - **Async Optimization**: Synalinks automatically optimizes your pipelines by detecting parallel processes.

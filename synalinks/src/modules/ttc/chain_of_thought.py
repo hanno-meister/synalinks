@@ -79,8 +79,8 @@ class ChainOfThought(Module):
         language_model (LanguageModel): The language model to use.
         prompt_template (str): The jinja2 prompt template (see `Generator`).
         examples (list): The default list of examples (see `Generator`).
-        hints (list): The default hints being a list of string containing
-            additional hints for the language model (see `Generator`).
+        instructions (list): The default instructions being a list of string containing
+            additional instructions for the language model (see `Generator`).
         use_inputs_schema (bool): Optional. Whether or not use the inputs schema in
             the prompt (Default to False) (see `Generator`).
         use_outputs_schema (bool): Optional. Whether or not use the outputs schema in
@@ -100,7 +100,7 @@ class ChainOfThought(Module):
         language_model=None,
         prompt_template=None,
         examples=None,
-        hints=None,
+        instructions=None,
         use_inputs_schema=False,
         use_outputs_schema=False,
         k=1,
@@ -121,7 +121,7 @@ class ChainOfThought(Module):
         self.language_model = language_model
         self.prompt_template = prompt_template
         self.examples = examples
-        self.hints = hints
+        self.instructions = instructions
         self.use_inputs_schema = use_inputs_schema
         self.use_outputs_schema = use_outputs_schema
         self.return_inputs = return_inputs
@@ -139,7 +139,7 @@ class ChainOfThought(Module):
             language_model=self.language_model,
             prompt_template=self.prompt_template,
             examples=self.examples,
-            hints=self.hints,
+            instructions=self.instructions,
             use_inputs_schema=self.use_inputs_schema,
             use_outputs_schema=self.use_outputs_schema,
             return_inputs=self.return_inputs,
@@ -154,7 +154,7 @@ class ChainOfThought(Module):
             "schema": self.schema,
             "prompt_template": self.prompt_template,
             "examples": self.examples,
-            "hints": self.hints,
+            "instructions": self.instructions,
             "use_inputs_schema": self.use_inputs_schema,
             "use_outputs_schema": self.use_outputs_schema,
             "return_inputs": self.return_inputs,

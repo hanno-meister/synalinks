@@ -41,7 +41,7 @@ Training a whole Language Model (LM) from scratch is out of the reach of most co
 
 LMs have the capability to leverage their prompt to mimick the examples given, but it means that one have to update the examples each time you change the pipelines as you experiment. Making it cumberstone, but even with that, their is no guaranty that the examples you gave yield to the best results.
 
-To select the best examples and hints to give to the LMs, it needs a complex system like Synalinks that automate the generation and selection.
+To select the best examples and instructions to give to the LMs, it needs a complex system like Synalinks that automate the generation and selection.
 
 ---
 

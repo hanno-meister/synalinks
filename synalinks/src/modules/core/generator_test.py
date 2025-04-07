@@ -29,6 +29,25 @@ class GeneratorModuleTest(testing.TestCase):
         ).format_messages(
             Query(query="What is the french city of aerospace and robotics?")
         )
+        self.assertTrue(len(msgs) == 1)
+        
+    def test_format_message(self):
+        class Query(DataModel):
+            query: str
+
+        class AnswerWithRationale(DataModel):
+            rationale: str
+            answer: str
+
+        language_model = LanguageModel(model="ollama_chat/deepseek-r1")
+
+        msgs = Generator(
+            data_model=AnswerWithRationale,
+            language_model=language_model,
+            instructions=["You are an helpfull assistant"],
+        ).format_messages(
+            Query(query="What is the french city of aerospace and robotics?")
+        )
         self.assertTrue(len(msgs) == 2)
 
     @patch("litellm.completion")
