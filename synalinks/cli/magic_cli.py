@@ -3,10 +3,8 @@ import click
 from synalinks.cli.banners import banner
 from synalinks.cli.utils.setup_utils import base_setup_config
 from synalinks.cli.utils.setup_utils import models_setup_config
-from synalinks.cli.utils.setup_utils import maybe_setup_project
 from synalinks.cli.utils.setup_utils import secrets_setup_config
 from synalinks.cli.utils.setup_utils import setup_project
-from synalinks.src.api_export import synalinks_export
 from synalinks.src.version import version as get_version
 
 

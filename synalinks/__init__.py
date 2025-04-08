@@ -21,8 +21,10 @@ from synalinks.api import Generator
 from synalinks.api import GenericInputs
 from synalinks.api import GenericIO
 from synalinks.api import GenericOutputs
+from synalinks.api import Identity
 from synalinks.api import Initializer
 from synalinks.api import Input
+from synalinks.api import Instructions
 from synalinks.api import JsonDataModel
 from synalinks.api import KnowledgeGraph
 from synalinks.api import KnowledgeGraphs
@@ -31,6 +33,7 @@ from synalinks.api import Metric
 from synalinks.api import Module
 from synalinks.api import Operation
 from synalinks.api import Or
+from synalinks.api import Prediction
 from synalinks.api import Program
 from synalinks.api import ReACTAgent
 from synalinks.api import Reward
@@ -38,6 +41,7 @@ from synalinks.api import Sequential
 from synalinks.api import StatelessScope
 from synalinks.api import SymbolicDataModel
 from synalinks.api import SymbolicScope
+from synalinks.api import Xor
 from synalinks.api import __version__
 from synalinks.api import backend
 from synalinks.api import callbacks
@@ -56,8 +60,10 @@ from synalinks.api import is_embedding
 from synalinks.api import is_embeddings
 from synalinks.api import is_entities
 from synalinks.api import is_entity
+from synalinks.api import is_instructions
 from synalinks.api import is_knowledge_graph
 from synalinks.api import is_knowledge_graphs
+from synalinks.api import is_prediction
 from synalinks.api import language_models
 from synalinks.api import metrics
 from synalinks.api import modules

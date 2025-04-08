@@ -24,12 +24,14 @@ class CosineSimilarityTest(testing.TestCase):
         cosine_similarity = CosineSimilarity(embedding_model=embedding_model)
         reward = await cosine_similarity(y_true, y_pred)
         self.assertEqual(reward, 1.0)
-        
+
     @patch("litellm.embedding")
     async def test_multiple_fields(self, mock_embedding):
         embedding_model = EmbeddingModel(model="ollama/all-minilm")
         expected_value = [0.0, 0.1, 0.2, 0.3, 0.4]
-        mock_embedding.return_value = {"data": [{"embedding": expected_value}, {"embedding": expected_value}]}
+        mock_embedding.return_value = {
+            "data": [{"embedding": expected_value}, {"embedding": expected_value}]
+        }
 
         class Answer(DataModel):
             thinking: str

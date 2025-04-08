@@ -114,7 +114,8 @@ class ReACTAgent(Program):
         prompt_template (str): Optional. The jinja2 prompt template to use
             (See `Generator`).
         examples (list): A default list of examples for decision-making (See `Decision`).
-        instructions (list): A default list of instructions for decision-making (See `Decision`).
+        instructions (list): A default list of instructions for decision-making
+            (See `Decision`).
         use_inputs_schema (bool): Optional. Whether or not use the inputs schema in
             the decision prompt (Default to False) (see `Decision`).
         use_outputs_schema (bool): Optional. Whether or not use the outputs schema in

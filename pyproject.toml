@@ -78,6 +78,7 @@ ignore = [
 "**/random.py" = ["F401"]  # imported but unused
 "examples/*" = ["I", "E"]
 "notebooks/*" = ["I", "E", "F"]
+"*/cli/*" = ["I", "E", "F"]
 
 [tool.ruff.lint.isort]
 force-single-line = true

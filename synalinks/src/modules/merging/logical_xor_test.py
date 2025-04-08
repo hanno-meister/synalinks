@@ -8,8 +8,7 @@ from synalinks.src.programs.program import Program
 
 
 class LogicalXorTest(testing.TestCase):
-    async def test_logical_xor_module_not_none(self):
-        
+    async def test_logical_xor_module_all_not_none(self):
         class Query(DataModel):
             query: str
 
@@ -32,9 +31,8 @@ class LogicalXorTest(testing.TestCase):
         )
 
         self.assertEqual(result, None)
-        
-    async def test_logical_xor_module_not_none(self):
-        
+
+    async def test_logical_xor_module_with_two_not_none(self):
         class Query(DataModel):
             query: str
 
@@ -59,7 +57,6 @@ class LogicalXorTest(testing.TestCase):
         self.assertEqual(result, None)
 
     async def test_logical_xor_module_none(self):
-        
         class Query(DataModel):
             query: str
 

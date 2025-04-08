@@ -127,7 +127,7 @@ def reduce_values(values, reduction="mean"):
     if reduction is None or reduction == "none" or not hasattr(values, "__len__"):
         return float(values)
     reward = np.sum(values)
-    if reduction ==  "mean":
+    if reduction == "mean":
         divisor = np.prod(np.convert_to_tensor(np.shape(values)))
         reward = np.divide_no_nan(reward, divisor)
     return float(reward)

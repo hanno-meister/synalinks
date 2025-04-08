@@ -14,6 +14,7 @@ SYNALINKS_BANNER = """
 ╚══════════════════════════════════════════════════════════════════════════╝
 """
 
+
 @synalinks_export("synalinks.banner")
 def banner():
     return SYNALINKS_BANNER

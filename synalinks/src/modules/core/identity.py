@@ -2,8 +2,8 @@
 
 from synalinks.src import tree
 from synalinks.src.api_export import synalinks_export
-from synalinks.src.backend import SymbolicDataModel
 from synalinks.src.backend import JsonDataModel
+from synalinks.src.backend import SymbolicDataModel
 from synalinks.src.modules.module import Module
 
 
@@ -13,22 +13,22 @@ class Identity(Module):
 
     This module should be used as a placeholder when no operation is to be
     performed. The module just returns its `inputs` argument as output.
-    
+
     This module can be really usefull during development process in order to
     implement the whole program architecture before the individual modules.
-    
+
     It avoid any data models naming issue that you could have by just
-    forwarding the inputs, that way you can implement the general 
+    forwarding the inputs, that way you can implement the general
     program architecture, validate it and implement the individual
     modules later.
-    
+
     Example:
-    
+
     ```python
     import synalinks
-    
+
     class MyAwesomeModule(synalinks.Program):
-    
+
         def __init__(
             name=None,
             description=None,
@@ -39,10 +39,10 @@ class Identity(Module):
                 description=description,
                 trainable=trainable,
             )
-        
+
         async def build(self, inputs):
             outputs = await synalinks.Identity()(inputs)
-            
+
             super().__init__(
                 inputs=inputs,
                 outputs=outputs,
@@ -51,7 +51,7 @@ class Identity(Module):
                 trainable=self.trainable,
             )
     ```
-    
+
     Args:
         **kwargs (keyword arguments): The default module's arguments
     """

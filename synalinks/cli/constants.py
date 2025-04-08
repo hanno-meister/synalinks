@@ -2,21 +2,22 @@
 
 import os
 
+
 def get_fake_data(filename):
     from synalinks.cli import datasets
-    
+
     folder_path = datasets.__file__[: -len("/__init__.py")]
     json_data = ""
     with open(os.path.join(folder_path, filename), "r") as f:
         json_data = f.read()
     return json_data
 
+
 PROJECT_CONFIG_FILENAME = "synalinks_project.json"
 
 TEMPLATE_CONFIG_FILENAME = "synalinks_template.json"
 
-README_TEMPLATE = \
-"""# {{config.project_name}}
+README_TEMPLATE = """# {{config.project_name}}
 ## {{config.project_description}}
 
 ![{{config.project_name}}]({{config.project_name}}.png)
@@ -67,8 +68,7 @@ Join our [Discord](https://discord.gg/82nt97uXcM) to never miss any update!
 Happy coding 😀!
 """
 
-PYPROJECT_TEMPLATE = \
-"""[project]
+PYPROJECT_TEMPLATE = """[project]
 name = "{{config.package_name}}"
 description = "{{config.project_description}}"
 readme = "README.md"
@@ -218,18 +218,15 @@ VERSION_TEMPLATE = """
 __version__ = "0.1.0"
 """
 
-INIT_TEMPLATE = \
-"""from {{config.package_name}}.src.version import __version__
+INIT_TEMPLATE = """from {{config.package_name}}.src.version import __version__
 from {{config.package_name}}.src.main import main
 """
 
-DATA_MODELS_INIT_TEMPLATE = \
-"""from {{config.package_name}}.src.data_models.query import Query
+DATA_MODELS_INIT_TEMPLATE = """from {{config.package_name}}.src.data_models.query import Query
 from {{config.package_name}}.src.data_models.answer import Answer
 """
 
-MODULES_INIT_TEMPLATE = \
-"""from {{config.package_name}}.src.modules.answer_with_chain_of_thought import AnswerWithChainOfThought
+MODULES_INIT_TEMPLATE = """from {{config.package_name}}.src.modules.answer_with_chain_of_thought import AnswerWithChainOfThought
 """
 
 REQUIREMENTS_TEMPLATE = """fastapi[standard]
@@ -237,8 +234,7 @@ psutil
 synalinks
 """
 
-QUERY_TEMPLATE = \
-"""import synalinks
+QUERY_TEMPLATE = """import synalinks
 
 class Query(synalinks.DataModel):
     query: str = synalinks.Field(
@@ -246,8 +242,7 @@ class Query(synalinks.DataModel):
     )
 """
 
-ANSWER_TEMPLATE = \
-"""import synalinks
+ANSWER_TEMPLATE = """import synalinks
 
 class Answer(synalinks.DataModel):
     answer: str = synalinks.Field(
@@ -255,8 +250,7 @@ class Answer(synalinks.DataModel):
     )
 """
 
-PROGRAM_TEMPLATE = \
-"""import synalinks
+PROGRAM_TEMPLATE = """import synalinks
 from {{config.package_name}}.src.data_models import Answer
 
 class AnswerWithChainOfThought(synalinks.Program):
@@ -298,8 +292,7 @@ class AnswerWithChainOfThought(synalinks.Program):
         )
 """
 
-TRAIN_TEMPLATE = \
-"""#!/usr/bin/python3
+TRAIN_TEMPLATE = """#!/usr/bin/python3
 import os
 import synalinks
 import asyncio

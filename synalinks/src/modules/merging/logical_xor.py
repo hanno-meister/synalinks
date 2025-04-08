@@ -1,6 +1,5 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
-from synalinks.src.backend import SymbolicDataModel
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.modules.module import Module
 
@@ -33,7 +32,7 @@ class Xor(Module):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        
+
     async def compute_output_spec(self, inputs, training=False):
         return inputs[0].clone()
 

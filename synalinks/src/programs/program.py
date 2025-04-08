@@ -112,8 +112,8 @@ class Program(Trainer, Module):
     Once the program is created, you can config the program with rewards and metrics
     with `program.compile()`, train the program with `program.fit()`, or use the program
     to do prediction with `program.predict()` or `program()`.
-    
-    To understand the difference between `program.predict()` or `program()`, read the 
+
+    To understand the difference between `program.predict()` or `program()`, read the
     [FAQ](https://synalinks.github.io/synalinks/FAQ/#whats-the-difference-between-program-methods-predict-and-__call__).
 
     ## With the `Sequential` class
@@ -543,7 +543,9 @@ class Program(Trainer, Module):
                 )
             elif k == "optimizer_variables":
                 if self.optimizer:
-                    self._assign_variable_values(self.optimizer.variables, path_value_dict)
+                    self._assign_variable_values(
+                        self.optimizer.variables, path_value_dict
+                    )
             elif k == "metrics_variables":
                 self._assign_variable_values(self.metrics_variables, path_value_dict)
             else:

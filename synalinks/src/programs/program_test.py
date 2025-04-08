@@ -7,7 +7,6 @@ from synalinks.src import rewards
 from synalinks.src import testing
 from synalinks.src.backend import DataModel
 from synalinks.src.backend import Instructions
-from synalinks.src.backend import Prediction
 from synalinks.src.language_models import LanguageModel
 from synalinks.src.modules import Generator
 from synalinks.src.modules import Input
@@ -42,9 +41,13 @@ class ProgramTest(testing.TestCase):
 
         state_tree = program.get_state_tree()
 
-        instructions_uuid = state_tree["trainable_variables"]["generator"]["generator_state"]["instructions"]["uuid"]
-        instructions_created_at = state_tree["trainable_variables"]["generator"]["generator_state"]["instructions"]["created_at"]
-        
+        instructions_uuid = state_tree["trainable_variables"]["generator"][
+            "generator_state"
+        ]["instructions"]["uuid"]
+        instructions_created_at = state_tree["trainable_variables"]["generator"][
+            "generator_state"
+        ]["instructions"]["created_at"]
+
         expected_tree = {
             "trainable_variables": {
                 "generator": {
@@ -63,7 +66,7 @@ class ProgramTest(testing.TestCase):
                                 instructions=[],
                                 created_at=instructions_created_at,
                             ).get_json()
-                        ]
+                        ],
                     }
                 }
             },
@@ -131,9 +134,13 @@ class ProgramTest(testing.TestCase):
         )
 
         state_tree = program.get_state_tree()
-        
-        instructions_uuid = state_tree["trainable_variables"]["generator"]["generator_state"]["instructions"]["uuid"]
-        instructions_created_at = state_tree["trainable_variables"]["generator"]["generator_state"]["instructions"]["created_at"]
+
+        instructions_uuid = state_tree["trainable_variables"]["generator"][
+            "generator_state"
+        ]["instructions"]["uuid"]
+        instructions_created_at = state_tree["trainable_variables"]["generator"][
+            "generator_state"
+        ]["instructions"]["created_at"]
 
         expected_tree = {
             "trainable_variables": {
@@ -153,7 +160,7 @@ class ProgramTest(testing.TestCase):
                                 instructions=[],
                                 created_at=instructions_created_at,
                             ).get_json()
-                        ]
+                        ],
                     }
                 }
             },

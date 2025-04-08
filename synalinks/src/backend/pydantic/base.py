@@ -352,9 +352,9 @@ def is_document(x):
 )
 class Prediction(Entity, GenericIO):
     """The generator's prediction"""
-    
+
     label: str = "Prediction"
-    reward: Optional[float] = None # None if not yet backpropagated
+    reward: Optional[float] = None  # None if not yet backpropagated
 
 
 @synalinks_export(
@@ -386,10 +386,10 @@ def is_prediction(x):
 )
 class Instructions(Entity):
     """The generator's instructions"""
-    
+
     label: str = "Instructions"
     instructions: List[str]
-    reward: Optional[float] = None # None if not yet backpropagated
+    reward: Optional[float] = None  # None if not yet backpropagated
 
 
 @synalinks_export(

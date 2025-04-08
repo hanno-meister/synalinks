@@ -720,7 +720,7 @@ class Module(BackendModule, Operation, SynalinksSaveable):
                     "your module."
                     f"Exception encountered: ''{e}''"
                 )
-        self.built=True
+        self.built = True
 
 
 def is_json_data_model_or_symbolic_data_model(x, allow_none=False):

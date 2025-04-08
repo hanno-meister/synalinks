@@ -39,8 +39,10 @@ from synalinks.src.backend.pydantic.base import Entity
 from synalinks.src.backend.pydantic.base import GenericInputs
 from synalinks.src.backend.pydantic.base import GenericIO
 from synalinks.src.backend.pydantic.base import GenericOutputs
+from synalinks.src.backend.pydantic.base import Instructions
 from synalinks.src.backend.pydantic.base import KnowledgeGraph
 from synalinks.src.backend.pydantic.base import KnowledgeGraphs
+from synalinks.src.backend.pydantic.base import Prediction
 from synalinks.src.backend.pydantic.base import is_chat_message
 from synalinks.src.backend.pydantic.base import is_chat_messages
 from synalinks.src.backend.pydantic.base import is_document
@@ -49,8 +51,10 @@ from synalinks.src.backend.pydantic.base import is_embedding
 from synalinks.src.backend.pydantic.base import is_embeddings
 from synalinks.src.backend.pydantic.base import is_entities
 from synalinks.src.backend.pydantic.base import is_entity
+from synalinks.src.backend.pydantic.base import is_instructions
 from synalinks.src.backend.pydantic.base import is_knowledge_graph
 from synalinks.src.backend.pydantic.base import is_knowledge_graphs
+from synalinks.src.backend.pydantic.base import is_prediction
 from synalinks.src.embedding_models.embedding_model import EmbeddingModel
 from synalinks.src.initializers.initializer import Initializer
 from synalinks.src.language_models.language_model import LanguageModel
@@ -62,10 +66,12 @@ from synalinks.src.modules.core.decision import Decision
 from synalinks.src.modules.core.generator import Generator
 from synalinks.src.modules.core.generator import chat_prompt_template
 from synalinks.src.modules.core.generator import default_prompt_template
+from synalinks.src.modules.core.identity import Identity
 from synalinks.src.modules.core.input_module import Input
 from synalinks.src.modules.merging.concat import Concat
 from synalinks.src.modules.merging.logical_and import And
 from synalinks.src.modules.merging.logical_or import Or
+from synalinks.src.modules.merging.logical_xor import Xor
 from synalinks.src.modules.module import Module
 from synalinks.src.modules.ttc.chain_of_thought import ChainOfThought
 from synalinks.src.ops.function import Function

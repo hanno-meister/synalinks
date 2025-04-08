@@ -30,7 +30,7 @@ class GeneratorModuleTest(testing.TestCase):
             Query(query="What is the french city of aerospace and robotics?")
         )
         self.assertTrue(len(msgs) == 1)
-        
+
     def test_format_message_with_instructions(self):
         class Query(DataModel):
             query: str
@@ -49,7 +49,7 @@ class GeneratorModuleTest(testing.TestCase):
             Query(query="What is the french city of aerospace and robotics?")
         )
         self.assertTrue(len(msgs) == 2)
-        
+
     def test_format_message_with_examples(self):
         class Query(DataModel):
             query: str
@@ -63,18 +63,20 @@ class GeneratorModuleTest(testing.TestCase):
         msgs = Generator(
             data_model=AnswerWithRationale,
             language_model=language_model,
-            examples=\
-                [
-                    (
-                        {"query": "What is the capital of France?"},
-                        {"rationale": "The capital of France is well known", "answer": "Paris"},
-                    )
-                ],
+            examples=[
+                (
+                    {"query": "What is the capital of France?"},
+                    {
+                        "rationale": "The capital of France is well known",
+                        "answer": "Paris",
+                    },
+                )
+            ],
         ).format_messages(
             Query(query="What is the french city of aerospace and robotics?")
         )
         self.assertTrue(len(msgs) == 2)
-        
+
     def test_format_message_with_examples_and_instructions(self):
         class Query(DataModel):
             query: str
@@ -88,15 +90,16 @@ class GeneratorModuleTest(testing.TestCase):
         msgs = Generator(
             data_model=AnswerWithRationale,
             language_model=language_model,
-            examples=\
-            [
+            examples=[
                 (
                     {"query": "What is the capital of France?"},
-                    {"rationale": "The capital of France is well known", "answer": "Paris"},
+                    {
+                        "rationale": "The capital of France is well known",
+                        "answer": "Paris",
+                    },
                 )
             ],
-            instructions=\
-            [
+            instructions=[
                 "You are an helpfull assistant",
             ],
         ).format_messages(

@@ -9,8 +9,8 @@ import click
 import inquirer
 import jinja2
 
-from synalinks.cli.constants import PROJECT_STRUCTURE_TEMPLATE
 from synalinks.cli.constants import PROJECT_CONFIG_FILENAME
+from synalinks.cli.constants import PROJECT_STRUCTURE_TEMPLATE
 from synalinks.cli.utils.project_utils import get_synalinks_project_config
 from synalinks.cli.utils.project_utils import is_inside_synalinks_project
 from synalinks.src.utils.naming import to_pkg_name
@@ -19,10 +19,12 @@ from synalinks.src.version import version as get_version
 
 def get_config_json(filename: str):
     """
-    Reads and returns the JSON configuration from a specified file within the config folder.
+    Reads and returns the JSON configuration from a specified file within the config
+    folder.
 
-    This function locates the configuration folder using the `synalinks.cli.config` module,
-    opens the specified JSON file, and parses its contents into a Python dictionary.
+    This function locates the configuration folder using the `synalinks.cli.config`
+    module, opens the specified JSON file, and parses its contents into a Python
+    dictionary.
 
     Args:
         filename (str): The name of the JSON configuration file to read.
@@ -95,8 +97,8 @@ def models_setup_config(config: Dict[str, Any]) -> Dict[str, Any]:
     questions.append(
         inquirer.List(
             "model_provider",
-            message=f"Select the model provider to use",
-            choices=list(lm_config.keys()),
+            message="Select the model provider to use",
+            choices=model_providers,
         ),
     )
     answers = inquirer.prompt(questions)
@@ -107,7 +109,7 @@ def models_setup_config(config: Dict[str, Any]) -> Dict[str, Any]:
             questions.append(
                 inquirer.List(
                     "language_model",
-                    message=f"Select the language model to use",
+                    message="Select the language model to use",
                     choices=lm_config.get(answers.get("model_provider")),
                 )
             )
@@ -115,7 +117,7 @@ def models_setup_config(config: Dict[str, Any]) -> Dict[str, Any]:
             questions.append(
                 inquirer.List(
                     "embedding_model",
-                    message=f"Select the embedding model to use",
+                    message="Select the embedding model to use",
                     choices=em_config.get(answers.get("model_provider")),
                 )
             )
@@ -188,13 +190,13 @@ def setup_project(config: Dict[str, Any], secrets: Dict[str, Any] = {}):
                     f.write(template)
     # Setup secrets into an .env file
     model_provider = config.get("model_provider")
-    language_model = config.get("model_provider")+"/"+config.get("language_model")
-    embedding_model = config.get("model_provider")+"/"+config.get("embedding_model")
+    language_model = model_provider + "/" + config.get("language_model")
+    embedding_model = model_provider + "/" + config.get("embedding_model")
     variables = [
         f"LANGUAGE_MODEL={language_model}",
         f"EMBEDDING_MODEL={embedding_model}",
     ]
-    if config["model_provider"] == "ollama":
+    if model_provider == "ollama":
         variables.append(
             "# To enable your container to communicate with your local ollama "
             "instance, uncomment the following line",
@@ -237,6 +239,6 @@ def maybe_setup_project() -> Dict[str, Any]:
             secrets = secrets_setup_config(config)
             setup_project(config, secrets)
         else:
-            click.echo(f"Aborting")
+            click.echo("Aborting")
             exit(0)
     return config

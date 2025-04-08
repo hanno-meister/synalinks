@@ -1,11 +1,7 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
 import re
-from typing import Any
-from typing import Dict
 from typing import List
-from typing import Optional
-from typing import Tuple
 
 import jinja2
 
@@ -15,12 +11,11 @@ from synalinks.src.backend import ChatMessage
 from synalinks.src.backend import ChatMessages
 from synalinks.src.backend import ChatRole
 from synalinks.src.backend import DataModel
-from synalinks.src.backend import Prediction
 from synalinks.src.backend import Instructions
+from synalinks.src.backend import Prediction
 from synalinks.src.backend import SymbolicDataModel
 from synalinks.src.modules.module import Module
 from synalinks.src.saving import serialization_lib
-
 
 XML_TAGS_REGEX = re.compile(
     r"<("
@@ -43,7 +38,9 @@ def default_prompt_template():
 Input JSON Schema:
 {{ inputs_schema }}
 {% endif %}
-{% if outputs_schema %}Your task is to answer with a JSON object following this output JSON schema.
+{% if outputs_schema %}
+Your task is to answer with a JSON object following this output JSON schema.
+
 Output JSON Schema:
 {{ outputs_schema }}
 {% endif %}
@@ -139,7 +136,7 @@ class Generator(Module):
             )
 
         language_model = synalinks.LanguageModel(
-            model="ollama_chat/deepseek-r1",
+            model="ollama/deepseek-r1",
         )
 
         x0 = synalinks.Input(data_model=Query)
@@ -162,7 +159,7 @@ class Generator(Module):
     Args:
         schema (dict): The target JSON schema.
             If not provided use the `data_model` to infer it.
-        data_model (DataModel | SymbolicDataModel | JsonDataModel): The target data 
+        data_model (DataModel | SymbolicDataModel | JsonDataModel): The target data
             model for structured output.
         language_model (LanguageModel): The language model to use.
         prompt_template (str): The jinja2 prompt template.
@@ -212,12 +209,12 @@ class Generator(Module):
             prompt_template = default_prompt_template()
         self.prompt_template = prompt_template
         if not examples:
-            examples = []            
+            examples = []
         self.examples = examples
         if not instructions:
             instructions = []
         self.instructions = instructions
-        
+
         predictions = []
         for example in examples:
             prediction = Prediction(
@@ -225,9 +222,9 @@ class Generator(Module):
                 outputs=example[1],
             )
             predictions.append(prediction)
-            
+
         instructions_predictions = [Instructions(instructions=instructions)]
-        
+
         self.return_inputs = return_inputs
         self.use_inputs_schema = use_inputs_schema
         self.use_outputs_schema = use_outputs_schema
@@ -319,7 +316,10 @@ class Generator(Module):
         rendered_prompt = template.render(
             inputs_schema=inputs.get_schema() if self.use_inputs_schema else None,
             outputs_schema=self.schema if self.use_outputs_schema else None,
-            examples=[(pred.get("inputs"), pred.get("outputs")) for pred in self.state.get("examples")],
+            examples=[
+                (pred.get("inputs"), pred.get("outputs"))
+                for pred in self.state.get("examples")
+            ],
             instructions=self.state.get("instructions").get("instructions"),
             inputs=inputs.get_json(),
         )
