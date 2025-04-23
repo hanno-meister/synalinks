@@ -889,8 +889,11 @@ class Trainer:
         config = serialization_lib.deserialize_synalinks_object(config)
         self.compile(**config)
         if hasattr(self, "optimizer") and self.built:
-            # Create optimizer variables.
-            self.optimizer.build(self.trainable_variables)
+            # Create optimizer variables/programs.
+            if not self.optimizer.built:
+                asyncio.get_event_loop().run_until_complete(
+                    self.optimizer.build(self.trainable_variables)
+                )
 
     def _should_reward(self, epoch, validation_freq):
         epoch = epoch + 1  # one-index the user-facing epoch.

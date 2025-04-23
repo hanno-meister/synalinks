@@ -2,6 +2,7 @@
 # Original authors: François Chollet et al. (Keras Team)
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
+import asyncio
 import warnings
 
 import docstring_parser
@@ -135,6 +136,8 @@ class Optimizer(SynalinksSaveable):
         """Apply the backprop/optimization for each trainable variables
         that match the optimizer schema.
         """
+        if not self.built:
+            asyncio.get_event_loop().run_until_complete(self.build(trainable_variables))
         iteration = self._iteration.get("iteration")
         self._iteration.update({"iteration": iteration + 1})
         for variable in trainable_variables:

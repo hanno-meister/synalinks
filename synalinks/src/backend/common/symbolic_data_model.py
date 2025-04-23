@@ -419,7 +419,7 @@ class SymbolicDataModel:
         if name:
             clone.name = name
         else:
-            clone.name = auto_name(self.name + "_clone")
+            clone.name = self.name + "_clone"
         return clone
 
 

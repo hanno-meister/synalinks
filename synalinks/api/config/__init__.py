@@ -12,6 +12,7 @@ from synalinks.src.backend.config import set_api_key
 from synalinks.src.backend.config import set_backend
 from synalinks.src.backend.config import set_epsilon
 from synalinks.src.backend.config import set_floatx
+from synalinks.src.backend.config import synalinks_home
 from synalinks.src.saving.serialization_lib import enable_unsafe_deserialization
 from synalinks.src.utils.io_utils import disable_interactive_logging
 from synalinks.src.utils.io_utils import enable_interactive_logging

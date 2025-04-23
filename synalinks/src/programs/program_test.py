@@ -44,9 +44,6 @@ class ProgramTest(testing.TestCase):
         instructions_uuid = state_tree["trainable_variables"]["generator"][
             "generator_state"
         ]["instructions"]["uuid"]
-        instructions_created_at = state_tree["trainable_variables"]["generator"][
-            "generator_state"
-        ]["instructions"]["created_at"]
 
         expected_tree = {
             "trainable_variables": {
@@ -57,14 +54,12 @@ class ProgramTest(testing.TestCase):
                         "instructions": Instructions(
                             uuid=instructions_uuid,
                             instructions=[],
-                            created_at=instructions_created_at,
                         ).get_json(),
                         "predictions": [],
                         "instructions_predictions": [
                             Instructions(
                                 uuid=instructions_uuid,
                                 instructions=[],
-                                created_at=instructions_created_at,
                             ).get_json()
                         ],
                     }
@@ -138,9 +133,6 @@ class ProgramTest(testing.TestCase):
         instructions_uuid = state_tree["trainable_variables"]["generator"][
             "generator_state"
         ]["instructions"]["uuid"]
-        instructions_created_at = state_tree["trainable_variables"]["generator"][
-            "generator_state"
-        ]["instructions"]["created_at"]
 
         expected_tree = {
             "trainable_variables": {
@@ -151,14 +143,12 @@ class ProgramTest(testing.TestCase):
                         "instructions": Instructions(
                             uuid=instructions_uuid,
                             instructions=[],
-                            created_at=instructions_created_at,
                         ).get_json(),
                         "predictions": [],
                         "instructions_predictions": [
                             Instructions(
                                 uuid=instructions_uuid,
                                 instructions=[],
-                                created_at=instructions_created_at,
                             ).get_json()
                         ],
                     }

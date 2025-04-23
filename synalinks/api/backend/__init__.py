@@ -31,10 +31,10 @@ from synalinks.src.backend.pydantic.base import GenericOutputs
 from synalinks.src.backend.pydantic.base import Instructions
 from synalinks.src.backend.pydantic.base import KnowledgeGraph
 from synalinks.src.backend.pydantic.base import KnowledgeGraphs
-from synalinks.src.backend.pydantic.base import Label
 from synalinks.src.backend.pydantic.base import Prediction
+from synalinks.src.backend.pydantic.base import RelationSchema
 from synalinks.src.backend.pydantic.base import Reward
-from synalinks.src.backend.pydantic.base import Stamp
+from synalinks.src.backend.pydantic.base import TripletSearch
 from synalinks.src.backend.pydantic.base import Unique
 from synalinks.src.backend.pydantic.base import Weight
 from synalinks.src.backend.pydantic.base import is_chat_message

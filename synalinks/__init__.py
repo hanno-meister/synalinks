@@ -36,11 +36,13 @@ from synalinks.api import Or
 from synalinks.api import Prediction
 from synalinks.api import Program
 from synalinks.api import ReACTAgent
+from synalinks.api import RelationSchema
 from synalinks.api import Reward
 from synalinks.api import Sequential
 from synalinks.api import StatelessScope
 from synalinks.api import SymbolicDataModel
 from synalinks.api import SymbolicScope
+from synalinks.api import TripletSearch
 from synalinks.api import Xor
 from synalinks.api import __version__
 from synalinks.api import backend
@@ -73,6 +75,7 @@ from synalinks.api import optimizers
 from synalinks.api import programs
 from synalinks.api import rewards
 from synalinks.api import saving
+from synalinks.api import synalinks_home
 from synalinks.api import tree
 from synalinks.api import utils
 from synalinks.api import version

@@ -37,6 +37,7 @@ dependencies = [
     "graphviz",
     "click",
     "inquirer",
+    "faiss-cpu",
 ]
 
 [project.urls]

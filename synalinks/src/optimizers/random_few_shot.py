@@ -62,7 +62,7 @@ class RandomFewShot(Optimizer):
         self.k = k
         self.k_best = k_best
 
-    def build(self, variables):
+    async def build(self, variables):
         self.built = True
 
     async def optimize(self, trainable_variable, reward=None):
@@ -70,23 +70,26 @@ class RandomFewShot(Optimizer):
         # Reward backpropagation
         predictions = trainable_variable.get("predictions")
         backpropagated_predictions = []
+        backprop_pred_nb = 0
         for p in predictions:
             if p["reward"] is None:
                 p["reward"] = reward
+                backprop_pred_nb += 1
             backpropagated_predictions.append(p)
-        trainable_variable.update({"predictions": backpropagated_predictions})
-        # Get the k best predictions (sorted by reward)
-        sorted_predictions = sorted(
-            backpropagated_predictions,
-            key=lambda x: x["reward"] if x["reward"] is not None else float("-inf"),
-            reverse=True,
-        )
-        top_k_predictions = sorted_predictions[: self.k_best]
-        if len(top_k_predictions) > self.k:
-            selected_predictions = random.sample(top_k_predictions, self.k)
-        else:
-            selected_predictions = top_k_predictions
-        trainable_variable.update({"examples": selected_predictions})
+        if backprop_pred_nb > 0:
+            trainable_variable.update({"predictions": backpropagated_predictions})
+            # Get the k best predictions (sorted by reward)
+            sorted_predictions = sorted(
+                backpropagated_predictions,
+                key=lambda x: x["reward"] if x["reward"] is not None else float("-inf"),
+                reverse=True,
+            )
+            top_k_predictions = sorted_predictions[: self.k_best]
+            if len(top_k_predictions) > self.k:
+                selected_predictions = random.sample(top_k_predictions, self.k)
+            else:
+                selected_predictions = top_k_predictions
+            trainable_variable.update({"examples": selected_predictions})
 
     async def finalize(self, trainable_variable):
         """Finalize the optimization of a single variable (cleanup/scaling etc.)."""

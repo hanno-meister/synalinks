@@ -27,6 +27,7 @@ from synalinks.src.backend.common.json_data_model import JsonDataModel
 from synalinks.src.backend.common.stateless_scope import StatelessScope
 from synalinks.src.backend.common.symbolic_data_model import SymbolicDataModel
 from synalinks.src.backend.common.symbolic_scope import SymbolicScope
+from synalinks.src.backend.config import synalinks_home
 from synalinks.src.backend.pydantic.base import ChatMessage
 from synalinks.src.backend.pydantic.base import ChatMessages
 from synalinks.src.backend.pydantic.base import ChatRole
@@ -43,6 +44,8 @@ from synalinks.src.backend.pydantic.base import Instructions
 from synalinks.src.backend.pydantic.base import KnowledgeGraph
 from synalinks.src.backend.pydantic.base import KnowledgeGraphs
 from synalinks.src.backend.pydantic.base import Prediction
+from synalinks.src.backend.pydantic.base import RelationSchema
+from synalinks.src.backend.pydantic.base import TripletSearch
 from synalinks.src.backend.pydantic.base import is_chat_message
 from synalinks.src.backend.pydantic.base import is_chat_messages
 from synalinks.src.backend.pydantic.base import is_document

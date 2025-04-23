@@ -12,12 +12,13 @@ e.g. `SymbolicDataModel`, `JsonDataModel`, `DataModel` or `Variable`.
 """
 
 import uuid
-from datetime import datetime
 from enum import Enum
 from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
+
+from pydantic import Field
 
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.backend.common.json_schema_utils import contains_schema
@@ -215,13 +216,6 @@ class Unique(DataModel):
     uuid: str = str(uuid.uuid4())
 
 
-@synalinks_export("synalinks.backend.Label")
-class Label(DataModel):
-    """A labelled data model"""
-
-    label: str
-
-
 @synalinks_export("synalinks.backend.Weight")
 class Weight(DataModel):
     """A weighted data model"""
@@ -237,20 +231,13 @@ class Reward(DataModel):
     count: int = 0
 
 
-@synalinks_export("synalinks.backend.Stamp")
-class Stamp(DataModel):
-    """A stamped data model"""
-
-    created_at: datetime = datetime.now()
-
-
 @synalinks_export(
     [
         "synalinks.backend.Entity",
         "synalinks.Entity",
     ]
 )
-class Entity(Unique, Embeddings, Label, Stamp):
+class Entity(Unique, Embeddings):
     """An entity data model"""
 
     pass
@@ -319,7 +306,6 @@ def is_entities(x):
 class Document(Entity):
     """A document"""
 
-    label: str = "Document"
     text: str
 
 
@@ -353,7 +339,6 @@ def is_document(x):
 class Prediction(Entity, GenericIO):
     """The generator's prediction"""
 
-    label: str = "Prediction"
     reward: Optional[float] = None  # None if not yet backpropagated
 
 
@@ -387,7 +372,6 @@ def is_prediction(x):
 class Instructions(Entity):
     """The generator's instructions"""
 
-    label: str = "Instructions"
     instructions: List[str]
     reward: Optional[float] = None  # None if not yet backpropagated
 
@@ -512,3 +496,77 @@ def is_knowledge_graphs(x):
     if contains_schema(x.get_schema(), KnowledgeGraphs.get_schema()):
         return True
     return False
+
+
+@synalinks_export(
+    [
+        "synalinks.backend.TripletSearch",
+        "synalinks.TripletSearch",
+    ]
+)
+class TripletSearch(DataModel):
+    subject_label: str = Field(
+        description="The label of the subject node",
+    )
+    subject_similarity_search: str = Field(
+        description=(
+            "The similarity queries to match specific subject nodes"
+            " (use `*` to match them all)",
+        ),
+    )
+    return_subject: bool = Field(
+        description="If True, returns the objects of the triplet search",
+    )
+    where_not: bool = Field(
+        description="If True, check for the absence of a relation",
+    )
+    relation_label: str = Field(
+        description="The label of the relation",
+    )
+    object_label: str = Field(
+        description="The label of the object node",
+    )
+    object_similarity_search: str = Field(
+        description=(
+            "The similarity queries to match specific object nodes"
+            " (use `*` to match them all)"
+        ),
+    )
+    return_object: bool = Field(
+        description="If True, returns the objects of the triplet search",
+    )
+    returns_count: bool = Field(
+        description="If True, returns the count",
+    )
+
+
+@synalinks_export(
+    [
+        "synalinks.backend.RelationSchema",
+        "synalinks.RelationSchema",
+    ]
+)
+class RelationSchema(DataModel):
+    relation: str = Field(description="The label of the relation")
+    subject_labels: List[str] = Field(
+        description="The list of entity labels that can be subject of the relation"
+    )
+    object_labels: List[str] = Field(
+        description="The list of entity labels that can be object of the relation"
+    )
+    inverse_of: Optional[str] = Field(
+        default=None,
+        description="The inverse of the relation if any",
+    )
+    is_transitive: bool = Field(
+        default=False, description="True if the relation is transitive"
+    )
+    is_symmetric: bool = Field(
+        default=False, description="True if the relation is symmetric"
+    )
+    is_reflexive: bool = Field(
+        default=False, description="True if the relation is reflexive"
+    )
+    is_irreflexive: bool = Field(
+        default=False, description="True if the relation is irreflexive"
+    )

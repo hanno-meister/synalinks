@@ -1,4 +1,5 @@
 from synalinks.src.api_export import synalinks_export
+from synalinks.src.optimizers.opro import OPRO
 from synalinks.src.optimizers.optimizer import Optimizer
 from synalinks.src.optimizers.random_few_shot import RandomFewShot
 from synalinks.src.saving import serialization_lib
@@ -6,6 +7,7 @@ from synalinks.src.saving import serialization_lib
 ALL_OBJECTS = {
     Optimizer,
     RandomFewShot,
+    OPRO,
 }
 
 ALL_OBJECTS_DICT = {cls.__name__.lower(): cls for cls in ALL_OBJECTS}

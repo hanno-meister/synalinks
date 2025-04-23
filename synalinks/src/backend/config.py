@@ -204,6 +204,7 @@ else:
     _synalinks_DIR = os.path.join(_synalinks_base_dir, ".synalinks")
 
 
+@synalinks_export(["synalinks.config.synalinks_home", "synalinks.synalinks_home"])
 def synalinks_home():
     # Private accessor for the synalinks home location.
     return _synalinks_DIR

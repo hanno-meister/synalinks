@@ -6,4 +6,5 @@ since your modifications would be overwritten.
 
 from synalinks.src.optimizers import deserialize
 from synalinks.src.optimizers import serialize
+from synalinks.src.optimizers.opro import OPRO
 from synalinks.src.optimizers.random_few_shot import RandomFewShot

@@ -11,10 +11,10 @@ from synalinks.src.utils.nlp_utils import to_singular_without_numerical_suffix
 
 def standardize_schema(schema):
     """Standardize the JSON schema for consistency"""
-    if schema.get("title"):
-        schema = copy.deepcopy(schema)
-        schema.update({"title": "SymbolicDataModel"})
-    return schema
+    new_schema = copy.deepcopy(schema)
+    if new_schema.get("title"):
+        new_schema.update({"title": "SymbolicDataModel"})
+    return new_schema
 
 
 def contains_schema(schema1, schema2):
@@ -241,7 +241,7 @@ def out_mask_schema(schema, mask=None, recursive=True):
     Returns:
         (dict): A masked JSON schema with removed properties.
     """
-    result_schema = standardize_schema(copy.deepcopy(schema))
+    result_schema = copy.deepcopy(schema)
 
     if not mask:
         return result_schema
@@ -319,7 +319,7 @@ def in_mask_schema(schema, mask=None, recursive=True):
             "type": "object",
         }
 
-    result_schema = standardize_schema(copy.deepcopy(schema))
+    result_schema = copy.deepcopy(schema)
 
     stack_init = [result_schema]
 
