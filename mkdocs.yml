@@ -58,6 +58,7 @@ nav:
         - Synalinks API/Modules API/Core Modules/index.md
         - Synalinks API/Modules API/Core Modules/Input module.md
         - Synalinks API/Modules API/Core Modules/Identity module.md
+        - Synalinks API/Modules API/Core Modules/None module.md
         - Synalinks API/Modules API/Core Modules/Generator module.md
         - Synalinks API/Modules API/Core Modules/Decision module.md
         - Synalinks API/Modules API/Core Modules/Action module.md
