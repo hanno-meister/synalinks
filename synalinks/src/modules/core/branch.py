@@ -148,38 +148,18 @@ class Branch(Module):
         )
         choice = decision.get("choice")
         outputs = []
+        if self.inject_decision:
+            inputs = await ops.concat(
+                inputs,
+                decision,
+                name=self.name + "_inputs_with_decision",
+            )
         for label, module in self.branches.items():
             if label == choice:
                 if module:
-                    if self.inject_decision and self.return_decision:
+                    if self.return_decision:
                         outputs.append(
-                            await ops.concat(
-                                decision,
-                                await module(
-                                    await ops.concat(
-                                        inputs,
-                                        decision,
-                                        name=self.name + "_inputs_with_decision",
-                                    ),
-                                    training=training,
-                                ),
-                                name=self.name + "_with_decision",
-                            )
-                        )
-                    elif self.inject_decision and not self.return_decision:
-                        outputs.append(
-                            await module(
-                                await ops.concat(
-                                    inputs,
-                                    decision,
-                                    name=self.name + "_inputs_with_decision",
-                                ),
-                                training=training,
-                            )
-                        )
-                    elif not self.inject_decision and self.return_decision:
-                        outputs.append(
-                            await ops.concat(
+                            await ops.logical_and(
                                 decision,
                                 await module(
                                     inputs,
@@ -207,36 +187,16 @@ class Branch(Module):
             inputs,
             training=training,
         )
+        if self.inject_decision:
+            inputs = await ops.concat(
+                inputs,
+                decision,
+                name=self.name + "_inputs_with_decision",
+            )
         for module in self.branches.values():
-            if self.inject_decision and self.return_decision:
+            if self.return_decision:
                 outputs.append(
-                    await ops.concat(
-                        decision,
-                        await module(
-                            await ops.concat(
-                                inputs,
-                                decision,
-                                name=self.name + "_inputs_with_decision",
-                            ),
-                            training=training,
-                        ),
-                        name=self.name + "_with_decision",
-                    )
-                )
-            elif self.inject_decision and not self.return_decision:
-                outputs.append(
-                    await module(
-                        await ops.concat(
-                            inputs,
-                            decision,
-                            name=self.name + "_inputs_with_decision",
-                        ),
-                        training=training,
-                    )
-                )
-            elif not self.inject_decision and self.return_decision:
-                outputs.append(
-                    await ops.concat(
+                    await ops.logical_and(
                         decision,
                         await module(
                             inputs,
