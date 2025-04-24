@@ -13,7 +13,7 @@ class NoneModule(Module):
 
     This module should be used as a placeholder when no operation is to be
     performed and the output should be None.
-    
+
     This module is useful to implement stop conditions when combined with a conditional
     branch or as placeholder (like the Identity) before implementing guards that leverage
     the xor operation.
@@ -33,7 +33,7 @@ class NoneModule(Module):
             lambda x: None,
             inputs,
         )
-        
+
     async def compute_output_spec(self, inputs):
         if isinstance(inputs, (JsonDataModel, SymbolicDataModel)):
             return inputs.clone()

@@ -14,6 +14,7 @@ from synalinks.src.modules.core.generator import Generator
 from synalinks.src.modules.core.identity import Identity
 from synalinks.src.modules.core.input_module import Input
 from synalinks.src.modules.core.input_module import InputModule
+from synalinks.src.modules.core.none import NoneModule
 from synalinks.src.modules.merging.concat import Concat
 from synalinks.src.modules.merging.logical_and import And
 from synalinks.src.modules.merging.logical_or import Or

@@ -31,6 +31,7 @@ from synalinks.api import KnowledgeGraphs
 from synalinks.api import LanguageModel
 from synalinks.api import Metric
 from synalinks.api import Module
+from synalinks.api import NoneModule
 from synalinks.api import Operation
 from synalinks.api import Or
 from synalinks.api import Prediction

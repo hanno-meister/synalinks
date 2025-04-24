@@ -2,8 +2,8 @@
 
 from synalinks.src import testing
 from synalinks.src.backend import DataModel
-from synalinks.src.modules.core.none import NoneModule
 from synalinks.src.modules.core.input_module import Input
+from synalinks.src.modules.core.none import NoneModule
 from synalinks.src.programs.program import Program
 
 
@@ -21,7 +21,7 @@ class NoneModuleTest(testing.TestCase):
         )
 
         result = await program(Query(query="a"))
-        
+
         self.assertEqual(result, None)
 
     async def test_tuple_inputs(self):
@@ -103,16 +103,6 @@ class NoneModuleTest(testing.TestCase):
                 "c": Query(query="c"),
             }
         )
-
-        expected_json_a = {
-            "query": "a",
-        }
-        expected_json_b = {
-            "query": "b",
-        }
-        expected_json_c = {
-            "query": "c",
-        }
 
         self.assertEqual(result["a"], None)
         self.assertEqual(result["b"], None)
