@@ -12,7 +12,6 @@ from synalinks.src import backend
 from synalinks.src import callbacks as callbacks_module
 from synalinks.src import metrics as metrics_module
 from synalinks.src import optimizers as optimizers_module
-from synalinks.src import tree
 from synalinks.src.backend.common import numpy
 from synalinks.src.saving import serialization_lib
 from synalinks.src.trainers.compile_utils import CompileMetrics
@@ -474,7 +473,10 @@ class Trainer:
             # Build the model on one batch of data.
             for _, data in epoch_iterator:
                 data_batch = data[0]
-                self._symbolic_build(data_batch)
+                self._auto_build(
+                    iterator=epoch_iterator,
+                    data_batch=data_batch,
+                )
                 break
         epoch_iterator.reset()
 
@@ -630,7 +632,10 @@ class Trainer:
             # Build the model on one batch of data.
             for _, data in epoch_iterator:
                 data_batch = data[0]
-                self._symbolic_build(data_batch)
+                self._auto_build(
+                    iterator=epoch_iterator,
+                    data_batch=data_batch,
+                )
                 break
         epoch_iterator.reset()
 
@@ -965,7 +970,7 @@ class Trainer:
                 msg += f"calling `{method_name}()`."
             raise ValueError(msg)
 
-    def _symbolic_build(self, iterator=None, data_batch=None):
+    def _auto_build(self, iterator=None, data_batch=None):
         program_unbuilt = not all(module.built for module in self._flatten_modules())
         compile_metrics_unbuilt = (
             self._compile_metrics is not None and not self._compile_metrics.built
@@ -975,13 +980,6 @@ class Trainer:
         )
         optimizer_unbuilt = self.optimizer is not None and not self.optimizer.built
         if program_unbuilt or compile_metrics_unbuilt or compile_reward_unbuilt:
-            # Create symbolic data_models matching an input batch.
-
-            def to_symbolic_input(v):
-                if v is None:
-                    return None
-                return backend.SymbolicDataModel(schema=v.get_schema())
-
             if data_batch is None:
                 for _, data_or_iterator in iterator:
                     if isinstance(data_or_iterator, (list, tuple)):
@@ -989,12 +987,10 @@ class Trainer:
                     else:
                         data_batch = next(data_or_iterator)
                     break
-            data_batch = tree.map_structure(to_symbolic_input, data_batch)
             (x, y) = data_batch
-            # Build all program state with `backend.compute_output_spec`.
             try:
                 y_pred = asyncio.get_event_loop().run_until_complete(
-                    backend.compute_output_spec(self, x, training=False)
+                    self.predict_on_batch(x, training=False)
                 )
             except Exception as e:
                 raise RuntimeError(
@@ -1022,7 +1018,7 @@ class Trainer:
                 # Build `CompileReward` state with `backend.compute_output_spec`.
                 asyncio.get_event_loop().run_until_complete(
                     backend.compute_output_spec(
-                        self._compute_reward,
+                        self.compute_reward,
                         x,
                         y,
                         y_pred,
@@ -1031,7 +1027,9 @@ class Trainer:
                 )
         if optimizer_unbuilt:
             # Build optimizer
-            self.optimizer.build(self.trainable_variables)
+            asyncio.get_event_loop().run_until_complete(
+                self.optimizer.build(self.trainable_variables)
+            )
         self._post_build()
 
     def _assert_compile_called(self, method_name=None):

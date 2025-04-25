@@ -191,6 +191,19 @@ class Module(BackendModule, Operation, SynalinksSaveable):
     def input_spec(self, value):
         self._input_spec = value
 
+    @classmethod
+    def get_arity(cls):
+        # Inspect the call method to get the number of parameters
+        sig = inspect.signature(cls.call)
+        # Exclude 'self' and 'training' from the parameter count
+        return len(
+            [
+                param
+                for param in sig.parameters.values()
+                if param.name not in ["self", "training"]
+            ]
+        )
+
     @python_utils.default
     async def build(self, input_schema):
         self._check_super_called()

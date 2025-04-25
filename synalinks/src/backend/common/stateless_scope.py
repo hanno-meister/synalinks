@@ -47,7 +47,7 @@ class StatelessScope:
 
         self.collect_rewards = collect_rewards
         self.initialize_variables = initialize_variables
-        self.evals = []
+        self.rewards = []
         self.state_mapping = {}
         state_mapping = state_mapping or {}
         for k, v in state_mapping:
@@ -77,7 +77,7 @@ class StatelessScope:
         return self
 
     def add_eval(self, eval):
-        self.evals.append(eval)
+        self.rewards.append(eval)
 
     def add_update(self, update):
         variable, value = update
