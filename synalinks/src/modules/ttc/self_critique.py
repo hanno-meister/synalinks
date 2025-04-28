@@ -44,10 +44,10 @@ class SelfCritique(Module):
     """Useful to critique the given inputs.
 
     This component critique the inputs given and eventually generate
-    an intermediate reward between [0.0, 1.0].
+    an intermediate reward between 0.0 and 1.0.
 
     You can enable or disable the intermediate reward computation by
-    using the `returns_reward` flag (default to True).
+    using the `return_reward` flag (default to True).
 
     To have more accurate results, ensure that the inputs are provided along
     with the output to evaluate using `return_inputs` in your modules.
