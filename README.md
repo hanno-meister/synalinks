@@ -21,7 +21,7 @@
 
 ![Beta](https://img.shields.io/badge/Release-Beta-blue.svg)
 ![Coverage Badge](https://raw.githubusercontent.com/SynaLinks/synalinks/refs/heads/main/coverage-badge.svg)
-![Pypi Downloads](https://img.shields.io/pypi/dm/synalinks)
+[![Pypi Downloads](https://img.shields.io/pypi/dm/synalinks)](https://pypistats.org/packages/synalinks)
 [![Discord](https://img.shields.io/discord/1118241178723291219)](https://discord.gg/82nt97uXcM)
 [![Python package](https://github.com/SynaLinks/Synalinks/actions/workflows/tests.yml/badge.svg)](https://github.com/SynaLinks/SynaLinks/actions/workflows/tests.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-green.svg)](https://opensource.org/license/apache-2-0)

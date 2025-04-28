@@ -14,7 +14,7 @@ class StatelessScope:
     should be passed via the `state_mapping` argument, a
     list of tuples `(k, v)` where `k` is a `Variable`
     and `v` is the intended value for this variable
-    (a backend tensor).
+    (a backend data model).
 
     Updated values can be collected on scope exit via
     `value = scope.get_current_value(variable)`. No updates
@@ -57,17 +57,14 @@ class StatelessScope:
                     "all keys in argument `mapping` must be Variable "
                     f"instances. Received instead: {k}"
                 )
-            if isinstance(v, Variable):
-                v = backend.cast(v.value, dtype=k.dtype)
-            else:
-                v = backend.convert_to_tensor(v, dtype=k.dtype)
-            if k.shape != v.shape:
+            v = backend.convert_to_json_data_model(v, dtype=k.dtype)
+            if not backend.is_schema_equal(k.get_schema(), v.get_schema()):
                 raise ValueError(
                     "Invalid variable value in StatelessScope: "
-                    "all values in argument `mapping` must be tensors with "
-                    "a shape that matches the corresponding variable shape. "
-                    f"For variable {k}, received invalid value {v} with shape "
-                    f"{v.shape}."
+                    "all values in argument `mapping` must be data models with "
+                    "a schema that matches the corresponding variable schema. "
+                    f"For variable {k}, received invalid value {v} with schema "
+                    f"{v.prettify_schema()}."
                 )
             self.state_mapping[id(k)] = v
 
@@ -76,8 +73,8 @@ class StatelessScope:
         global_state.set_global_attribute("stateless_scope", self)
         return self
 
-    def add_eval(self, eval):
-        self.rewards.append(eval)
+    def add_reward(self, reward):
+        self.rewards.append(reward)
 
     def add_update(self, update):
         variable, value = update

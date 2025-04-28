@@ -33,7 +33,9 @@ class Branch(Module):
             critique: str
             answer: str
 
-        language_model = synalinks.LanguageModel("ollama_chat/deepseek-r1")
+        language_model = synalinks.LanguageModel(
+            model="ollama/mistral",
+        )
 
         x0 = synalinks.Input(data_model=Query)
         (x1, x2) = await synalinks.Branch(

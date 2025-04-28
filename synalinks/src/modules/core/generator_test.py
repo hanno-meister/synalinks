@@ -21,7 +21,9 @@ class GeneratorModuleTest(testing.TestCase):
             rationale: str
             answer: str
 
-        language_model = LanguageModel(model="ollama_chat/deepseek-r1")
+        language_model = LanguageModel(
+            model="ollama/mistral",
+        )
 
         msgs = Generator(
             data_model=AnswerWithRationale,

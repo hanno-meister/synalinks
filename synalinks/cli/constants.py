@@ -135,7 +135,7 @@ async def create_program():
     language_model = synalinks.LanguageModel(
         model=os.environ.get(
             "LANGUAGE_MODEL",
-            "ollama/deepseek-r1",
+            "{{config.model_provider}}/{{config.language_model}}",
         ),
         api_base=os.environ.get("MODEL_API_BASE", None),
     )
@@ -148,8 +148,8 @@ async def create_program():
     return synalinks.Program(
         inputs=inputs,
         outputs=outputs,
-        name="my-project",
-        description="My awesome project",
+        name="{{config.package_name}}",
+        description="{{config.project_description}}",
     )
     
 program = asyncio.run(create_program())

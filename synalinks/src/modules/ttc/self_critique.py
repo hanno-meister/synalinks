@@ -1,33 +1,56 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
+from typing import Annotated
+
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.backend import DataModel
 from synalinks.src.backend import Field
-from synalinks.src.backend import SymbolicDataModel
 from synalinks.src.modules.core.generator import Generator
 from synalinks.src.modules.module import Module
 from synalinks.src.saving import serialization_lib
 
 
-class Thinking(DataModel):
-    thinking: str = Field(
-        description="Your step by step thinking",
+class Critique(DataModel):
+    critique: str = Field(
+        description="The elaborated critique of the provided inputs",
     )
+
+
+class CritiqueWithReward(DataModel):
+    critique: str = Field(
+        description="The elaborated critique of the provided inputs",
+    )
+    reward: Annotated[
+        float,
+        Field(
+            description=(
+                "The reward value corresponding to the critique"
+                "  (a float between 0 and 1.0)"
+            ),
+            strict=True,
+            ge=0.0,
+            le=1.0,
+        ),
+    ]
 
 
 @synalinks_export(
     [
-        "synalinks.modules.ChainOfThought",
-        "synalinks.ChainOfThought",
+        "synalinks.modules.SelfCritique",
+        "synalinks.SelfCritique",
     ]
 )
-class ChainOfThought(Module):
-    """Useful to answer in a step by step manner.
+class SelfCritique(Module):
+    """Useful to critique the given inputs.
 
-    This component concatenate thinking fields to your data model/schema and generate
-    a prediction allowing the LM to think step by step before answering.
+    This component critique the inputs given and eventually generate
+    an intermediate reward between [0.0, 1.0].
 
-    The parameter K specify the number of thinking fields to add (Default to 1).
+    You can enable or disable the intermediate reward computation by
+    using the `returns_reward` flag (default to True).
+
+    To have more accurate results, ensure that the inputs are provided along
+    with the output to evaluate using `return_inputs` in your modules.
 
     Example:
 
@@ -55,27 +78,24 @@ class ChainOfThought(Module):
         x1 = await synalinks.ChainOfThought(
             data_model=Answer,
             language_model=language_model,
-            k=3,
+            return_inputs=True,
         )(x0)
+        x2 = await synalinks.SelfCritique(
+            language_model=language_model,
+        )(x1)
 
         program = synalinks.Program(
             inputs=x0,
-            outputs=x1,
-            name="answer_with_chain_of_thought",
-            description="Useful to answer step by step",
+            outputs=x2,
+            name="answer_with_cot_and_self_critique",
+            description="Useful to answer accurately",
         )
 
     if __name__ == "__main__":
         asyncio.run(main())
     ```
 
-    References:
-        - [Chain-of-Thought Prompting Elicits Reasoning in Large Language Models](https://arxiv.org/abs/2201.11903)
-
     Args:
-        schema (dict): The target JSON schema.
-            If not provided use the `data_model` to infer it.
-        data_model (DataModel | SymbolicDataModel | JsonDataModel): The target data model.
         language_model (LanguageModel): The language model to use.
         prompt_template (str): The jinja2 prompt template (see `Generator`).
         examples (list): The default list of examples (see `Generator`).
@@ -85,9 +105,9 @@ class ChainOfThought(Module):
             the prompt (Default to False) (see `Generator`).
         use_outputs_schema (bool): Optional. Whether or not use the outputs schema in
             the prompt (Default to False) (see `Generator`).
-        k (int): The number of thinking fields to add.
+        return_reward (bool): Optional. Whether or not to compute an intermediate reward.
         return_inputs (bool): Optional. Whether or not to concatenate the inputs to
-            the outputs (Default to False) (see `Generator`).
+            the outputs (Default to True) (see `Generator`).
         name (str): Optional. The name of the module.
         description (str): Optional. The description of the module.
         trainable (bool): Whether the module's variables should be trainable.
@@ -95,16 +115,14 @@ class ChainOfThought(Module):
 
     def __init__(
         self,
-        schema=None,
-        data_model=None,
         language_model=None,
         prompt_template=None,
         examples=None,
         instructions=None,
         use_inputs_schema=False,
         use_outputs_schema=False,
-        k=1,
-        return_inputs=False,
+        return_reward=True,
+        return_inputs=True,
         name=None,
         description=None,
         trainable=None,
@@ -115,27 +133,22 @@ class ChainOfThought(Module):
             trainable=trainable,
         )
 
-        if not schema and data_model:
-            schema = data_model.get_schema()
-        self.schema = schema
         self.language_model = language_model
         self.prompt_template = prompt_template
         self.examples = examples
         self.instructions = instructions
         self.use_inputs_schema = use_inputs_schema
         self.use_outputs_schema = use_outputs_schema
+        self.return_reward = return_reward
         self.return_inputs = return_inputs
-        self.k = k
 
-        thinking_data_model = Thinking
-        if k > 1:
-            for _ in range(k - 1):
-                thinking_data_model += Thinking
-
-        final_data_model = thinking_data_model + SymbolicDataModel(schema=self.schema)
+        if self.return_reward:
+            schema = CritiqueWithReward.get_schema()
+        else:
+            schema = Critique.get_schema()
 
         self.generator = Generator(
-            data_model=final_data_model,
+            schema=schema,
             language_model=self.language_model,
             prompt_template=self.prompt_template,
             examples=self.examples,
@@ -151,14 +164,12 @@ class ChainOfThought(Module):
 
     def get_config(self):
         config = {
-            "schema": self.schema,
-            "prompt_template": self.prompt_template,
             "examples": self.examples,
             "instructions": self.instructions,
             "use_inputs_schema": self.use_inputs_schema,
             "use_outputs_schema": self.use_outputs_schema,
+            "return_reward": self.return_reward,
             "return_inputs": self.return_inputs,
-            "k": self.k,
             "name": self.name,
             "description": self.description,
             "trainable": self.trainable,

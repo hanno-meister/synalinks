@@ -7,9 +7,9 @@ from synalinks.src.backend import SymbolicDataModel
 from synalinks.src.modules.module import Module
 
 
-@synalinks_export(["synalinks.modules.NoneModule", "synalinks.NoneModule"])
-class NoneModule(Module):
-    """None module.
+@synalinks_export(["synalinks.modules.Not", "synalinks.Not"])
+class Not(Module):
+    """Not module.
 
     This module should be used as a placeholder when no operation is to be
     performed and the output should be None.

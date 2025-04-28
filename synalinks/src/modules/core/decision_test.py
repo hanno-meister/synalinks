@@ -18,7 +18,7 @@ class DecisionTest(testing.TestCase):
             query: str
 
         language_model = LanguageModel(
-            model="ollama_chat/deepseek-r1",
+            model="ollama/mistral",
         )
 
         expected_string = (

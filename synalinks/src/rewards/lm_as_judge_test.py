@@ -19,7 +19,7 @@ class LMAsJudgeTest(testing.TestCase):
             thinking: str = Field(description="The step by step thinking process")
             answer: str = Field(description="The correct answer")
 
-        language_model = LanguageModel(model="ollama_chat/deepseek-r1")
+        language_model = LanguageModel(model="ollama/mistral")
 
         reward = LMAsJudge(language_model=language_model)
 
@@ -38,9 +38,8 @@ class LMAsJudgeTest(testing.TestCase):
         y_pred = inputs + y_pred
 
         expected_string = (
-            """{"thinking": "The provided answer is correct", """
-            """"critique": "The answer is correct so we can attribute a high reward", """
-            """"reward":1.0}"""
+            """{"critique": "The answer is correct so we can attribute a high reward", """
+            """"reward": 1.0}"""
         )
 
         mock_completion.return_value = {

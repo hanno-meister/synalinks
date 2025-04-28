@@ -74,7 +74,7 @@ class Action(Module):
                 }
 
         language_model = synalinks.LanguageModel(
-            model="ollama_chat/deepseek-r1",
+            model="ollama/mistral",
         )
 
         x0 = synalinks.Input(data_model=Query)

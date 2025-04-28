@@ -45,7 +45,7 @@ Output JSON Schema:
 {{ outputs_schema }}
 {% endif %}
 {% if examples %}
-Examples:
+### Examples
 {% for example in examples %}
 Input:
 {{ example[0] }}
@@ -54,7 +54,7 @@ Output:
 {% endfor %}
 {% endif %}
 {% if instructions %}
-Instructions:
+### Instructions:
 {% for instruction in instructions %}
  - {{ instruction }}
 {% endfor %}
@@ -77,7 +77,7 @@ def chat_prompt_template():
     return """
 <system>
 {% if instructions %}
-Instructions:
+### Instructions:
 {% for instruction in instructions %}
  - {{ instruction }}
 {% endfor %}{% endif %}
@@ -136,7 +136,7 @@ class Generator(Module):
             )
 
         language_model = synalinks.LanguageModel(
-            model="ollama/deepseek-r1",
+            model="ollama/mistral",
         )
 
         x0 = synalinks.Input(data_model=Query)

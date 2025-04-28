@@ -26,7 +26,7 @@ class ChainOfThoughtModuleTest(testing.TestCase):
             )
 
         language_model = LanguageModel(
-            model="ollama_chat/deepseek-r1",
+            model="ollama/mistral",
         )
 
         x0 = Input(data_model=Query)
@@ -61,7 +61,7 @@ class ChainOfThoughtModuleTest(testing.TestCase):
             )
         )
 
-        self.assertAlmostEqual(result.get_json(), json.loads(expected_string))
+        self.assertEqual(result.get_json(), json.loads(expected_string))
 
     @patch("litellm.completion")
     async def test_chain_of_thought_with_k_2(self, mock_completion):
@@ -114,4 +114,4 @@ class ChainOfThoughtModuleTest(testing.TestCase):
             )
         )
 
-        self.assertAlmostEqual(result.get_json(), json.loads(expected_string))
+        self.assertEqual(result.get_json(), json.loads(expected_string))

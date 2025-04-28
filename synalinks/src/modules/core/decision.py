@@ -39,7 +39,7 @@ class Decision(Module):
     async def main():
 
         language_model = synalinks.LanguageModel(
-            model="ollama_chat/deepseek-r1",
+            model="ollama/mistral",
         )
 
         x0 = synalinks.Input(data_model=synalinks.ChatMessages)

@@ -31,7 +31,7 @@ from synalinks.api import KnowledgeGraphs
 from synalinks.api import LanguageModel
 from synalinks.api import Metric
 from synalinks.api import Module
-from synalinks.api import NoneModule
+from synalinks.api import Not
 from synalinks.api import Operation
 from synalinks.api import Or
 from synalinks.api import Prediction
@@ -39,6 +39,7 @@ from synalinks.api import Program
 from synalinks.api import ReACTAgent
 from synalinks.api import RelationSchema
 from synalinks.api import Reward
+from synalinks.api import SelfCritique
 from synalinks.api import Sequential
 from synalinks.api import StatelessScope
 from synalinks.api import SymbolicDataModel

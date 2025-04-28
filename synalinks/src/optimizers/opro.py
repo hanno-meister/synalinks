@@ -85,7 +85,7 @@ class OPRO(Optimizer):
                 "Below are some previous instructions with their reward.",
                 "Generate instructions that is different from all the instructions.",
                 (
-                    "The instruction should be concise, effective and generally"
+                    "The instructions should be concise, effective and generally"
                     " applicable to all predictions below."
                 ),
             ],

@@ -1,26 +1,10 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
 from synalinks.src import ops
-from synalinks.src.backend import DataModel
-from synalinks.src.backend import Field
-from synalinks.src.modules import Generator
+from synalinks.src.modules import SelfCritique
 from synalinks.src.programs import Program
 from synalinks.src.rewards.reward_wrappers import ProgramAsJudge
 from synalinks.src.saving import serialization_lib
-
-
-class RewardWithCritique(DataModel):
-    thinking: str = Field(
-        description="The step by step thinking to critique",
-    )
-    critique: str = Field(
-        description="The critique of the provided inputs",
-    )
-    reward: float = Field(
-        description="The reward value between [0.0, 1.0]",
-        ge=0.0,
-        le=1.0,
-    )
 
 
 class LMAsJudgeProgram(Program):
@@ -53,13 +37,12 @@ class LMAsJudgeProgram(Program):
             description=description,
             trainable=trainable,
         )
-        self.generator = Generator(
-            data_model=RewardWithCritique,
+        self.critique = SelfCritique(
             language_model=language_model,
             prompt_template=prompt_template,
             examples=examples,
             instructions=instructions,
-            name=self.name + "_generator",
+            name=self.name + "_self_critique",
         )
         self.language_model = language_model
         self.prompt_template = prompt_template
@@ -79,7 +62,7 @@ class LMAsJudgeProgram(Program):
                 prefix="gold",
                 name="gold_y_true",
             )
-            return await self.generator(
+            return await self.critique(
                 await ops.concat(
                     y_true,
                     y_pred,
@@ -87,13 +70,16 @@ class LMAsJudgeProgram(Program):
                 )
             )
         else:
-            return await self.generator(y_pred)
+            return await self.critique(y_pred)
 
     def get_config(self):
         config = {
             "prompt_template": self.prompt_template,
             "examples": self.examples,
             "instructions": self.instructions,
+            "name": self.name,
+            "description": self.description,
+            "trainable": self.trainable,
         }
         language_model_config = {
             "language_model": serialization_lib.serialize_synalinks_object(

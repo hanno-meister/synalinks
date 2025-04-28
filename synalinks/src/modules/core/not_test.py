@@ -3,17 +3,17 @@
 from synalinks.src import testing
 from synalinks.src.backend import DataModel
 from synalinks.src.modules.core.input_module import Input
-from synalinks.src.modules.core.none import NoneModule
+from synalinks.src.modules.core.not_module import Not
 from synalinks.src.programs.program import Program
 
 
-class NoneModuleTest(testing.TestCase):
+class NotTest(testing.TestCase):
     async def test_single_inputs(self):
         class Query(DataModel):
             query: str
 
         inputs = Input(data_model=Query)
-        outputs = await NoneModule()(inputs)
+        outputs = await Not()(inputs)
 
         program = Program(
             inputs=inputs,
@@ -33,7 +33,7 @@ class NoneModuleTest(testing.TestCase):
             Input(data_model=Query),
             Input(data_model=Query),
         )
-        outputs = await NoneModule()(inputs)
+        outputs = await Not()(inputs)
 
         program = Program(
             inputs=inputs,
@@ -61,7 +61,7 @@ class NoneModuleTest(testing.TestCase):
             Input(data_model=Query),
             Input(data_model=Query),
         ]
-        outputs = await NoneModule()(inputs)
+        outputs = await Not()(inputs)
 
         program = Program(
             inputs=inputs,
@@ -89,7 +89,7 @@ class NoneModuleTest(testing.TestCase):
             "b": Input(data_model=Query),
             "c": Input(data_model=Query),
         }
-        outputs = await NoneModule()(inputs)
+        outputs = await Not()(inputs)
 
         program = Program(
             inputs=inputs,

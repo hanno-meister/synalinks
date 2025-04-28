@@ -3,10 +3,13 @@ from synalinks.src.modules.core.action import Action
 from synalinks.src.modules.core.branch import Branch
 from synalinks.src.modules.core.decision import Decision
 from synalinks.src.modules.core.generator import Generator
+from synalinks.src.modules.core.identity import Identity
 from synalinks.src.modules.core.input_module import Input
 from synalinks.src.modules.core.input_module import InputModule
+from synalinks.src.modules.core.not_module import Not
 from synalinks.src.modules.module import Module
 from synalinks.src.modules.ttc.chain_of_thought import ChainOfThought
+from synalinks.src.modules.ttc.self_critique import SelfCritique
 from synalinks.src.saving import serialization_lib
 
 

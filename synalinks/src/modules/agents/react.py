@@ -41,14 +41,20 @@ class ReACTAgent(Program):
     Example:
 
     ```python
+    import synalinks
+    import asyncio
+
+    class Query(synalinks.DataModel):
+        query: str = synalinks.Field(
+            description="The user query",
+        )
+
+    class FinalAnswer(synalinks.DataModel):
+        answer: float = synalinks.Field(
+            description="The correct final answer",
+        )
 
     async def main():
-
-        class Query(DataModel):
-            query: str
-
-        class FinalAnswer(DataModel):
-            answer: float
 
         async def calculate(expression: str):
             \"""Calculate the result of a mathematical expression.
@@ -76,7 +82,7 @@ class ReACTAgent(Program):
                     "log": f"Error: {e}",
                 }
 
-        language_model = LanguageModel(model="ollama_chat/deepseek-r1")
+        language_model = LanguageModel(model="ollama/mistral")
 
         x0 = Input(data_model=Query)
         x1 = await ReACTAgent(
@@ -89,6 +95,8 @@ class ReACTAgent(Program):
         program = Program(
             inputs=x0,
             outputs=x1,
+            name="math_agent",
+            description="A math agent that can use a calculator",
         )
 
     if __name__ == "__main__":
