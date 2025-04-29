@@ -20,7 +20,7 @@ class RandomFewShotTest(testing.TestCase):
     @patch("litellm.embedding")
     @patch("litellm.completion")
     async def test_random_few_shot_training(self, mock_completion, mock_embedding):
-        language_model = LanguageModel(model="ollama/deepseek-r1")
+        language_model = LanguageModel(model="ollama/mistral")
 
         embedding_model = EmbeddingModel(model="ollama/all-minilm")
 
