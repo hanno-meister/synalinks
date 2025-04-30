@@ -76,19 +76,20 @@ You start from `Input`, you chain modules calls to specify the program's structu
 import synalinks
 import asyncio
 
-async def main():
-    class Query(synalinks.DataModel):
-        query: str = synalinks.Field(
-            description="The user query",
-        )
+class Query(synalinks.DataModel):
+    query: str = synalinks.Field(
+        description="The user query",
+    )
 
-    class AnswerWithThinking(synalinks.DataModel):
-        thinking: str = synalinks.Field(
-            description="Your step by step thinking process",
-        )
-        answer: float = synalinks.Field(
-            description="The correct numerical answer",
-        )
+class AnswerWithThinking(synalinks.DataModel):
+    thinking: str = synalinks.Field(
+        description="Your step by step thinking process",
+    )
+    answer: float = synalinks.Field(
+        description="The correct numerical answer",
+    )
+
+async def main():
 
     language_model = synalinks.LanguageModel(
         model="ollama/mistral",
@@ -121,73 +122,74 @@ In that case, you should define your modules in `__init__()` and implement the p
 import synalinks
 import asyncio
 
+class Query(synalinks.DataModel):
+    query: str = synalinks.Field(
+        description="The user query",
+    )
+
+class AnswerWithThinking(synalinks.DataModel):
+    thinking: str = synalinks.Field(
+        description="Your step by step thinking process",
+    )
+    answer: float = synalinks.Field(
+        description="The correct numerical answer",
+    )
+
+class ChainOfThought(synalinks.Program):
+    """Useful to answer in a step by step manner.
+    
+    The first line of the docstring is provided as description
+    for the program if not provided in the `super().__init__()`.
+    In a similar way the name is automatically infered based on
+    the class name if not provided.
+    """
+
+    def __init__(
+        self,
+        language_model=None,
+        name=None,
+        description=None,
+        trainable=True,
+    ):
+        super().__init__(
+            name=name,
+            description=description,
+            trainable=trainable,
+        )
+        self.answer = synalinks.Generator(
+            data_model=AnswerWithThinking,
+            language_model=language_model,
+            name=self.name+"_generator",
+        )
+
+    async def call(self, inputs, training=False):
+        if not inputs:
+            return None
+        x = await self.answer(inputs, training=training)
+        return x
+
+    def get_config(self):
+        config = {
+            "name": self.name,
+            "description": self.description,
+            "trainable": self.trainable,
+        }
+        language_model_config = \
+        {
+            "language_model": synalinks.saving.serialize_synalinks_object(
+                self.language_model
+            )
+        }
+        return {**config, **language_model_config}
+
+    @classmethod
+    def from_config(cls, config):
+        language_model = synalinks.saving.deserialize_synalinks_object(
+            config.pop("language_model")
+        )
+        return cls(language_model=language_model, **config)
+
 async def main():
-    class Query(synalinks.DataModel):
-        query: str = synalinks.Field(
-            description="The user query",
-        )
-
-    class AnswerWithThinking(synalinks.DataModel):
-        thinking: str = synalinks.Field(
-            description="Your step by step thinking process",
-        )
-        answer: float = synalinks.Field(
-            description="The correct numerical answer",
-        )
-
-    class ChainOfThought(synalinks.Program):
-        """Useful to answer in a step by step manner.
-        
-        The first line of the docstring is provided as description
-        for the program if not provided in the `super().__init__()`.
-        In a similar way the name is automatically infered based on
-        the class name if not provided.
-        """
-
-        def __init__(
-            self,
-            language_model=None,
-            name=None,
-            description=None,
-            trainable=True,
-        ):
-            super().__init__(
-                name=name,
-                description=description,
-                trainable=trainable,
-            )
-            self.answer = synalinks.Generator(
-                data_model=AnswerWithThinking,
-                language_model=language_model,
-                name=self.name+"_generator",
-            )
-
-        async def call(self, inputs, training=False):
-            if not inputs:
-                return None
-            x = await self.answer(inputs, training=training)
-            return x
-
-        def get_config(self):
-            config = {
-                "name": self.name,
-                "description": self.description,
-                "trainable": self.trainable,
-            }
-            language_model_config = \
-            {
-                "language_model": synalinks.saving.serialize_synalinks_object(
-                    self.language_model
-                )
-            }
-            return {**config, **language_model_config}
-
-        @classmethod
-        def from_config(cls, config):
-            language_model = synalinks.saving.deserialize_synalinks_object(
-                config.pop("language_model")
-            )
-            return cls(language_model=language_model, **config)
 
     language_model = synalinks.LanguageModel(
         model="ollama/mistral",
@@ -211,20 +213,20 @@ In that case, you should implement only the `__init__()` and `build()` methods.
 import synalinks
 import asyncio
 
+class Query(synalinks.DataModel):
+    query: str = synalinks.Field(
+        description="The user query",
+    )
+
+class AnswerWithThinking(synalinks.DataModel):
+    thinking: str = synalinks.Field(
+        description="Your step by step thinking process",
+    )
+    answer: float = synalinks.Field(
+        description="The correct numerical answer",
+    )
+
 async def main():
-
-    class Query(synalinks.DataModel):
-        query: str = synalinks.Field(
-            description="The user query",
-        )
-
-    class AnswerWithThinking(synalinks.DataModel):
-        thinking: str = synalinks.Field(
-            description="Your step by step thinking process",
-        )
-        answer: float = synalinks.Field(
-            description="The correct numerical answer",
-        )
 
     class ChainOfThought(synalinks.Program):
         """Useful to answer in a step by step manner."""
@@ -283,19 +285,20 @@ is purely a stack of single-input, single-output modules.
 import synalinks
 import asyncio
 
-async def main():
-    class Query(synalinks.DataModel):
-        query: str = synalinks.Field(
-            description="The user query",
-        )
+class Query(synalinks.DataModel):
+    query: str = synalinks.Field(
+        description="The user query",
+    )
 
-    class AnswerWithThinking(synalinks.DataModel):
-        thinking: str = synalinks.Field(
-            description="Your step by step thinking process",
-        )
-        answer: float = synalinks.Field(
-            description="The correct numerical answer",
-        )
+class AnswerWithThinking(synalinks.DataModel):
+    thinking: str = synalinks.Field(
+        description="Your step by step thinking process",
+    )
+    answer: float = synalinks.Field(
+        description="The correct numerical answer",
+    )
+
+async def main():
 
     language_model = synalinks.LanguageModel(
         model="ollama/mistral",

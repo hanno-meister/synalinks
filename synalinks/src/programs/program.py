@@ -21,30 +21,39 @@ from synalinks.src.utils.nlp_utils import remove_numerical_suffix
 class Program(Trainer, Module):
     """A program grouping modules into an object with training/inference features.
 
-    There is three ways to instantiate a `Program`:
+    There is four ways to instantiate a `Program`:
 
     ## With the "Functional API"
 
-    You start from `Input`, you chain modules calls to specify the program's forward pass,
+    You start from `Input`, you chain modules calls to specify the program's structure,
     and finally, you create your program from inputs and outputs:
 
     ```python
     import synalinks
     import asyncio
+    
+    class Query(synalinks.DataModel):
+        query: str = synalinks.Field(
+            description="The user query",
+        )
 
+    class AnswerWithThinking(synalinks.DataModel):
+        thinking: str = synalinks.Field(
+            description="Your step by step thinking process",
+        )
+        answer: float = synalinks.Field(
+            description="The correct numerical answer",
+        )
+    
     async def main():
-        class Query(synalinks.DataModel):
-            query: str
 
-        class AnswerWithRationale(synalinks.DataModel):
-            rationale: str
-            answer: str
-
-        language_model = synalinks.LanguageModel(model="ollama_chat/deepseek-r1")
+        language_model = synalinks.LanguageModel(
+            model="ollama/mistral",
+        )
 
         x0 = synalinks.Input(data_model=Query)
         x1 = await synalinks.Generator(
-            data_model=AnswerWithRationale,
+            data_model=AnswerWithThinking,
             language_model=language_model,
         )(x0)
 
@@ -66,43 +75,88 @@ class Program(Trainer, Module):
 
     In that case, you should define your
     modules in `__init__()` and you should implement the program's structure
-    in `call()`.
+    in `call()` .
 
     ```python
     import synalinks
     import asyncio
+    
+    class Query(synalinks.DataModel):
+        query: str = synalinks.Field(
+            description="The user query",
+        )
 
-    async def main():
-        class Query(synalinks.DataModel):
-            query: str
+    class AnswerWithThinking(synalinks.DataModel):
+        thinking: str = synalinks.Field(
+            description="Your step by step thinking process",
+        )
+        answer: float = synalinks.Field(
+            description="The correct numerical answer",
+        )
+        
+    class ChainOfThought(synalinks.Program):
+        \"\"\"Useful to answer in a step by step manner.
+        
+        The first line of the docstring is provided as description
+        for the program if not provided in the `super().__init__()`.
+        In a similar way the name is automatically infered based on
+        the class name if not provided.
+        \"\"\"
 
-        class AnswerWithRationale(synalinks.DataModel):
-            rationale: str
-            answer: str
+        def __init__(
+            self,
+            language_model=None,
+            name=None,
+            description=None,
+            trainable=True,
+        ):
+            super().__init__(
+                name=name,
+                description=description,
+                trainable=trainable,
+            )
+            self.answer = synalinks.Generator(
+                data_model=AnswerWithThinking,
+                language_model=language_model,
+                name=self.name+"_generator",
+            )
 
-        class ChainOfThought(synalinks.Program):
-            \"""Useful to answer in a step by step manner.
+        async def call(self, inputs, training=False):
+            if not inputs:
+                return None
+            x = await self.answer(inputs, training=training)
+            return x
 
-            The first line of the docstring is provided as description for the program
-            if not provided in the `super().__init__()`. In a similar way the name is
-            automatically infered based on the class name if not provided.
-            \"""
-
-            def __init__(self, language_model=None):
-                super().__init__()
-                self.answer = synalinks.Generator(
-                    data_model=AnswerWithRationale,
-                    language_model=language_model
+        def get_config(self):
+            config = {
+                "name": self.name,
+                "description": self.description,
+                "trainable": self.trainable,
+            }
+            language_model_config = \
+            {
+                "language_model": synalinks.saving.serialize_synalinks_object(
+                    self.language_model
                 )
+            }
+            return {**config, **language_model_config}
 
-            async def call(self, inputs):
-                x = await self.answer(inputs)
-                return x
+        @classmethod
+        def from_config(cls, config):
+            language_model = synalinks.saving.deserialize_synalinks_object(
+                config.pop("language_model")
+            )
+            return cls(language_model=language_model, **config)
+    
+    async def main():
 
-        program = ChainOfThought(language_model=language_model)
+        language_model = synalinks.LanguageModel(
+            model="ollama/mistral",
+        )
 
-    if __name__ == "__main__":
-        asyncio.run(main())
+        program = ChainOfThought(
+            language_model=language_model,
+        )
     ```
 
     If you subclass `Program`, you can optionally have
@@ -116,6 +170,79 @@ class Program(Trainer, Module):
     To understand the difference between `program.predict()` or `program()`, read the
     [FAQ](https://synalinks.github.io/synalinks/FAQ/#whats-the-difference-between-program-methods-predict-and-__call__).
 
+    ## Mixing the subclassing and the `Functional` API
+
+    This way of programming is recommended to encapsulate your application while providing an easy to use setup.
+    It is the recommended way for most users as it avoid making your program/agents from scratch.
+    In that case, you should implement only the `__init__()` and `build()` methods.
+
+    ```python
+    import synalinks
+    import asyncio
+
+    class Query(synalinks.DataModel):
+        query: str = synalinks.Field(
+            description="The user query",
+        )
+
+    class AnswerWithThinking(synalinks.DataModel):
+        thinking: str = synalinks.Field(
+            description="Your step by step thinking process",
+        )
+        answer: float = synalinks.Field(
+            description="The correct numerical answer",
+        )
+
+    async def main():
+
+        class ChainOfThought(synalinks.Program):
+            \"\"\"Useful to answer in a step by step manner.\"\"\"
+
+            def __init__(
+                self,
+                language_model=None,
+                name=None,
+                description=None,
+                trainable=True,
+            ):
+                super().__init__(
+                    name=name,
+                    description=description,
+                    trainable=trainable,
+                )
+
+                self.language_model = language_model
+            
+            async def build(self, inputs):
+                outputs = await synalinks.Generator(
+                    data_model=AnswerWithThinking,
+                    language_model=self.language_model,
+                )(inputs)
+
+                # Create your program using the functional API
+                super().__init__(
+                    inputs=inputs,
+                    outputs=outputs,
+                    name=self.name,
+                    description=self.description,
+                    trainable=self.trainable,
+                )
+
+        language_model = synalinks.LanguageModel(
+            model="ollama/mistral",
+        )
+
+        program = ChainOfThought(
+            language_model=language_model,
+        )
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+
+    This allows you to not have to implement the `call()` and serialization methods
+    (`get_config()` and `from_config()`). The program will be built for any inputs the first time called.
+
     ## With the `Sequential` class
 
     In addition, `synalinks.Sequential` is a special case of program where
@@ -124,16 +251,23 @@ class Program(Trainer, Module):
     ```python
     import synalinks
     import asyncio
+    
+    class Query(synalinks.DataModel):
+        query: str = synalinks.Field(
+            description="The user query",
+        )
+
+    class AnswerWithThinking(synalinks.DataModel):
+        thinking: str = synalinks.Field(
+            description="Your step by step thinking process",
+        )
+        answer: float = synalinks.Field(
+            description="The correct numerical answer",
+        )
 
     async def main():
-        class Query(synalinks.DataModel):
-            query: str
 
-        class AnswerWithRationale(synalinks.DataModel):
-            rationale: str
-            answer: str
-
-        language_model = synalinks.LanguageModel(model="ollama_chat/deepseek-r1")
+        language_model = synalinks.LanguageModel(model="ollama/mistral")
 
         program = synalinks.Sequential(
             [
@@ -141,7 +275,7 @@ class Program(Trainer, Module):
                     data_model=Query,
                 ),
                 synalinks.Generator(
-                    data_model=AnswerWithRationale,
+                    data_model=AnswerWithThinking,
                     language_model=language_model,
                 ),
             ],
@@ -315,6 +449,7 @@ class Program(Trainer, Module):
         - The program's configuration (architecture)
         - The program's variables
         - The program's optimizer's state (if any)
+        - The program's reward's state (if any)
 
         Thus programs can be reinstantiated in the exact same state.
 
