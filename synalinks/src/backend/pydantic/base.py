@@ -654,7 +654,6 @@ def is_triplet_search(x):
             and properties.get("object_label", None)
             and properties.get("object_similarity_search", None)
             and properties.get("returns", None)
-            and properties.get("return_count", None)
         ):
             return True
     return False
