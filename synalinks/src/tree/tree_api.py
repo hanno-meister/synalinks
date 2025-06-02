@@ -10,6 +10,7 @@ from synalinks.src.utils.module_utils import optree
 if optree.available:
     from synalinks.src.tree import optree_impl as tree_impl
 else:
+    # from synalinks.src.tree import python_impl as tree_impl
     raise ImportError(
         "To use synalinks, you need to have `optree` installed. "
         "Install it via `pip install optree`"
@@ -134,32 +135,6 @@ def flatten(structure):
     return tree_impl.flatten(structure)
 
 
-@synalinks_export("synalinks.tree.flatten_with_path")
-def flatten_with_path(structure):
-    """Flattens a possibly nested structure into a list.
-
-    This is a variant of flattens() which produces a
-    list of pairs: `(path, item)`. A path is a tuple of indices and/or keys
-    which uniquely identifies the position of the corresponding item.
-
-    Dictionaries with non-sortable keys are not supported.
-
-    Examples:
-
-    >>> synalinks.flatten_with_path([{"foo": 42}])
-    [((0, 'foo'), 42)]
-
-
-    Args:
-        structure: An arbitrarily nested structure.
-
-    Returns:
-        A list of `(path, item)` pairs corresponding to the flattened
-        version of the input `structure`.
-    """
-    return tree_impl.flatten_with_path(structure)
-
-
 @synalinks_export("synalinks.tree.map_structure")
 def map_structure(func, *structures):
     """Maps `func` through given structures.
@@ -191,43 +166,6 @@ def map_structure(func, *structures):
             `assert_same_structure`.
     """
     return tree_impl.map_structure(func, *structures)
-
-
-@synalinks_export("synalinks.tree.map_structure_up_to")
-def map_structure_up_to(shallow_structure, func, *structures):
-    """Maps `func` through given structures up to `shallow_structure`.
-
-    This is a variant of `map_structure` which only maps the given structures
-    up to `shallow_structure`. All further nested components are retained as-is.
-
-    Examples:
-
-    >>> shallow_structure = [None, None]
-    >>> structure = [[1, 1], [2, 2]]
-    >>> synalinks.tree.map_structure_up_to(shallow_structure, len, structure)
-    [2, 2]
-
-    >>> shallow_structure = [None, [None, None]]
-    >>> synalinks.tree.map_structure_up_to(shallow_structure, str, structure)
-    ['[1, 1]', ['2', '2']]
-
-    Args:
-        shallow_structure: A structure with layout common to all `structures`.
-        func: A callable that accepts as many arguments as there are structures.
-        *structures: Arbitrarily nested structures of the same layout.
-
-    Returns:
-        A new structure with the same layout as `shallow_structure`.
-
-    Raises:
-        TypeError: If `structures` is empty or `func` is not callable.
-        ValueError: If one of the items in `structures` doesn't match the
-            nested structure of `shallow_structure` according to the rules of
-            `assert_same_structure`. Items in `structures` are allowed to be
-            nested deeper than `shallow_structure`, but they cannot be
-            shallower.
-    """
-    return tree_impl.map_structure_up_to(shallow_structure, func, *structures)
 
 
 @synalinks_export("synalinks.tree.assert_same_structure")

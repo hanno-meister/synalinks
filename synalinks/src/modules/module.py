@@ -205,17 +205,32 @@ class Module(BackendModule, Operation, SynalinksSaveable):
         )
 
     @python_utils.default
-    async def build(self, input_schema):
+    async def build(self, *args, **kwargs):
         self._check_super_called()
         if utils.is_default(self.build) and might_have_unbuilt_state(self):
-            warnings.warn(
-                f"`build()` was called on module '{self.name}', however "
-                "the module does not have a `build()` method implemented "
-                "and it looks like it has unbuilt state. This will cause "
-                "the module to be marked as built, despite not being "
-                "actually built, which may cause failures down the line. "
-                "Make sure to implement a proper `build()` method."
-            )
+            try:
+                if isinstance(args, tuple):
+                    args = list(args)
+                if len(args) == 1 or backend.is_data_model(args[0]):
+                    args[0] = args[0].to_symbolic_data_model()
+                else:
+                    args = tree.map_structure(
+                        lambda x: x.to_symbolic_data_model()
+                        if backend.is_data_model(x)
+                        else x,
+                        args,
+                    )
+                await self.__call__(*args, **kwargs)
+            except Exception as e:
+                warnings.warn(
+                    f"`build()` was called on module '{self.name}', however "
+                    "the module does not have a `build()` method implemented "
+                    "and it looks like it has unbuilt state. This will cause "
+                    "the module to be marked as built, despite not being "
+                    "actually built, which may cause failures down the line. "
+                    "Make sure to implement a proper `build()` method."
+                    f"Exception encountered: ''{e}''"
+                )
         self.built = True
 
     def _lock_state(self):

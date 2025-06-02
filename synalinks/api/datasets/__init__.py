@@ -6,3 +6,4 @@ since your modifications would be overwritten.
 
 from synalinks.api.datasets import arcagi
 from synalinks.api.datasets import gsm8k
+from synalinks.api.datasets import hotpotqa

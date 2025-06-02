@@ -46,16 +46,29 @@ plugins:
   - search
   - mkdocstrings:
       default_handler: python
-  # - glightbox
+  - glightbox
 
 nav:
   - index.md
   - Introduction.md
   - FAQ.md
-  - Code Examples: https://huggingface.co/spaces/YoanSallami/synalinks-noteboooks
+  - Code Examples:
+    - Basics:
+      - Code Examples/Basics/First Steps.md
+      - Code Examples/Basics/First Programs.md
+      - Code Examples/Basics/Control Flow.md
+      - Code Examples/Basics/Conversational Applications.md
+      - Code Examples/Basics/Reward Metrics And Optimizers.md
+      - Code Examples/Basics/Training Programs.md
+    - Advanced:
+      - Code Examples/Advanced/Implementing Custom Modules And Programs Via Subclassing.md
+      - Code Examples/Advanced/First Knowledge Graph Schema.md
+      - Code Examples/Advanced/Knowledge Extraction.md
+      - Code Examples/Advanced/Retrieval Augmented Generation.md
   - Synalinks API:
     - Synalinks API/Language Models API.md
     - Synalinks API/Embedding Models API.md
+    - Synalinks API/Knowledge Bases API.md
     - Data Models API:
       - Synalinks API/Data Models API/index.md
       - Synalinks API/Data Models API/The DataModel class.md
@@ -83,6 +96,12 @@ nav:
         - Synalinks API/Modules API/Core Modules/Decision module.md
         - Synalinks API/Modules API/Core Modules/Action module.md
         - Synalinks API/Modules API/Core Modules/Branch module.md
+      - Knowledge Modules:
+        - Synalinks API/Modules API/Knowledge Modules/index.md
+        - Synalinks API/Modules API/Knowledge Modules/Embedding module.md
+        - Synalinks API/Modules API/Knowledge Modules/UpdateKnowledge module.md
+        - Synalinks API/Modules API/Knowledge Modules/EntityRetriever module.md
+        - Synalinks API/Modules API/Knowledge Modules/KnowledgeRetriever module.md
       - Merging Modules:
         - Synalinks API/Modules API/Merging Modules/index.md
         - Synalinks API/Modules API/Merging Modules/Concat module.md
@@ -126,6 +145,7 @@ nav:
     - Built-in Datasets:
       - Synalinks API/Built-in Datasets/index.md
       - Synalinks API/Built-in Datasets/GSM8K.md
+      - Synalinks API/Built-in Datasets/HotpotQA.md
       - Synalinks API/Built-in Datasets/ARC-AGI.md
     - Utilities:
       - Synalinks API/Utilities/Program plotting utilities.md

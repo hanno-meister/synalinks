@@ -36,7 +36,7 @@ def get_config_json(filename: str):
 
     config_folder_path = config.__file__[: -len("/__init__.py")]
     json_config = {}
-    with open(os.path.join(config_folder_path, filename), "r") as f:
+    with open(os.path.join(config_folder_path, filename), "r", encoding="utf-8") as f:
         json_config = json.loads(f.read())
     return json_config
 
@@ -177,7 +177,9 @@ def setup_project(config: Dict[str, Any], secrets: Dict[str, Any] = {}):
         if not os.path.exists(node_dir):
             os.mkdir(node_dir)
         if node_dir == project_dir:
-            with open(os.path.join(project_dir, PROJECT_CONFIG_FILENAME), "w") as f:
+            with open(
+                os.path.join(project_dir, PROJECT_CONFIG_FILENAME), "w", encoding="utf-8"
+            ) as f:
                 f.write(json.dumps(config, indent=2))
         for filename, template in node_structure.items():
             filename = jinja2.Template(filename).render(config=config)
@@ -185,7 +187,7 @@ def setup_project(config: Dict[str, Any], secrets: Dict[str, Any] = {}):
             if isinstance(template, dict):
                 queue.append((path, template))
             elif isinstance(template, str):
-                with open(path, "w") as f:
+                with open(path, "w", encoding="utf-8") as f:
                     template = jinja2.Template(template).render(config=config)
                     f.write(template)
     # Setup secrets into an .env file
@@ -211,7 +213,7 @@ def setup_project(config: Dict[str, Any], secrets: Dict[str, Any] = {}):
     for lm_provider, env_variables in secrets.items():
         for env_var, env_var_value in env_variables.items():
             variables.append(f"{env_var}={env_var_value}")
-    with open(os.path.join(project_dir, ".env"), "w") as f:
+    with open(os.path.join(project_dir, ".env"), "w", encoding="utf-8") as f:
         f.write("\n".join(variables))
 
 

@@ -6,7 +6,7 @@ from synalinks.src import testing
 from synalinks.src.backend import DataModel
 from synalinks.src.language_models import LanguageModel
 from synalinks.src.modules import Input
-from synalinks.src.modules.agents.react import ReACTAgent
+from synalinks.src.modules.agents.react_agent import ReACTAgent
 from synalinks.src.programs import Program
 
 

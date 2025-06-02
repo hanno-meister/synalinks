@@ -6,7 +6,7 @@ since your modifications would be overwritten.
 
 from synalinks.src.modules import deserialize
 from synalinks.src.modules import serialize
-from synalinks.src.modules.agents.react import ReACTAgent
+from synalinks.src.modules.agents.react_agent import ReACTAgent
 from synalinks.src.modules.core.action import Action
 from synalinks.src.modules.core.branch import Branch
 from synalinks.src.modules.core.decision import Decision
@@ -15,6 +15,10 @@ from synalinks.src.modules.core.identity import Identity
 from synalinks.src.modules.core.input_module import Input
 from synalinks.src.modules.core.input_module import InputModule
 from synalinks.src.modules.core.not_module import Not
+from synalinks.src.modules.knowledge.embedding import Embedding
+from synalinks.src.modules.knowledge.entity_retriever import EntityRetriever
+from synalinks.src.modules.knowledge.knowledge_retriever import KnowledgeRetriever
+from synalinks.src.modules.knowledge.update_knowledge import UpdateKnowledge
 from synalinks.src.modules.merging.concat import Concat
 from synalinks.src.modules.merging.logical_and import And
 from synalinks.src.modules.merging.logical_or import Or

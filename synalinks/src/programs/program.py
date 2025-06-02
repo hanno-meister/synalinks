@@ -172,8 +172,9 @@ class Program(Trainer, Module):
 
     ## Mixing the subclassing and the `Functional` API
 
-    This way of programming is recommended to encapsulate your application while providing an easy to use setup.
-    It is the recommended way for most users as it avoid making your program/agents from scratch.
+    This way of programming is recommended to encapsulate your application while 
+    providing an easy to use setup. It is the recommended way for most users as 
+    it avoid making your program/agents from scratch.
     In that case, you should implement only the `__init__()` and `build()` methods.
 
     ```python
@@ -241,7 +242,8 @@ class Program(Trainer, Module):
     ```
 
     This allows you to not have to implement the `call()` and serialization methods
-    (`get_config()` and `from_config()`). The program will be built for any inputs the first time called.
+    (`get_config()` and `from_config()`). The program will be built for any inputs 
+    the first time called.
 
     ## With the `Sequential` class
 
@@ -688,11 +690,21 @@ class Program(Trainer, Module):
 
     def _assign_variable_values(self, variables, path_value_dict):
         for full_path, value in path_value_dict.items():
-            path = "/".join(full_path.split("/")[:-1])
-            field_name = full_path.split("/")[-1]
+            path_parts = full_path.split("/")
+            field_name = path_parts[-1]
+            parent_path = "/".join(path_parts[:-1])
             for variable in variables:
-                if remove_numerical_suffix(variable.path) == path:
-                    variable.get_json()[field_name] = value
+                variable_path = remove_numerical_suffix(variable.path)
+                if parent_path == variable_path:
+                    variable.update({field_name: value})
+                    break
+                else:
+                    nested_field_name = parent_path.split("/")[-1]
+                    if parent_path.startswith(variable_path) and variable.get(
+                        nested_field_name, None
+                    ):
+                        variable.get_json()[nested_field_name].update({field_name: value})
+                        break
 
     def _flatten_nested_dict(self, nested_dict):
         flat_dict = {}

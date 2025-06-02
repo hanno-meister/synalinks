@@ -1,2 +1,2 @@
 
-::: synalinks.src.modules.agents.react
+::: synalinks.src.modules.agents.react_agent

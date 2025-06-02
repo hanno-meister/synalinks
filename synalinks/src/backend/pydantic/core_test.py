@@ -1,6 +1,7 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
 from synalinks.src import testing
+from synalinks.src.backend.common.json_schema_utils import is_schema_equal
 from synalinks.src.backend.common.json_schema_utils import standardize_schema
 from synalinks.src.backend.pydantic.core import DataModel
 from synalinks.src.backend.pydantic.core import is_meta_class
@@ -58,7 +59,7 @@ class CoreTest(testing.TestCase):
 
         schema = x.get_schema()
         expected_schema = standardize_schema(Result.get_schema())
-        self.assertEqual(schema, expected_schema)
+        self.assertTrue(is_schema_equal(schema, expected_schema))
 
     def test_and_meta_data_model(self):
         class Foo(DataModel):
@@ -75,7 +76,7 @@ class CoreTest(testing.TestCase):
 
         schema = x.get_schema()
         expected_schema = standardize_schema(Result.get_schema())
-        self.assertEqual(schema, expected_schema)
+        self.assertTrue(is_schema_equal(schema, expected_schema))
 
     def test_or_meta_data_model(self):
         class Foo(DataModel):

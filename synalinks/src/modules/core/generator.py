@@ -103,7 +103,7 @@ class GeneratorState(DataModel):
     examples: List[Prediction] = []
     predictions: List[Prediction] = []
     instructions: Instructions
-    instructions_predictions: List[Instructions] = []
+    instructions_candidates: List[Instructions] = []
 
 
 @synalinks_export(["synalinks.modules.Generator", "synalinks.Generator"])
@@ -215,29 +215,27 @@ class Generator(Module):
             instructions = []
         self.instructions = instructions
 
-        predictions = []
-        for example in examples:
-            prediction = Prediction(
-                inputs=example[0],
-                outputs=example[1],
-            )
-            predictions.append(prediction)
-
-        instructions_predictions = [Instructions(instructions=instructions)]
-
         self.return_inputs = return_inputs
         self.use_inputs_schema = use_inputs_schema
         self.use_outputs_schema = use_outputs_schema
         if schema and streaming:
             streaming = False
         self.streaming = streaming
+
+        predictions = [
+            Prediction(
+                inputs=example[0],
+                outputs=example[1],
+            )
+            for example in examples
+        ]
+
         self.state = self.add_variable(
             initializer=GeneratorState(
                 prompt_template=prompt_template,
                 examples=predictions,
                 predictions=predictions,
-                instructions=instructions_predictions[0],
-                instructions_predictions=instructions_predictions,
+                instructions=Instructions(instructions=instructions),
             ).get_json(),
             data_model=GeneratorState,
             name=self.name + "_state",
@@ -311,7 +309,7 @@ class Generator(Module):
                     name=self.name,
                 )
 
-    def format_messages(self, inputs):
+    def format_messages(self, inputs=None):
         template = jinja2.Template(self.state.get("prompt_template"))
         rendered_prompt = template.render(
             inputs_schema=inputs.get_schema() if self.use_inputs_schema else None,

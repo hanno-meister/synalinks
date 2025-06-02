@@ -90,6 +90,4 @@ class SelfCritiqueModuleTest(testing.TestCase):
             """output slightly for better user experience.", "reward": 0.9}"""
         )
 
-        print(result.prettify_json())
-
         self.assertEqual(result.get_json(), json.loads(expected_string))

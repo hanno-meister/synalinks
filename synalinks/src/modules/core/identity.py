@@ -14,7 +14,7 @@ class Identity(Module):
     This module should be used as a placeholder when no operation is to be
     performed. The module just returns its `inputs` argument as output.
 
-    This module can be really usefull during development process in order to
+    This module can be really useful during development process in order to
     implement the whole program architecture before the individual modules.
 
     It avoid any data models naming issue that you could have by just

@@ -189,7 +189,15 @@ class Function(Operation):
 
         output_data_models = []
         for x in self.outputs:
-            output_data_models.append(data_model_dict[id(x)])
+            try:
+                output_data_models.append(data_model_dict[id(x)])
+            except KeyError:
+                raise KeyError(
+                    f"Name conflict detected for x={x}: "
+                    "Ensure that each data model have a "
+                    "unique name. If it is the case, ensure that your inputs"
+                    " match the program's structure"
+                )
 
         return tree.pack_sequence_as(self._outputs_struct, output_data_models)
 

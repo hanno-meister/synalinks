@@ -29,5 +29,7 @@ jobs:
         run: ./shell/install.sh
       - name: Install pytest
         run: uv pip install pytest pytest-cov
+      - name: Start Neo4J
+        run: docker run --publish=7474:7474 --publish=7687:7687 --volume=$HOME/neo4j/data:/data --env=NEO4J_AUTH=none neo4j
       - name: Run the tests
         run: ./shell/test.sh

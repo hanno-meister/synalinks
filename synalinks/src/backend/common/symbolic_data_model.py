@@ -9,11 +9,12 @@ from synalinks.src import tree
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.backend.common.json_schema_utils import is_schema_equal
 from synalinks.src.backend.common.json_schema_utils import standardize_schema
+from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
 from synalinks.src.utils.naming import auto_name
 
 
 @synalinks_export("synalinks.SymbolicDataModel")
-class SymbolicDataModel:
+class SymbolicDataModel(SynalinksSaveable):
     """A symbolic backend-independent data model.
 
     A `SymbolicDataModel` is a container for a JSON schema and can be used to represent
@@ -421,6 +422,18 @@ class SymbolicDataModel:
         else:
             clone.name = self.name + "_clone"
         return clone
+
+    def get_config(self):
+        config = {
+            "name": self.name,
+            "schema": self.get_schema(),
+            "record_history": self.record_history,
+        }
+        return config
+
+    @classmethod
+    def from_config(cls, config):
+        return cls(**config)
 
 
 def any_symbolic_data_models(args=None, kwargs=None):

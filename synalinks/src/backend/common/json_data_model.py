@@ -1,6 +1,7 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
 import asyncio
+import copy
 import inspect
 
 from synalinks.src.api_export import synalinks_export
@@ -18,10 +19,10 @@ class JsonDataModel:
 
     Args:
         schema (dict): The JSON object's schema. If not provided,
-            uses the data_model to infer it.
+            uses the data model to infer it.
         json (dict): The JSON object's json. If not provided,
-            uses the data_model to infer it.
-        data_model (DataModel | JsonDataModel): The data_model to use to
+            uses the data model to infer it.
+        data_model (DataModel | JsonDataModel): The data model to use to
             infer the schema and json.
         name (str): Optional. The name of the data model, automatically
             inferred if not provided.
@@ -93,7 +94,7 @@ class JsonDataModel:
                 "You should specify at least one argument between "
                 "`data_model` or `schema`."
             )
-        if not json and not data_model:
+        if not schema and not json and not data_model:
             raise ValueError(
                 "You should specify at least one argument between `data_model` or `json`."
             )
@@ -384,15 +385,15 @@ class JsonDataModel:
         )
 
     def get(self, key, default_value=None):
-        """Get wrapper to make it easier to access fields.
+        """Get wrapper to make it easier to access JSON fields.
 
         Args:
             key (str): The key to access.
         """
-        return self._json.get(key, default_value)
+        return copy.deepcopy(self._json.get(key, default_value))
 
     def update(self, kv_dict):
-        """Update wrapper to make it easier to modify fields.
+        """Update wrapper to make it easier to modify JSON fields.
 
         Args:
             kv_dict (dict): The key/json dict to update.
@@ -401,7 +402,6 @@ class JsonDataModel:
 
     def clone(self, name=None):
         """Clone a data model and give it a different name."""
-        import copy
 
         clone = copy.deepcopy(self)
         if name:
@@ -409,6 +409,52 @@ class JsonDataModel:
         else:
             clone.name = auto_name(self.name + "_clone")
         return clone
+
+    def get_nested_entity(self, key):
+        """Retrieve a nested Entity and convert it to a JsonDataModel"""
+        json = copy.deepcopy(self.get(key))
+        if "label" in json:
+            schema_key = json.get("label")
+        else:
+            return None
+        schema = copy.deepcopy(self.get_schema().get("$defs").get(schema_key))
+
+        defs = {}
+        for obj_key, obj_schema in copy.deepcopy(self.get_schema().get("$defs")).items():
+            if str(schema).find(f"#/$defs/{obj_key}") > 0:
+                defs[obj_key] = obj_schema
+
+        if defs:
+            schema.update({"$defs": defs})
+
+        if schema:
+            return JsonDataModel(json=json, schema=schema, name=self.name + "_" + key)
+        else:
+            return None
+
+    def get_nested_entity_list(self, key):
+        """Retrieve a nested Entity list and convert it to a list of JsonDataModel"""
+        json = self.get(key)
+        outputs = []
+        for i, data_model_json in enumerate(json):
+            if "label" in data_model_json:
+                schema_key = data_model_json.get("label")
+                schema = self.get_schema().get("$defs").get(schema_key)
+                defs = {}
+                for obj_key, obj_schema in self.get_schema().get("$defs").items():
+                    if str(schema).find(f"#/$defs/{obj_key}") > 0:
+                        defs[obj_key] = obj_schema
+                if defs:
+                    schema.update({"$defs": defs})
+
+                outputs.append(
+                    JsonDataModel(
+                        json=data_model_json,
+                        schema=schema,
+                        name=self.name + "_" + key + f"_{i}",
+                    )
+                )
+        return outputs
 
     def __repr__(self):
         return f"<JsonDataModel schema={self._schema}, json={self._json}>"

@@ -10,6 +10,7 @@ from synalinks.src import tree
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.backend.common.json_data_model import JsonDataModel
 from synalinks.src.backend.common.symbolic_data_model import SymbolicDataModel
+from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
 
 IS_THREAD_SAFE = True
 
@@ -176,7 +177,7 @@ class MetaDataModel(type(pydantic.BaseModel)):
         )
 
 
-class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
+class DataModel(pydantic.BaseModel, SynalinksSaveable, metaclass=MetaDataModel):
     """The backend-dependent data model.
 
     This data model uses Pydantic to provide, JSON schema inference
@@ -471,6 +472,13 @@ class DataModel(pydantic.BaseModel, metaclass=MetaDataModel):
             return asyncio.get_event_loop().run_until_complete(
                 ops.Xor()(other, self),
             )
+
+    def get_config(self):
+        return self.get_json()
+
+    @classmethod
+    def from_config(cls, config):
+        return cls(**config)
 
 
 def is_data_model(x):

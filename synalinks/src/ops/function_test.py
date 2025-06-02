@@ -46,7 +46,7 @@ class FunctionTest(testing.TestCase):
                 "answer": {"title": "Answer", "type": "string"},
             },
             "required": ["query", "answer"],
-            "title": "SymbolicDataModel",
+            "title": "Query",
             "type": "object",
             "additionalProperties": False,
         }

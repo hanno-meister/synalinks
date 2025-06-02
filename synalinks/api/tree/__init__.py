@@ -8,10 +8,8 @@ from synalinks.src.tree.tree_api import MAP_TO_NONE
 from synalinks.src.tree.tree_api import assert_same_paths
 from synalinks.src.tree.tree_api import assert_same_structure
 from synalinks.src.tree.tree_api import flatten
-from synalinks.src.tree.tree_api import flatten_with_path
 from synalinks.src.tree.tree_api import is_nested
 from synalinks.src.tree.tree_api import lists_to_tuples
 from synalinks.src.tree.tree_api import map_structure
-from synalinks.src.tree.tree_api import map_structure_up_to
 from synalinks.src.tree.tree_api import pack_sequence_as
 from synalinks.src.tree.tree_api import traverse

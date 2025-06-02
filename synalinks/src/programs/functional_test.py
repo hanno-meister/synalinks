@@ -42,7 +42,7 @@ class FunctionalTest(testing.TestCase):
                 "answer": {"title": "Answer", "type": "string"},
             },
             "required": ["query", "answer"],
-            "title": "SymbolicDataModel",
+            "title": "Query",
             "type": "object",
             "additionalProperties": False,
         }
@@ -100,7 +100,7 @@ class FunctionalTest(testing.TestCase):
                 "query": {"title": "Query", "type": "string"},
             },
             "required": ["query"],
-            "title": "SymbolicDataModel",
+            "title": "Query",
             "type": "object",
             "additionalProperties": False,
         }
@@ -111,7 +111,7 @@ class FunctionalTest(testing.TestCase):
                 "answer": {"title": "Answer", "type": "string"},
             },
             "required": ["query", "answer"],
-            "title": "SymbolicDataModel",
+            "title": "Query",
             "type": "object",
             "additionalProperties": False,
         }
@@ -176,7 +176,7 @@ class FunctionalTest(testing.TestCase):
                 "answer": {"title": "Answer", "type": "string"},
             },
             "required": ["query", "answer"],
-            "title": "SymbolicDataModel",
+            "title": "Query",
             "type": "object",
             "additionalProperties": False,
         }

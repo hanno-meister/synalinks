@@ -12,6 +12,8 @@ Or uv (recommended):
 uv pip install synalinks
 ```
 
+**Note for Windows users**: Use the [Windows Linux Sub-System](https://learn.microsoft.com/en-us/windows/wsl/install) (WLS).
+
 If you want to install it from source (for contributors), then do:
 
 ```shell
@@ -28,11 +30,15 @@ import synalinks
 print(synalinks.__version__)
 ```
 
-Or just create a new project using the following command:
+or use `uv run synalinks --version`
+
+Now create a new project using the following command:
 
 ```shell
 uv run synalinks init
 ```
+
+This will setup a template project ready to work on.
 
 Synalinks use a global context to ensure that each variable/module
 have a unique name. Clear it at the beginning of your scripts to 
@@ -44,7 +50,7 @@ synalinks.clear_session()
 ```
 
 Addtionally, you can install Ollama [here](https://ollama.com/) to run
-Language Models (LMs) locally, which is very usefull to development.
+Language Models (LMs) locally, which is very useful to development.
 
 ## Prompting
 
@@ -56,16 +62,18 @@ construct the prompt automatically.
 The prompt template is a jinja2 template that describe how to render 
 the examples, instructions and how to convert them into chat messages:
 
+### Default Prompt template
+
 ::: synalinks.src.modules.core.generator.default_prompt_template
 
 The template use the XML tags `<system>...</system>`, `<user>...</user>` and
 `<assistant>...</assistant>` to know how to convert the prompt template 
-into messages. You can modify the default template used by using the 
+into chat messages. You can modify at any time the default template used by using the 
 `prompt_template` argument in Synalinks modules. You can notice also, 
 that we send the inputs's and output's JSON schema to instruct the LMs
 how to answer, you can enable/disable that behavior by using `use_inputs_schema`
-and `use_outputs_schema` in Synalinks modules. Synalinks use constrained
-structured output ensuring that the LMs answer respect the data models
+and `use_outputs_schema` in Synalinks modules. Synalinks use **constrained
+structured output** ensuring that the LMs answer respect the data models
 specification (the JSON schema), and is ready to parse, so in theory
 we don't need it, except if you use it to provide additional information
 to the LMs. You can find more information in the 
@@ -75,7 +83,7 @@ to the LMs. You can find more information in the
 
 To provide additional information to the LMs, you can use the data models
 `Field`. You can notice that Synalinks use Pydantic as default data backend.
-Allowing Synalinks to be compatible out-of-the-box with constrained structured output, FastAPI of FastMCP.
+Allowing Synalinks to be compatible out-of-the-box with constrained structured output, FastAPI and FastMCP.
 
 ```python
 class AnswerWithThinking(synalinks.DataModel):
@@ -107,5 +115,4 @@ presented in the prompt template.
     customizable, allowing you to tailor the instructions provided to
     the LMs based on your specific use case. 
 - **Compatibility**: Synalinks use Pydantic as the default data backend
-    ensures compatibility with structured output, FastAPI or FastMCP.
-"""
+    ensures compatibility with structured output, FastAPI and FastMCP.

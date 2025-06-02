@@ -25,7 +25,13 @@ from synalinks.src.utils.io_utils import disable_interactive_logging
 from synalinks.src.utils.io_utils import enable_interactive_logging
 from synalinks.src.utils.io_utils import is_interactive_logging_enabled
 from synalinks.src.utils.plot_history import plot_history
+from synalinks.src.utils.plot_history import plot_history_comparison
+from synalinks.src.utils.plot_history import plot_history_comparison_with_mean_and_std
+from synalinks.src.utils.plot_history import plot_history_with_mean_and_std
 from synalinks.src.utils.plot_metrics import plot_metrics
+from synalinks.src.utils.plot_metrics import plot_metrics_comparison
+from synalinks.src.utils.plot_metrics import plot_metrics_comparison_with_mean_and_std
+from synalinks.src.utils.plot_metrics import plot_metrics_with_mean_and_std
 from synalinks.src.utils.progbar import Progbar
 from synalinks.src.utils.program_visualization import plot_program
 from synalinks.src.utils.program_visualization import program_to_dot

@@ -90,9 +90,9 @@ def Input(
 ):
     """Used to instantiate a `SymbolicDataModel`.
 
-    A `SymbolicDataModel` is a symbolic data_model-like object, which we augment with
+    A `SymbolicDataModel` is a symbolic data model-like object, which we augment with
     certain attributes that allow us to build a Synalinks `Program` just by knowing the
-    inputs and outputs of the program.
+    inputs and outputs of the program (similar to Keras symbolic tensor).
 
     Example:
 

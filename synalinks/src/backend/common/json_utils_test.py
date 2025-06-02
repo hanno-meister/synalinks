@@ -1,6 +1,8 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
 from typing import List
+from typing import Literal
+from typing import Union
 
 from synalinks.src import testing
 from synalinks.src.backend import DataModel
@@ -80,6 +82,66 @@ class JsonConcatenateTest(testing.TestCase):
         ).get_json()
 
         result = concatenate_json(json, json)
+        self.assertEqual(result, expected)
+
+    def test_concatenate_similar_entities(self):
+        class City(DataModel):
+            label: Literal["City"]
+            name: str
+
+        class Cities(DataModel):
+            entities: List[City]
+
+        class Result(DataModel):
+            entities: List[City]
+            entities_1: List[City]
+
+        paris = City(label="City", name="Paris")
+        toulouse = City(label="City", name="Toulouse")
+
+        json = Cities(entities=[paris, toulouse]).get_json()
+        expected = Result(
+            entities=[paris, toulouse],
+            entities_1=[paris, toulouse],
+        ).get_json()
+
+        result = concatenate_json(json, json)
+        self.assertEqual(result, expected)
+
+    def test_concatenate_different_entities(self):
+        class City(DataModel):
+            label: Literal["City"]
+            name: str
+
+        class Event(DataModel):
+            label: Literal["Event"]
+            name: str
+
+        class Cities(DataModel):
+            entities: List[City]
+
+        class Events(DataModel):
+            entities: List[Event]
+
+        class Result(DataModel):
+            entities: List[City]
+            entities_1: List[Event]
+
+        paris = City(label="City", name="Paris")
+        toulouse = City(label="City", name="Toulouse")
+
+        event1 = Event(label="Event", name="A test event")
+        event2 = Event(label="Event", name="Another test event")
+
+        json1 = Cities(entities=[paris, toulouse]).get_json()
+        json2 = Events(entities=[event1, event2]).get_json()
+
+        expected = Result(
+            entities=[paris, toulouse],
+            entities_1=[event1, event2],
+        ).get_json()
+
+        result = concatenate_json(json1, json2)
         self.assertEqual(result, expected)
 
 
@@ -255,6 +317,68 @@ class JsonFactorizeTest(testing.TestCase):
         ).get_json()
 
         result = factorize_json(json)
+        self.assertEqual(result, expected)
+
+    def test_factorize_similar_entities(self):
+        class City(DataModel):
+            label: Literal["City"]
+            name: str
+
+        class Cities(DataModel):
+            entities: List[City]
+
+        class Input(DataModel):
+            entities: List[City]
+            entities_1: List[City]
+
+        class Result(DataModel):
+            entities: List[City]
+
+        paris = City(label="City", name="Paris")
+        toulouse = City(label="City", name="Toulouse")
+
+        inputs = Input(
+            entities=[paris, toulouse],
+            entities_1=[paris, toulouse],
+        ).get_json()
+        expected = Result(
+            entities=[paris, toulouse, paris, toulouse],
+        ).get_json()
+
+        result = factorize_json(inputs)
+        self.assertEqual(result, expected)
+
+    def test_factorize_different_entities(self):
+        class City(DataModel):
+            label: Literal["City"]
+            name: str
+
+        class Event(DataModel):
+            label: Literal["Event"]
+            name: str
+
+        class Input(DataModel):
+            entities: List[City]
+            entities_1: List[Event]
+
+        class Result(DataModel):
+            entities: List[Union[City, Event]]
+
+        paris = City(label="City", name="Paris")
+        toulouse = City(label="City", name="Toulouse")
+
+        event1 = Event(label="Event", name="A test event")
+        event2 = Event(label="Event", name="Another test event")
+
+        inputs = Input(
+            entities=[paris, toulouse],
+            entities_1=[event1, event2],
+        ).get_json()
+        expected = Result(
+            entities=[paris, toulouse, event1, event2],
+        ).get_json()
+
+        result = factorize_json(inputs)
         self.assertEqual(result, expected)
 
 

@@ -54,13 +54,6 @@ def flatten(structure):
     return leaves
 
 
-def flatten_with_path(structure):
-    paths, leaves, _ = optree.tree_flatten_with_path(
-        structure, none_is_leaf=True, namespace="synalinks"
-    )
-    return list(zip(paths, leaves))
-
-
 def map_structure(func, *structures):
     if not structures:
         raise ValueError("Must provide at least one structure")
@@ -77,26 +70,6 @@ def map_structure(func, *structures):
 
     return optree.tree_map(
         map_func, *structures, none_is_leaf=True, namespace="synalinks"
-    )
-
-
-def map_structure_up_to(shallow_structure, func, *structures):
-    if not structures:
-        raise ValueError("Must provide at least one structure")
-
-    # Add check that `shallow_structure` really is the shallowest.
-    # Also only call `func` on `structures` and not `shallow_structure`.
-    def func_with_check_without_shallow_structure(shallow, *args):
-        if not optree.tree_is_leaf(shallow):
-            raise ValueError("Structures don't have the same nested structure.")
-        return func(*args)
-
-    return optree.tree_map(
-        func_with_check_without_shallow_structure,
-        shallow_structure,
-        *structures,
-        none_is_leaf=True,
-        namespace="synalinks",
     )
 
 

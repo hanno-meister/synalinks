@@ -94,7 +94,10 @@ def factorize_json(json):
                 result_json[plural_key] = []
 
             # Add the values to the list
-            result_json[plural_key].append(prop_value)
+            if isinstance(prop_value, list):
+                result_json[plural_key].extend(prop_value)
+            else:
+                result_json[plural_key].append(prop_value)
         else:
             if not is_plural(prop_key):
                 result_json[base_key] = prop_value

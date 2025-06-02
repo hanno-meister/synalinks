@@ -11,10 +11,7 @@ from synalinks.src.utils.nlp_utils import to_singular_without_numerical_suffix
 
 def standardize_schema(schema):
     """Standardize the JSON schema for consistency"""
-    new_schema = copy.deepcopy(schema)
-    if new_schema.get("title"):
-        new_schema.update({"title": "SymbolicDataModel"})
-    return new_schema
+    return schema
 
 
 def contains_schema(schema1, schema2):
@@ -97,7 +94,7 @@ def concatenate_schema(schema1, schema2):
         "$defs": {},
         "properties": {},
         "required": [],
-        "title": "SymbolicDataModel",
+        "title": schema1.get("title"),
         "type": "object",
     }
 
@@ -145,16 +142,6 @@ def concatenate_schema(schema1, schema2):
     if len(result_schema.get("$defs")) == 0:
         del result_schema["$defs"]
 
-    # TODO Find an elegant way to deal with that
-    # description1 = schema1.get("description")
-    # description2 = schema2.get("description")
-    # if description1 and not description2:
-    #     result_schema.update({"description": description1})
-    # elif description2 and not description1:
-    #     result_schema.update({"description": description2})
-    # elif description1 and description2:
-    #     result_schema.update({"description": description1 + "\n" + description2})
-
     return result_schema
 
 
@@ -175,11 +162,11 @@ def factorize_schema(schema):
     schema = copy.deepcopy(schema)
     # Initialize the resulting schema
     result_schema = {
-        "additionalProperties": False,
         "$defs": {},
+        "additionalProperties": False,
         "properties": {},
         "required": [],
-        "title": "SymbolicDataModel",
+        "title": schema.get("title"),
         "type": "object",
     }
 
@@ -193,18 +180,41 @@ def factorize_schema(schema):
         base_key = to_singular_without_numerical_suffix(prop_key)
         plural_key = to_plural_without_numerical_suffix(base_key)
         # Find all similar properties
-        similar_props = [
+        similar_prop_keys = [
             p
             for p in schema_properties.keys()
             if to_singular_without_numerical_suffix(p) == base_key and p != prop_key
         ]
-        if similar_props and not is_plural(prop_key):
+        similar_prop_values = [schema["properties"][p] for p in similar_prop_keys]
+        if similar_prop_keys and not is_plural(prop_key):
             if plural_key not in result_schema["properties"]:
                 # Create an array property
                 array_prop = copy.deepcopy(prop_value)
                 array_prop["title"] = plural_key.title()
                 array_prop["type"] = "array"
-                array_prop["items"] = {"type": prop_value["type"]}
+                if is_array(prop_value):
+                    if all(is_array(prop) for prop in similar_prop_values):
+                        if not all(
+                            prop["items"] == prop_value["items"]
+                            for prop in similar_prop_values
+                        ):
+                            if "$ref" in array_prop["items"]:
+                                del array_prop["items"]["$ref"]
+
+                            for s in similar_prop_values:
+                                if s["items"] != prop_value["items"]:
+                                    if "anyOf" not in array_prop["items"]:
+                                        array_prop["items"]["anyOf"] = []
+                                    array_prop["items"]["anyOf"].append(s["items"])
+                            array_prop["items"]["anyOf"].append(prop_value["items"])
+                            if "description" in array_prop:
+                                del array_prop["description"]
+                        else:
+                            array_prop["items"] = prop_value["items"]
+                    else:
+                        array_prop["items"] = prop_value["items"]
+                else:
+                    array_prop["items"] = {"type": prop_value["type"]}
 
                 result_schema["properties"][plural_key] = array_prop
                 if plural_key not in result_schema["required"]:
@@ -217,11 +227,6 @@ def factorize_schema(schema):
 
     if len(result_schema.get("$defs")) == 0:
         del result_schema["$defs"]
-
-    # TODO Find an elegant way to deal with that
-    # description = schema.get("description")
-    # if description:
-    #     result_schema.update({"description": description})
 
     return result_schema
 
@@ -241,16 +246,16 @@ def out_mask_schema(schema, mask=None, recursive=True):
     Returns:
         (dict): A masked JSON schema with removed properties.
     """
-    result_schema = copy.deepcopy(schema)
+    schema = copy.deepcopy(schema)
 
     if not mask:
-        return result_schema
+        return schema
 
-    stack_init = [result_schema]
+    stack_init = [schema]
 
     if recursive:
-        if "$defs" in result_schema:
-            for obk_name, obj_schema in result_schema["$defs"].items():
+        if "$defs" in schema:
+            for obk_name, obj_schema in schema["$defs"].items():
                 stack_init.append(obj_schema)
 
     stack = collections.deque(stack_init)
@@ -287,13 +292,13 @@ def out_mask_schema(schema, mask=None, recursive=True):
 
     # Clean up defs if no link found after masking
     new_defs = {}
-    if "$defs" in result_schema:
-        for obj_key, obj_schema in result_schema["$defs"].items():
-            if str(result_schema).find(f"#/$defs/{obj_key}") > 0:
+    if "$defs" in schema:
+        for obj_key, obj_schema in schema["$defs"].items():
+            if str(schema).find(f"#/$defs/{obj_key}") > 0:
                 new_defs[obj_key] = obj_schema
-        result_schema["$defs"] = new_defs
+        schema["$defs"] = new_defs
 
-    return result_schema
+    return schema
 
 
 def in_mask_schema(schema, mask=None, recursive=True):
@@ -311,21 +316,21 @@ def in_mask_schema(schema, mask=None, recursive=True):
     Returns:
         - (dict): A masked JSON schema with only the specified properties.
     """
+    schema = copy.deepcopy(schema)
+
     if not mask:
         return {
             "additionalProperties": False,
             "properties": {},
-            "title": "SymbolicDataModel",
+            "title": schema.get("title"),
             "type": "object",
         }
 
-    result_schema = copy.deepcopy(schema)
-
-    stack_init = [result_schema]
+    stack_init = [schema]
 
     if recursive:
-        if "$defs" in result_schema:
-            for _, obj_schema in result_schema["$defs"].items():
+        if "$defs" in schema:
+            for _, obj_schema in schema["$defs"].items():
                 stack_init.append(obj_schema)
 
     stack = collections.deque(stack_init)
@@ -366,10 +371,10 @@ def in_mask_schema(schema, mask=None, recursive=True):
 
     # Clean up defs if no link found after masking
     new_defs = {}
-    if "$defs" in result_schema:
-        for obj_key, obj_schema in result_schema["$defs"].items():
-            if str(result_schema).find(f"#/$defs/{obj_key}") > 0:
+    if "$defs" in schema:
+        for obj_key, obj_schema in schema["$defs"].items():
+            if str(schema).find(f"#/$defs/{obj_key}") > 0:
                 new_defs[obj_key] = obj_schema
-        result_schema["$defs"] = new_defs
+        schema["$defs"] = new_defs
 
-    return result_schema
+    return schema

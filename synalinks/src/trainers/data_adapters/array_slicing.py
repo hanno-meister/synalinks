@@ -8,7 +8,7 @@ import numpy as np
 
 from synalinks.src import tree
 
-ARRAY_TYPES = (np.ndarray,)
+ARRAY_TYPES = (np.ndarray, list, tuple)
 
 
 def can_slice_array(x):

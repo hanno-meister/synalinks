@@ -1,7 +1,7 @@
-# Your First Programs
+# First Programs
 
 The main concept of Synalinks, is that an application (we call it a `Program`)
-is a computation graph (a Directed Acyclic Graph to be exact) with JSON data (called `JsonDataModel`) as edges and `Operation`s as nodes.
+is a computation graph (a Directed Acyclic Graph to be exact) with JSON data (`JsonDataModel`) as edges and `Operation`s as nodes.
 
 What set apart Synalinks from other similar frameworks like DSPy or AdalFlow is that we focus on graph-based systems but also that it allow users to declare the computation graph using a Functional API inherited
 from [Keras](https://keras.io/).
@@ -30,7 +30,7 @@ class Query(synalinks.DataModel):
 
 class AnswerWithThinking(synalinks.DataModel):
     thinking: str = synalinks.Field(
-        description="Your step by step thinking process",
+        description="Your step by step thinking",
     )
     answer: str = synalinks.Field(
         description="The correct answer",
@@ -55,15 +55,15 @@ programs's structure, and finally, you create your program from inputs and outpu
 
 async def main():
 
-    x0 = synalinks.Input(data_model=Query)
-    x1 = await synalinks.Generator(
+    inputs = synalinks.Input(data_model=Query)
+    outputs = await synalinks.Generator(
         data_model=AnswerWithThinking,
         language_model=language_model,
     )(x0)
 
     program = synalinks.Program(
-        inputs=x0,
-        outputs=x1,
+        inputs=inputs,
+        outputs=outputs,
         name="chain_of_thought",
         description="Useful to answer in a step by step manner.",
     )
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 Now let's try to program it using another method, subclassing the `Program`
 class. It is the more complicated one, and reserved for skilled developers or contributors.
 
-In that case, you should define your modules in `__init__()` and you should
+In that case, you define your modules in `__init__()` and you should
 implement the program's structure in `call()` and the serialization methods (`get_config` and `from_config`).
 
 ```python
@@ -119,12 +119,19 @@ class ChainOfThought(synalinks.Program):
         )
         return cls(language_model=language_model, **config)
 
-program = ChainOfThought(language_model=language_model)
+async def main():
+    program = ChainOfThought(language_model=language_model)
+    # Build the program for Query inputs
+    await program.build(Query)
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 Note that the program isn't actually built, this behavior is intended its 
 means that it can accept any king of input, making the program truly 
-generalizable.
+generalizable. You can use `program.build()` to built it, otherwise it will be built
+automatically the first time used.
 
 ## Mixing the subclassing and the `Functional` API
 
@@ -166,9 +173,13 @@ class ChainOfThought(synalinks.Program):
             trainable=self.trainable,
         )
 
-program = ChainOfThought(
-    language_model=language_model,
-)
+async def main():
+    program = ChainOfThought(language_model=language_model)
+    # Build the program for Query inputs
+    await program.build(Query)
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 Like when using the subclassing method, the program will be built on the fly when called for the first time.
@@ -181,7 +192,6 @@ is purely a stack of single-input, single-output modules.
 ```python
 
 async def main():
-
     program = synalinks.Sequential(
         [
             synalinks.Input(
@@ -202,17 +212,23 @@ if __name__ == "__main__":
 
 ## Running your programs
         
-In order to run your program, you just have to call it with the input data model
+In order to run your program, you just have to call it like a function with the input data model
 as argument.
 
 ```python
-result = await program(
-    Query(query="What are the key aspects of human cognition?"),
-)
+async def main():
+    # ... program definition
+        
+    result = await program(
+        Query(query="What are the key aspects of human cognition?"),
+    )
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ## Conclusion
-        
+
 Congratulations! You've successfully explored the fundamental concepts of programming
 applications using Synalinks.
 

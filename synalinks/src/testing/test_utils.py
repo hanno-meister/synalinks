@@ -64,11 +64,11 @@ def load_test_data():
 
 def mock_completion_data():
     response = (
-        """{"ratonale":"The capital of France is well-known and is the seat of """
+        """{"rationale":"The capital of France is well-known and is the seat of """
         """the French government.", "answer": "Paris"}"""
     )
     response_1 = (
-        """{"ratonale":"Toulouse is known as the French city of aeronautics due"""
+        """{"rationale":"Toulouse is known as the French city of aeronautics due"""
         """ to its significant contributions to the aerospace industry.", """
         """"answer": "Toulouse"}"""
     )

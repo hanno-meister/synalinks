@@ -8,17 +8,13 @@ from synalinks.src.backend import DataModel
 from synalinks.src.backend import Field
 
 
-class GSM8KInput(DataModel):
-    """Input data model."""
-
+class MathQuestion(DataModel):
     question: str = Field(
         description="The math word problem",
     )
 
 
-class GSM8KOutput(DataModel):
-    """Output data model."""
-
+class NumericalAnswerWithThinking(DataModel):
     thinking: str = Field(
         description="Your step by step thinking",
     )
@@ -35,7 +31,7 @@ def get_input_data_model():
     Returns:
         (DataModel): The GSM8K input data_model
     """
-    return GSM8KInput
+    return MathQuestion
 
 
 @synalinks_export("synalinks.datasets.gsm8k.get_output_data_model")
@@ -46,7 +42,7 @@ def get_output_data_model():
     Returns:
         (DataModel): The GSM8K output data_model
     """
-    return GSM8KOutput
+    return NumericalAnswerWithThinking
 
 
 @synalinks_export("synalinks.datasets.gsm8k.load_data")
@@ -70,25 +66,25 @@ def load_data():
     x_test = []
     y_test = []
 
-    for datapoint in dataset["train"]:
-        question = datapoint["question"]
-        thinking = datapoint["answer"].split("####")[0].strip()
-        answer = datapoint["answer"].split("####")[-1].strip()
-        x_train.append(GSM8KInput(question=question))
+    for data_point in dataset["train"]:
+        question = data_point["question"]
+        thinking = data_point["answer"].split("####")[0].strip()
+        answer = data_point["answer"].split("####")[-1].strip()
+        x_train.append(MathQuestion(question=question))
         y_train.append(
-            GSM8KOutput(
+            NumericalAnswerWithThinking(
                 thinking=thinking,
                 answer=float(answer.replace(",", "")),
             )
         )
 
-    for datapoint in dataset["test"]:
-        question = datapoint["question"]
-        thinking = datapoint["answer"].split("####")[0].strip()
-        answer = datapoint["answer"].split("####")[-1].strip()
-        x_test.append(GSM8KInput(question=question))
+    for data_point in dataset["test"]:
+        question = data_point["question"]
+        thinking = data_point["answer"].split("####")[0].strip()
+        answer = data_point["answer"].split("####")[-1].strip()
+        x_test.append(MathQuestion(question=question))
         y_test.append(
-            GSM8KOutput(
+            NumericalAnswerWithThinking(
                 thinking=thinking,
                 answer=float(answer.replace(",", "")),
             )

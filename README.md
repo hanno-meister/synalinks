@@ -5,12 +5,11 @@
 
 <div align="center">
 
-
 <p align="center">
   <a href="https://synalinks.github.io/synalinks" target="_blank"><strong>Documentation</strong></a> ·
   <a href="https://synalinks.github.io/synalinks/FAQ/" target="_blank"><strong>FAQ</strong></a> ·
   <a href="https://discord.gg/82nt97uXcM" target="_blank"><strong>Discord</strong></a> ·
-  <a href="https://huggingface.co/spaces/YoanSallami/synalinks-noteboooks" target="_blank"><strong>Code Examples</strong></a>
+  <a href="https://synalinks.github.io/synalinks" target="_blank"><strong>Code Examples</strong></a>
 </p>
 
 <b>Synalinks:</b> <em>A production-first LM framework built with decade old Deep Learning best practices</em>
@@ -21,7 +20,7 @@
 
 ![Beta](https://img.shields.io/badge/Release-Beta-blue.svg)
 ![Coverage Badge](https://raw.githubusercontent.com/SynaLinks/synalinks/refs/heads/main/coverage-badge.svg)
-[![Pypi Downloads](https://img.shields.io/pypi/dm/synalinks)](https://pypistats.org/packages/synalinks)
+[![Downloads](https://static.pepy.tech/badge/synalinks)](https://pepy.tech/project/synalinks)
 [![Discord](https://img.shields.io/discord/1118241178723291219)](https://discord.gg/82nt97uXcM)
 [![Python package](https://github.com/SynaLinks/Synalinks/actions/workflows/tests.yml/badge.svg)](https://github.com/SynaLinks/SynaLinks/actions/workflows/tests.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-green.svg)](https://opensource.org/license/apache-2-0)
@@ -42,15 +41,15 @@ Synalinks is designed for a diverse range of users, from professionals and AI re
 
 Developping a successful LM application in a profesional context, beyond stateless chatbots, is difficult and typically include:
 
-- **Building optimized prompts with examples/instructions at each step**: Synalinks uses advanced In-Context Reinforcement Learning techniques to optimize each prompt.
+- **Building optimized prompts with examples/instructions at each step**: Synalinks uses advanced In-Context Reinforcement Learning techniques to optimize **each** prompt of your workflow/agent.
 - **Pipelines that change over time**: Easily edit your pipelines, re-run your training, and you're good to go.
-- **Ensuring the correctness of the LMs output**: Synalinks combines constrained structured output with In-Context RL to ensure both format and content correctness.
-- **Async Optimization**: Synalinks automatically optimizes your pipelines by detecting parallel processes.
+- **Ensuring the correctness of the LMs output**: Synalinks combines *constrained structured output* with In-Context RL to ensure **both format and content correctness**.
+- **Async Optimization**: Synalinks automatically optimizes your pipelines by detecting parallel processes, so you don't have to worry about it.
 - **Assessing the performance of your application**: Synalinks provides built-in metrics and rewards to evaluate your workflows.
-- **Configuring Language & Embedding Models**: Seamlessly integrate multiple LM providers like Ollama, OpenAI, Anthropic, Mistral or Groq.
+- **Configuring Language & Embedding Models**: Seamlessly integrate multiple LM providers like Ollama, OpenAI, Azure, Anthropic, Mistral or Groq.
 - **Documenting your ML workflows**: Plot your workflows, training history, and evaluations; document everything.
 - **Versioning the prompts/pipelines**: Each program is serializable into JSON so you can version it with git.
-- **Deploying REST APIs**: Compatible out-of-the-box with FastAPI so your Data Scientists and Web Developers can stop tearing each other apart.
+- **Deploying REST APIs**: Compatible out-of-the-box with FastAPI and FastMPC so your Data Scientists and Web Developers can stop tearing each other apart.
 
 Synalinks can help you simplify these tasks by leveraging decade old practices in Deep Learning frameworks. We provide a comprehensive suite of tools and features designed to streamline the development process, making it easier to create, evaluate, train, document and deploy robust neuro-symbolic LMs applications.
 
@@ -83,7 +82,7 @@ class Query(synalinks.DataModel):
 
 class AnswerWithThinking(synalinks.DataModel):
     thinking: str = synalinks.Field(
-        description="Your step by step thinking process",
+        description="Your step by step thinking",
     )
     answer: float = synalinks.Field(
         description="The correct numerical answer",
@@ -292,7 +291,7 @@ class Query(synalinks.DataModel):
 
 class AnswerWithThinking(synalinks.DataModel):
     thinking: str = synalinks.Field(
-        description="Your step by step thinking process",
+        description="Your step by step thinking",
     )
     answer: float = synalinks.Field(
         description="The correct numerical answer",
@@ -403,6 +402,19 @@ Beware that every additional metric/module/optimizer should be approved by the c
 ### Community
 
 Join our community to learn more about neuro-symbolic systems and the future of AI. We welcome the participation of people from very different backgrounds or education levels.
+
+### Citing our work
+
+This work have been done under the supervision of François Chollet, the author of Keras. If this work is useful for your research please use the following bibtex entry:
+
+```bibtex
+@misc{sallami2025synalinks,
+  title={Synalinks},
+  author={Sallami, Yoan and Chollet, Fran\c{c}ois},
+  year={2025},
+  howpublished={\url{https://github.com/SynaLinks/Synalinks}},
+}
+```
 
 ### Credit
 

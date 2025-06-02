@@ -1,0 +1,242 @@
+{
+  "module": "synalinks.src.programs.functional",
+  "class_name": "Functional",
+  "config": {
+    "name": "gsm8k_baseline",
+    "trainable": true,
+    "modules": [
+      {
+        "module": "synalinks.modules",
+        "class_name": "InputModule",
+        "config": {
+          "schema": {
+            "additionalProperties": false,
+            "properties": {
+              "question": {
+                "description": "The math word problem",
+                "title": "Question",
+                "type": "string"
+              }
+            },
+            "required": [
+              "question"
+            ],
+            "title": "MathQuestion",
+            "type": "object"
+          },
+          "optional": false,
+          "name": "input_module",
+          "description": "Defines the input data model for a program."
+        },
+        "registered_name": null,
+        "name": "input_module",
+        "inbound_nodes": []
+      },
+      {
+        "module": "synalinks.modules",
+        "class_name": "Generator",
+        "config": {
+          "schema": {
+            "additionalProperties": false,
+            "properties": {
+              "thinking": {
+                "description": "Your step by step thinking",
+                "title": "Thinking",
+                "type": "string"
+              },
+              "answer": {
+                "description": "The numerical answer",
+                "title": "Answer",
+                "type": "number"
+              }
+            },
+            "required": [
+              "thinking",
+              "answer"
+            ],
+            "title": "NumericalAnswerWithThinking",
+            "type": "object"
+          },
+          "prompt_template": "\n<system>\n{% if inputs_schema %}You will be given an input JSON object with the following schema. \nInput JSON Schema:\n{{ inputs_schema }}\n{% endif %}\n{% if outputs_schema %}\nYour task is to answer with a JSON object following this output JSON schema.\n\nOutput JSON Schema:\n{{ outputs_schema }}\n{% endif %}\n{% if examples %}\n### Examples\n{% for example in examples %}\nInput:\n{{ example[0] }}\nOutput:\n{{ example[1] }}\n{% endfor %}\n{% endif %}\n{% if instructions %}\n### Instructions:\n{% for instruction in instructions %}\n - {{ instruction }}\n{% endfor %}\n{% endif %}\n</system>\n<user>\nInput:\n{{ inputs }}\nOutput:\n</user>",
+          "examples": [],
+          "instructions": [],
+          "use_inputs_schema": false,
+          "use_outputs_schema": false,
+          "return_inputs": false,
+          "name": "generator",
+          "description": "Use a `LanguageModel` to generate a data model from an arbitrary input data model.",
+          "trainable": true,
+          "language_model": {
+            "module": "synalinks",
+            "class_name": "LanguageModel",
+            "config": {
+              "model": "ollama_chat/deepseek-r1",
+              "api_base": "http://localhost:11434",
+              "retry": 5
+            },
+            "registered_name": null
+          }
+        },
+        "registered_name": null,
+        "name": "generator",
+        "inbound_nodes": [
+          {
+            "args": [
+              {
+                "class_name": "__symbolic_data_model__",
+                "config": {
+                  "schema": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "question": {
+                        "description": "The math word problem",
+                        "title": "Question",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "question"
+                    ],
+                    "title": "MathQuestion",
+                    "type": "object"
+                  },
+                  "synalinks_history": [
+                    "input_module",
+                    0,
+                    0
+                  ]
+                }
+              }
+            ],
+            "kwargs": {
+              "training": false
+            }
+          }
+        ]
+      }
+    ],
+    "input_modules": [
+      [
+        "input_module",
+        0,
+        0
+      ]
+    ],
+    "output_modules": [
+      [
+        "generator",
+        0,
+        0
+      ]
+    ]
+  },
+  "registered_name": "Functional",
+  "compile_config": {
+    "optimizer": {
+      "module": "synalinks.optimizers",
+      "class_name": "RandomFewShot",
+      "config": {
+        "k": 3,
+        "k_best": 10,
+        "name": "random_few_shot_1",
+        "description": "Select randomly the best examples to populate the LM's prompt to make it"
+      },
+      "registered_name": null
+    },
+    "reward": {
+      "module": "synalinks.rewards",
+      "class_name": "ExactMatch",
+      "config": {
+        "name": "exact_match",
+        "in_mask": [
+          "answer"
+        ],
+        "out_mask": null
+      },
+      "registered_name": null
+    },
+    "reward_weights": null,
+    "metrics": null,
+    "run_eagerly": false,
+    "steps_per_execution": 1
+  },
+  "variables": {
+    "trainable_variables": {
+      "generator": {
+        "generator_state": {
+          "prompt_template": "\n<system>\n{% if inputs_schema %}You will be given an input JSON object with the following schema. \nInput JSON Schema:\n{{ inputs_schema }}\n{% endif %}\n{% if outputs_schema %}\nYour task is to answer with a JSON object following this output JSON schema.\n\nOutput JSON Schema:\n{{ outputs_schema }}\n{% endif %}\n{% if examples %}\n### Examples\n{% for example in examples %}\nInput:\n{{ example[0] }}\nOutput:\n{{ example[1] }}\n{% endfor %}\n{% endif %}\n{% if instructions %}\n### Instructions:\n{% for instruction in instructions %}\n - {{ instruction }}\n{% endfor %}\n{% endif %}\n</system>\n<user>\nInput:\n{{ inputs }}\nOutput:\n</user>",
+          "examples": [
+            {
+              "inputs": {
+                "question": "Natalia sold clips to 48 of her friends in April, and then she sold half as many clips in May. How many clips did Natalia sell altogether in April and May?"
+              },
+              "outputs": {
+                "thinking": "First, I'll identify the number of clips Natalia sold in April, which is given directly as 48 clips.",
+                "answer": 48
+              },
+              "label": "Prediction",
+              "reward": 0.5
+            },
+            {
+              "inputs": {
+                "question": "Weng earns $12 an hour for babysitting. Yesterday, she just did 50 minutes of babysitting. How much did she earn?"
+              },
+              "outputs": {
+                "thinking": "\nOkay, so Weng earned $12 per hour for babysitting, and she worked for 50 minutes yesterday. Hmm, I need to figure out how much she earned based on that time. First, I should convert the 50 minutes into hours because her hourly rate is in dollars per hour. There are 60 minutes in an hour, right? So if she worked for 50 minutes, that's less than an hour. To find out how many hours that is, I can divide 50 by 60. Let me do that: 50 \u00f7 60 equals... hmm, maybe it's easier to think of it as a fraction. 50 divided by 60 simplifies to 5/6 when both numerator and denominator are divided by 10. So, she worked for 5/6 of an hour. Now, I need to calculate how much she earned for that time. Since her rate is $12 per hour, multiplying her hourly rate by the fraction of the hour she worked should give me the total earnings. So, it would be $12 multiplied by 5/6. Let's compute that: 12 \u00d7 (5/6) = ... well, 12 divided by 6 is 2, and then multiplied by 5 gives me 10. Therefore, Weng earned $10 for babysitting yesterday.",
+                "answer": 10
+              },
+              "label": "Prediction",
+              "reward": 0.5
+            }
+          ],
+          "predictions": [
+            {
+              "inputs": {
+                "question": "Natalia sold clips to 48 of her friends in April, and then she sold half as many clips in May. How many clips did Natalia sell altogether in April and May?"
+              },
+              "outputs": {
+                "thinking": "First, I'll identify the number of clips Natalia sold in April, which is given directly as 48 clips.",
+                "answer": 48
+              },
+              "label": "Prediction",
+              "reward": 0.5
+            },
+            {
+              "inputs": {
+                "question": "Weng earns $12 an hour for babysitting. Yesterday, she just did 50 minutes of babysitting. How much did she earn?"
+              },
+              "outputs": {
+                "thinking": "\nOkay, so Weng earned $12 per hour for babysitting, and she worked for 50 minutes yesterday. Hmm, I need to figure out how much she earned based on that time. First, I should convert the 50 minutes into hours because her hourly rate is in dollars per hour. There are 60 minutes in an hour, right? So if she worked for 50 minutes, that's less than an hour. To find out how many hours that is, I can divide 50 by 60. Let me do that: 50 \u00f7 60 equals... hmm, maybe it's easier to think of it as a fraction. 50 divided by 60 simplifies to 5/6 when both numerator and denominator are divided by 10. So, she worked for 5/6 of an hour. Now, I need to calculate how much she earned for that time. Since her rate is $12 per hour, multiplying her hourly rate by the fraction of the hour she worked should give me the total earnings. So, it would be $12 multiplied by 5/6. Let's compute that: 12 \u00d7 (5/6) = ... well, 12 divided by 6 is 2, and then multiplied by 5 gives me 10. Therefore, Weng earned $10 for babysitting yesterday.",
+                "answer": 10
+              },
+              "label": "Prediction",
+              "reward": 0.5
+            }
+          ],
+          "instructions": {
+            "label": "Instructions",
+            "instructions": [],
+            "reward": null
+          },
+          "instructions_candidates": []
+        }
+      }
+    },
+    "non_trainable_variables": {},
+    "optimizer_variables": {
+      "random_few_shot_1": {
+        "iteration": {
+          "iteration": 1
+        }
+      }
+    },
+    "metrics_variables": {
+      "reward": {
+        "total_with_count": {
+          "total": 0.5,
+          "count": 1
+        }
+      }
+    }
+  }
+}

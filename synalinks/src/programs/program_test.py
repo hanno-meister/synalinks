@@ -41,10 +41,6 @@ class ProgramTest(testing.TestCase):
 
         state_tree = program.get_state_tree()
 
-        instructions_uuid = state_tree["trainable_variables"]["generator"][
-            "generator_state"
-        ]["instructions"]["uuid"]
-
         expected_tree = {
             "trainable_variables": {
                 "generator": {
@@ -52,16 +48,10 @@ class ProgramTest(testing.TestCase):
                         "prompt_template": default_prompt_template(),
                         "examples": [],
                         "instructions": Instructions(
-                            uuid=instructions_uuid,
                             instructions=[],
                         ).get_json(),
                         "predictions": [],
-                        "instructions_predictions": [
-                            Instructions(
-                                uuid=instructions_uuid,
-                                instructions=[],
-                            ).get_json()
-                        ],
+                        "instructions_candidates": [],
                     }
                 }
             },
@@ -130,10 +120,6 @@ class ProgramTest(testing.TestCase):
 
         state_tree = program.get_state_tree()
 
-        instructions_uuid = state_tree["trainable_variables"]["generator"][
-            "generator_state"
-        ]["instructions"]["uuid"]
-
         expected_tree = {
             "trainable_variables": {
                 "generator": {
@@ -141,16 +127,10 @@ class ProgramTest(testing.TestCase):
                         "prompt_template": default_prompt_template(),
                         "examples": [],
                         "instructions": Instructions(
-                            uuid=instructions_uuid,
                             instructions=[],
                         ).get_json(),
                         "predictions": [],
-                        "instructions_predictions": [
-                            Instructions(
-                                uuid=instructions_uuid,
-                                instructions=[],
-                            ).get_json()
-                        ],
+                        "instructions_candidates": [],
                     }
                 }
             },
@@ -171,7 +151,9 @@ class ProgramTest(testing.TestCase):
             rationale: str
             answer: str
 
-        language_model = LanguageModel(model="ollama/mistral")
+        language_model = LanguageModel(
+            model="ollama/mistral",
+        )
 
         x0 = Input(data_model=Query)
         x1 = await Generator(
@@ -207,7 +189,9 @@ class ProgramTest(testing.TestCase):
             rationale: str
             answer: str
 
-        language_model = LanguageModel(model="ollama/mistral")
+        language_model = LanguageModel(
+            model="ollama/mistral",
+        )
 
         x0 = Input(data_model=Query)
         x1 = await Generator(
@@ -247,7 +231,9 @@ class ProgramTest(testing.TestCase):
             rationale: str
             answer: str
 
-        language_model = LanguageModel(model="ollama/mistral")
+        language_model = LanguageModel(
+            model="ollama/mistral",
+        )
 
         x0 = Input(data_model=Query)
         x1 = await Generator(
@@ -290,7 +276,9 @@ class ProgramTest(testing.TestCase):
             rationale: str
             answer: str
 
-        language_model = LanguageModel(model="ollama/mistral")
+        language_model = LanguageModel(
+            model="ollama/mistral",
+        )
 
         x0 = Input(data_model=Query)
         x1 = await Generator(

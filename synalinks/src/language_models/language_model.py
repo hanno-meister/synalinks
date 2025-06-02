@@ -1,5 +1,6 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
+import copy
 import json
 import warnings
 
@@ -7,10 +8,16 @@ import litellm
 
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.backend import ChatRole
+from synalinks.src.saving import serialization_lib
 from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
 
 
-@synalinks_export(["synalinks.LanguageModel", "synalinks.language_models.LanguageModel"])
+@synalinks_export(
+    [
+        "synalinks.LanguageModel",
+        "synalinks.language_models.LanguageModel",
+    ]
+)
 class LanguageModel(SynalinksSaveable):
     """A language model API wrapper.
 
@@ -20,7 +27,7 @@ class LanguageModel(SynalinksSaveable):
     generation, translation, summarization, and answering questions.
 
     We support providers that implement *constrained structured output*
-    like OpenAI, Ollama or Mistral. In addition we support providers that otherwise
+    like OpenAI, Azure, Ollama or Mistral. In addition we support providers that otherwise
     allow to constrain the use of a specific tool like Groq or Anthropic.
 
     For the complete list of models, please refer to the providers documentation.
@@ -84,14 +91,53 @@ class LanguageModel(SynalinksSaveable):
     import os
 
     language_model = synalinks.LanguageModel(
-        model="ollama/deepseek-r1",
+        model="ollama/mistral",
     )
     ```
+
+    **Using Azure OpenAI models**
+
+    ```python
+    import synalinks
+    import os
+
+    os.environ["AZURE_API_KEY"] = "your-api-key"
+    os.environ["AZURE_API_BASE"] = "your-api-key"
+    os.environ["AZURE_API_VERSION"] = "your-api-key"
+
+    language_model = synalinks.LanguageModel(
+        model="azure/<your_deployment_name>",
+    )
+    ```
+
+    To cascade models to make the pipeline robust in case there is anything wrong with
+    the model provider (hence making your pipelines more robust).
+    Use the `fallback` argument like in this example:
+
+    ```python
+    import synalinks
+    import os
+
+    os.environ["OPENAI_API_KEY"] = "your-api-key"
+    os.environ["ANTHROPIC_API_KEY"] = "your-api-key"
+
+    language_model = synalinks.LanguageModel(
+        model="anthropic/claude-3-sonnet-20240229",
+        fallback=synalinks.LanguageModel(
+            model="openai/gpt-4o-mini",
+        )
+    )
+    ```
+
+    Note: Obviously, use an `.env` file and `.gitignore` to avoid putting your API keys
+    in the code that can lead to leackage when pushing it into repositories.
 
     Args:
         model (str): The model to use.
         api_base (str): Optional. The endpoint to use.
-        retry (int): Optional. The number of retry.
+        retry (int): Optional. The number of retry (default to 5).
+        fallback (LanguageModel): Optional. The language model to fallback
+            if anything is wrong.
     """
 
     def __init__(
@@ -99,6 +145,7 @@ class LanguageModel(SynalinksSaveable):
         model=None,
         api_base=None,
         retry=5,
+        fallback=None,
     ):
         if model is None:
             raise ValueError("You need to set the `model` argument for any LanguageModel")
@@ -108,6 +155,7 @@ class LanguageModel(SynalinksSaveable):
             # because it have better performance due to the chat prompts
             model = model.replace("ollama", "ollama_chat")
         self.model = model
+        self.fallback = fallback
         if self.model.startswith("ollama") and not api_base:
             self.api_base = "http://localhost:11434"
         else:
@@ -132,6 +180,7 @@ class LanguageModel(SynalinksSaveable):
         """
         formatted_messages = messages.get_json().get("messages", [])
         json_instance = {}
+        input_kwargs = copy.deepcopy(kwargs)
         if schema:
             if self.model.startswith("groq"):
                 # Use a tool created on the fly for groq
@@ -185,7 +234,7 @@ class LanguageModel(SynalinksSaveable):
                         },
                     }
                 )
-            elif self.model.startswith("openai"):
+            elif self.model.startswith("openai") or self.model.startswith("azure"):
                 # Use constrained structured output for openai
                 # OpenAI require the field  "additionalProperties"
                 kwargs.update(
@@ -243,21 +292,44 @@ class LanguageModel(SynalinksSaveable):
                 return json_instance
             except Exception as e:
                 warnings.warn(str(e))
-        return None
+        if self.fallback:
+            return self.fallback(
+                messages,
+                schema=schema,
+                streaming=streaming,
+                **input_kwargs,
+            )
+        else:
+            return None
 
     def _obj_type(self):
         return "LanguageModel"
 
     def get_config(self):
-        return {
+        config = {
             "model": self.model,
             "api_base": self.api_base,
             "retry": self.retry,
         }
+        if self.fallback:
+            fallback_config = {
+                "fallback": serialization_lib.serialize_synalinks_object(
+                    self.fallback,
+                )
+            }
+            return {**fallback_config, **config}
+        else:
+            return config
 
     @classmethod
     def from_config(cls, config):
-        return cls(**config)
+        if "fallback" in config:
+            fallback = serialization_lib.deserialize_synalinks_object(
+                config.pop("fallback")
+            )
+            return cls(fallback=fallback, **config)
+        else:
+            return cls(**config)
 
     def __repr__(self):
         api_base = f" api_base={self.api_base}" if self.api_base else ""

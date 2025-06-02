@@ -25,6 +25,8 @@ def get_synalinks_project_config():
             otherwise an empty dictionary.
     """
     if is_inside_synalinks_project():
-        with open(os.path.join(os.getcwd(), PROJECT_CONFIG_FILENAME, "r")) as f:
+        with open(
+            os.path.join(os.getcwd(), PROJECT_CONFIG_FILENAME, "r", encoding="utf-8")
+        ) as f:
             return json.loads(f.read())
     return {}
