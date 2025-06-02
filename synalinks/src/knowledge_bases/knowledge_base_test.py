@@ -1,5 +1,8 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
+from unittest.mock import patch
+
+import numpy as np
 from typing import Literal
 
 from synalinks.src import testing
@@ -26,7 +29,11 @@ class IsPartOf(Relation):
 
 
 class KnowledgeBaseTest(testing.TestCase):
-    async def test_knowledge_base(self):
+    @patch("litellm.embedding")
+    async def test_knowledge_base(self, mock_embedding):
+        expected_value = np.random.rand(1024)
+        mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
+        
         embedding_model = EmbeddingModel(
             model="ollama/mxbai-embed-large",
         )
@@ -42,7 +49,11 @@ class KnowledgeBaseTest(testing.TestCase):
 
         _ = await knowledge_base.query("RETURN 1")
 
-    def test_knowledge_base_serialization(self):
+    @patch("litellm.embedding")
+    def test_knowledge_base_serialization(self, mock_embedding):
+        expected_value = np.random.rand(1024)
+        mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
+        
         embedding_model = EmbeddingModel(
             model="ollama/mxbai-embed-large",
         )

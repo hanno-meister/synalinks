@@ -1,5 +1,7 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
+from unittest.mock import patch
+
 from typing import Literal
 from typing import Union
 
@@ -33,7 +35,11 @@ class IsPartOf(Relation):
 
 
 class Neo4JAdapterTest(testing.TestCase):
-    async def test_adapter(self):
+    @patch("litellm.embedding")
+    async def test_adapter(self, mock_embedding):
+        expected_value = np.random.rand(1024)
+        mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
+        
         embedding_model = EmbeddingModel(
             model="ollama/mxbai-embed-large",
         )
@@ -48,7 +54,11 @@ class Neo4JAdapterTest(testing.TestCase):
 
         _ = await adapter.query("RETURN 1")
 
-    async def test_adapter_update_entity(self):
+    @patch("litellm.embedding")
+    async def test_adapter_update_entity(self, mock_embedding):
+        expected_value = np.random.rand(1024)
+        mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
+        
         embedding_model = EmbeddingModel(model="ollama/mxbai-embed-large")
 
         adapter = Neo4JAdapter(
@@ -66,7 +76,11 @@ class Neo4JAdapterTest(testing.TestCase):
 
         await adapter.update(doc1.to_json_data_model())
 
-    async def test_adapter_update_relation(self):
+    @patch("litellm.embedding")
+    async def test_adapter_update_relation(self, mock_embedding):
+        expected_value = np.random.rand(1024)
+        mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
+        
         embedding_model = EmbeddingModel(
             model="ollama/mxbai-embed-large",
         )
@@ -96,7 +110,11 @@ class Neo4JAdapterTest(testing.TestCase):
 
         await adapter.update(rel1.to_json_data_model())
 
-    async def test_adapter_similarity_search(self):
+    @patch("litellm.embedding")
+    async def test_adapter_similarity_search(self, mock_embedding):
+        expected_value = np.random.rand(1024)
+        mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
+        
         embedding_model = EmbeddingModel(model="ollama/mxbai-embed-large")
 
         adapter = Neo4JAdapter(
