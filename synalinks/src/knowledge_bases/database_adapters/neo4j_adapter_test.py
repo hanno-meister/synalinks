@@ -47,7 +47,7 @@ class Neo4JAdapterTest(testing.TestCase):
         adapter = Neo4JAdapter(
             index_name="neo4j://localhost:7687",
             embedding_model=embedding_model,
-            data_models=[Document, Chunk],
+            entity_models=[Document, Chunk],
             relation_models=[IsPartOf],
             wipe_on_start=True,
         )
@@ -64,7 +64,7 @@ class Neo4JAdapterTest(testing.TestCase):
         adapter = Neo4JAdapter(
             index_name="neo4j://localhost:7687",
             embedding_model=embedding_model,
-            data_models=[Document, Chunk],
+            entity_models=[Document, Chunk],
             relation_models=[IsPartOf],
             wipe_on_start=True,
         )
@@ -88,7 +88,7 @@ class Neo4JAdapterTest(testing.TestCase):
         adapter = Neo4JAdapter(
             index_name="neo4j://localhost:7687",
             embedding_model=embedding_model,
-            data_models=[Document, Chunk],
+            entity_models=[Document, Chunk],
             relation_models=[IsPartOf],
             wipe_on_start=True,
         )
@@ -120,7 +120,7 @@ class Neo4JAdapterTest(testing.TestCase):
         adapter = Neo4JAdapter(
             index_name="neo4j://localhost:7687",
             embedding_model=embedding_model,
-            data_models=[Document, Chunk],
+            entity_models=[Document, Chunk],
             relation_models=[IsPartOf],
             wipe_on_start=True,
         )

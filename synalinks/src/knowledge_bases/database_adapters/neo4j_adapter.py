@@ -27,7 +27,6 @@ class Neo4JAdapter(DatabaseAdapter):
         embedding_model=None,
         metric="cosine",
         wipe_on_start=False,
-        **kwargs,
     ):
         super().__init__(
             index_name=index_name,
@@ -77,13 +76,12 @@ class Neo4JAdapter(DatabaseAdapter):
         asyncio.get_event_loop().run_until_complete(
             self.query(query, params=params),
         )
-
         for entity_model in self.entity_models:
             node_label = self.sanitize_label(entity_model.get_schema().get("title"))
             index_name = to_snake_case(node_label)
             query = "\n".join(
                 [
-                    f"CREATE VECTOR INDEX `{index_name}` IF NOT EXISTS",
+                    f"CREATE VECTOR INDEX $indexName IF NOT EXISTS",
                     f"FOR (n:{node_label}) ON n.embedding",
                     "OPTIONS {indexConfig : {"
                     " `vector.dimensions`: $dimension,"
@@ -92,11 +90,16 @@ class Neo4JAdapter(DatabaseAdapter):
                 ]
             )
             params = {
+                "indexName": index_name,
                 "dimension": self.embedding_dim,
                 "similarityFunction": self.metric,
             }
             asyncio.get_event_loop().run_until_complete(
                 self.query(query, params=params),
+            )
+        if self.entity_models:
+            asyncio.get_event_loop().run_until_complete(
+                self.query("CALL db.awaitIndexes(300)"),
             )
 
     def sanitize_label(self, label):
