@@ -2,7 +2,7 @@
 
 Retrieval Augmented Generation (RAG) represents a significant leap forward in AI system design, combining the creative power of language models with precise information retrieval capabilities. This tutorial will guide you through building sophisticated RAG systems using Synalinks, moving from basic document retrieval to advanced Knowledge Augmented Generation (KAG) architectures.
 
-###  Understanding the Foundation
+### Understanding the Foundation
 
 RAG systems solve a fundamental limitation of traditional language models: their reliance on static training data. While language models excel at generating coherent text, they cannot access information beyond their training cutoff or incorporate real-time data. RAG bridges this gap by dynamically retrieving relevant information and weaving it into the generation process.
 

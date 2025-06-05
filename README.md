@@ -377,14 +377,12 @@ async def main():
         epochs=epochs,
     )
 
-    synalinks.utils.plot_history(history)
-
 if __name__ == "__main__":
     asyncio.run(main())
 ```
 <div align="center">
 
-![training_history](./docs/assets/training_history.png)
+![training_history](./docs/assets/gsm8k_evaluation_comparison.png.png)
 
 </div>
 
