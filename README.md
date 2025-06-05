@@ -382,7 +382,7 @@ if __name__ == "__main__":
 ```
 <div align="center">
 
-![training_history](./docs/assets/gsm8k_evaluation_comparison.png.png)
+![gsm8k_evaluation_comparison](./docs/assets/gsm8k_evaluation_comparison.png)
 
 </div>
 
