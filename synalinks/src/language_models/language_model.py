@@ -145,6 +145,7 @@ class LanguageModel(SynalinksSaveable):
         model=None,
         api_base=None,
         retry=5,
+        timeout=30,
         fallback=None,
     ):
         if model is None:
@@ -161,6 +162,7 @@ class LanguageModel(SynalinksSaveable):
         else:
             self.api_base = api_base
         self.retry = retry
+        self.timeout = timeout
 
     async def __call__(self, messages, schema=None, streaming=False, **kwargs):
         """

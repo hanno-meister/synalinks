@@ -4,8 +4,8 @@ import os
 import synalinks
 
 NB_EPOCHS = 2
-BATCH_SIZE = 16
-NB_SAMPLES = 2
+BATCH_SIZE = 32
+NB_SAMPLES = None
 NB_RUNS = 3
 
 FOLDER = "examples/training_programs"
@@ -129,7 +129,8 @@ async def main():
     synalinks.utils.plot_metrics_comparison_with_mean_and_std(
         metrics_comparison,
         to_folder=FOLDER,
-        to_file="evaluation_comparison.png",
+        show_values=True,
+        to_file="gsm8k_evaluation_comparison.png",
         title="Comparison w/o training (GSM8K with EM reward)",
     )
 

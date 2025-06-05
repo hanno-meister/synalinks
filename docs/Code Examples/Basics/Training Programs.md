@@ -24,7 +24,7 @@ First, let's have a look at the dataset.
 
 ::: synalinks.src.datasets.gsm8k.NumericalAnswerWithThinking
 
-Now we can dive into the code used for this benchmark. In this example, we are going to use a small distilled model that can run locally. Training an LM application involves numerous calls to LMs, and it is better to experiment with small models. We are also proving that, despite what most people think, small models, when trained, can easily compete with their larger counterparts. This makes Synalinks a framework of choice if you want to reduce the costs of your LM applications.
+Now we can dive into the code used for this benchmark. In this example, we are going to use a small distilled model that can run locally. Training an LM application involves numerous calls to LMs, and it is better to experiment with small models. We are also proving that, despite what most people think, small models, when trained, can compete with their larger counterparts. This makes Synalinks a framework of choice if you want to reduce the costs of your LM applications.
 
 In production settings, this means that you can use smaller and more cost-effective models from your preferred provider while enhancing their accuracy with Synalinks. This is also a good way to fight model obsolescence, as many proprietary providers degrade the performance of their models over time to make people switch to newer/more costly models.
 
@@ -36,8 +36,8 @@ import os
 
 import synalinks
 
-NB_EPOCHS = 10
-BATCH_SIZE = 16
+NB_EPOCHS = 2
+BATCH_SIZE = 32
 NB_SAMPLES = None
 NB_RUNS = 3
 
@@ -161,7 +161,7 @@ async def main():
     synalinks.utils.plot_metrics_comparison_with_mean_and_std(
         metrics_comparison,
         to_folder=FOLDER,
-        to_file="evaluation_comparison.png",
+        to_file="gsm8k_evaluation_comparison.png",
         title="Comparison w/o training (GSM8K with EM reward)",
     )
 
@@ -175,9 +175,9 @@ if __name__ == "__main__":
 
 ### Training Result
 
-![gsm8k_baseline_training_history](../../assets/gsm8k_baseline_training_history.png)
+![gsm8k_evaluation_comparison](../../assets/gsm8k_evaluation_comparison.png)
 
-Not bad for a local model? You can push the results even higher by training for more epochs or by using multiple optimizers one after another. Another way to have better results is to modify the architecture, using agents with a calculator or a more complex workflow.
+Here we have a **77.142% increase of performance**, not bad for a small distilled. You can push the results even higher by training for more epochs or by using multiple optimizers one after another. Another way to have better results is to modify the architecture, using agents with a calculator or a more complex workflow.
 
 ## Conclusion
         
