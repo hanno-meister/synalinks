@@ -177,7 +177,7 @@ if __name__ == "__main__":
 
 ![gsm8k_evaluation_comparison](../../assets/gsm8k_evaluation_comparison.png)
 
-Here we have a **77.142% increase of performance**, not bad for a small distilled. You can push the results even higher by training for more epochs or by using multiple optimizers one after another. Another way to have better results is to modify the architecture, using agents with a calculator or a more complex workflow.
+Here we have a **77.142% increase of performance**, not bad for a small distilled model. You can push the results even higher by training for more epochs or by using multiple optimizers one after another. Another way to have better results is to modify the architecture, using agents with a calculator or a more complex workflow.
 
 ## Conclusion
         

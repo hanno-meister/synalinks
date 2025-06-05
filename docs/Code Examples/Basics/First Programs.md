@@ -1,7 +1,7 @@
 # First Programs
 
 The main concept of Synalinks, is that an application (we call it a `Program`)
-is a computation graph (a Directed Acyclic Graph to be exact) with JSON data (`JsonDataModel`) as edges and `Operation`s as nodes.
+is a computation graph (a [Directed Acyclic Graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph) or DAG to be exact) with JSON data (`JsonDataModel`) as edges and `Operation`s as nodes.
 
 What set apart Synalinks from other similar frameworks like DSPy or AdalFlow is that we focus on graph-based systems but also that it allow users to declare the computation graph using a Functional API inherited
 from [Keras](https://keras.io/).
