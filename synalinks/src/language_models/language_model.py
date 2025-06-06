@@ -129,8 +129,8 @@ class LanguageModel(SynalinksSaveable):
     )
     ```
 
-    Note: Obviously, use an `.env` file and `.gitignore` to avoid putting your API keys
-    in the code that can lead to leackage when pushing it into repositories.
+    **Note**: Obviously, use an `.env` file and `.gitignore` to avoid putting your API keys
+    in the code or a config file that can lead to leackage when pushing it into repositories.
 
     Args:
         model (str): The model to use.

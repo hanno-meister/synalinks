@@ -44,6 +44,9 @@ class KnowledgeBase(SynalinksSaveable):
         wipe_on_start=False,
     )
     ```
+    
+    Note: Obviously, use an `.env` file and `.gitignore` to avoid putting your username and password
+    in the code or a config file that can lead to leackage when pushing it into repositories.
 
     Args:
         index_name (str): The index name/url of the database.

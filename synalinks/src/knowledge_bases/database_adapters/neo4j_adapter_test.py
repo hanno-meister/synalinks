@@ -11,6 +11,7 @@ from synalinks.src import testing
 from synalinks.src.backend import Entity
 from synalinks.src.backend import Relation
 from synalinks.src.backend import SimilaritySearch
+from synalinks.src.backend import TripletSearch
 from synalinks.src.embedding_models import EmbeddingModel
 from synalinks.src.knowledge_bases.database_adapters.neo4j_adapter import Neo4JAdapter
 from synalinks.src.modules import Embedding
@@ -164,3 +165,10 @@ class Neo4JAdapterTest(testing.TestCase):
         ).to_json_data_model()
         result = await adapter.similarity_search(search)
         self.assertTrue(len(result) > 0)
+
+    @patch("litellm.embedding")
+    async def test_adapter_triplet_search(self, mock_embedding):
+        expected_value = np.random.rand(1024)
+        mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
+        
+        
