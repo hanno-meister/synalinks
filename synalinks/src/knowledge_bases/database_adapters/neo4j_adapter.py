@@ -102,28 +102,6 @@ class Neo4JAdapter(DatabaseAdapter):
                 self.query("CALL db.awaitIndexes(300)"),
             )
 
-    def sanitize_label(self, label):
-        """Sanitize labels for Neo4j compatibility"""
-        if not label:
-            return "Entity"
-        # Remove special characters and replace spaces with underscores
-        sanitized = re.sub(r"[^a-zA-Z0-9_]", "_", str(label))
-        # Ensure it starts with a letter or underscore
-        if sanitized and not sanitized[0].isalpha() and sanitized[0] != "_":
-            sanitized = "_" + sanitized
-        return sanitized
-
-    def sanitize_properties(self, properties):
-        """Sanitize property names and values for Neo4j compatibility"""
-        if not isinstance(properties, dict):
-            return {}
-
-        sanitized = {}
-        for key, value in properties.items():
-            # Sanitize key names
-            sanitized[self.sanitize(key)] = value
-        return sanitized
-
     async def query(self, query: str, params: Dict[str, Any] = None):
         driver = neo4j.GraphDatabase.driver(
             self.index_name, auth=(self.username, self.password)

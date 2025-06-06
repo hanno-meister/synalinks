@@ -117,7 +117,7 @@ class KnowledgeBase(SynalinksSaveable):
         self,
         similarity_search,
         k=10,
-        threshold=0.7,
+        threshold=0.8,
     ):
         """Perform similarity search to find entities similar to the given text.
 
@@ -130,7 +130,7 @@ class KnowledgeBase(SynalinksSaveable):
                 Defaults to 10.
             threshold (float): Minimum similarity score for results.
                 Entities with similarity below this threshold are excluded.
-                Should be between 0.0 and 1.0. Defaults to 0.7.
+                Should be between 0.0 and 1.0 (Defaults to 0.8).
         """
         return await self.adapter.similarity_search(
             similarity_search,
@@ -142,7 +142,7 @@ class KnowledgeBase(SynalinksSaveable):
         self,
         triplet_search,
         k=10,
-        threshold=0.7,
+        threshold=0.8,
     ):
         """Search for triplets in the knowledge graph.
 
@@ -155,7 +155,7 @@ class KnowledgeBase(SynalinksSaveable):
                 (Defaults to 10).
             threshold (float, optional): Minimum similarity score for triplet matches.
                 Triplets with similarity below this threshold are excluded.
-                Should be between 0.0 and 1.0. Defaults to 0.7.
+                Should be between 0.0 and 1.0. (Defaults to 0.8).
         """
         return await self.adapter.triplet_search(
             triplet_search,
