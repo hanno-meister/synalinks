@@ -101,7 +101,7 @@ class BacktrackingOfThought(synalinks.Module):
                     instructions=self.instructions,
                     use_inputs_schema=self.use_inputs_schema,
                     use_outputs_schema=self.use_outputs_schema,
-                    name=self.name + "_thinking_generator",
+                    name=self.name + f"_thinking_generator_{i}",
                 )
             )
         self.critique = []
@@ -115,7 +115,7 @@ class BacktrackingOfThought(synalinks.Module):
                 instructions=self.instructions,
                 use_inputs_schema=self.use_inputs_schema,
                 use_outputs_schema=self.use_outputs_schema,
-                name=self.name + "_critique_generator",
+                name=self.name + f"_critique_generator_{i}",
             )
         )
         # This is going to be the final generator
@@ -257,7 +257,7 @@ if __name__ == "__main__":
 
 First, let's explain the `__init__()` function. When implementing modules that
 use a `Generator`, you want to externalize the generator's parameters 
-(`prompt_template`, `hints`, `examples`, `use_inputs_schema`, `use_outputs_schema`)
+(`prompt_template`, `instructions`, `examples`, `use_inputs_schema`, `use_outputs_schema`)
 to give maximum flexibility to your module when possible.
 Then, you have to include the default arguments of a module (`name`, `description`, `trainable`)
 that will be provided to the `super().__init__()`. 
@@ -281,7 +281,7 @@ As a rule of thumb, the variables should be anything that evolve over time durin
 inference/training. These variables could be updated by the module itself, or by 
 the optimizer if you have an optimizer designed for that. They will be serialized
 when you save your program so you can recover the state of your program by loading
-a JSON file. In this example, the variables are encapsulated in the `Generator`.
+a JSON file. In this example, the variables are encapsulated in the `Generator` module.
 
 ### The `call()` function
 
@@ -306,12 +306,12 @@ backtracking logic:
 
 The `compute_output_spec()` function is responsible for defining the output data model
 of the module/program. It allows the system to understand the structure of the data
-produced by this module. Its inputs is always a `SymbolicDataModel`.
+produced by this module. Its inputs is always a `SymbolicDataModel`, a placeholder that only contains a JSON schema that serve as data specification.
 
 In this example, `compute_output_spec()` returns a `SymbolicDataModel` based on the module's 
 schema by calling the modules sequentially, indicating the expected structure of the output data.
 
-As a rule of thumb, if you access a data model field (using `get()`) you will have to 
+As a rule of thumb, if you access a data model field in your call (using `get()`) you will have to 
 implement it otherwise, Synalinks will infer the output spec by running the call 
 function with symbolic data models. If you have any doubt, do not implement it and the system will
 raise an error if you needs to.
@@ -324,7 +324,7 @@ any trainable variables, and restoring it later.
 
 - The `get_config()` method should return a dictionary containing all the information needed 
     to recreate the module. This includes the module's configuration and any serialized 
-    sub-components like the language model or critique program in this case.
+    sub-components like the language model in this case.
 - The `from_config()` class method should be able to reconstruct the module from the 
     configuration dictionary returned by `get_config()`.
 

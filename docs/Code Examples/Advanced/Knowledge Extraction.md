@@ -143,39 +143,133 @@ This staged approach offers several advantages: entities can be extracted using 
 
 ### Multi-Stage Extraction
 
-Complex real-world applications often require extraction of diverse data types with varying computational demands. Multi-stage pipelines excel in scenarios where you need to simultaneously extract factual entities, perform complex reasoning, and generate analytical insights from the same source material.
-
-Consider a scenario where you need to extract both concrete geographical entities and abstract reasoning patterns from documents. The multi-stage approach allows you to optimize each extraction task independently while maintaining coherent integration of the results. You might employ fast pattern-matching models for entity extraction while reserving computationally intensive reasoning models for inference tasks, all within a single, coordinated pipeline.
-
-This flexibility becomes crucial when dealing with heterogeneous data sources, varying quality requirements, or when different stages require different specialized models. Multi-stage pipelines also enable sophisticated error handling and recovery strategies, where failures in one stage don't necessarily compromise the entire extraction process.
-
-The modular architecture of Synalinks ensures that as your extraction requirements evolve, you can incrementally enhance your pipelines without rebuilding them from scratch. This evolutionary approach to knowledge extraction provides the adaptability needed for production systems that must handle changing data patterns and evolving business requirements.
+If you have heterogeneous data models, or if you are using small language models (SLMs), you might want to consider using a separate generator for each entity or relation to extract. This approach enhances the predictions of LMs by making one call per entity or relation type, thereby reducing the scope of the task for each call and enhancing accuracy. You can then combine the results of your extraction using logical operators (`And` or `Or`), depending on whether you want your aggregation to be robust to failures from the LMs.
 
 ```python
+import synalinks
+import asyncio
+from typing import List
 
-async def multi_stage_program(
-    language_model: synalinks.LanguageModel,
-    embedding_model: synalinks.EmbeddingModel,
-    knowledge_base: synalinks.KnowledgeBase,
-):
+from knowledge_graph_schema import City, Country, Place, Event
+from knowledge_graph_schema import IsCapitalOf, IsLocatedIn, IsCityOf, TookPlaceIn
+from knowledge_dataset import Document, load_data
+
+
+class Cities(synalinks.Entities):
+    entities: List[City] = synalinks.Field(
+        description="A list exclusively containing city entities, such as 'Tokyo' or 'London'.",
+    )
+
+
+class Countries(synalinks.Entities):
+    entities: List[Country] = synalinks.Field(
+        description="A list exclusively containing country entities, such as 'Japan' or 'United Kingdom'.",
+    )
+
+
+class Places(synalinks.Entities):
+    entities: List[Place] = synalinks.Field(
+        description="A list exclusively containing place entities, which could be landmarks or points of interest, such as 'Mount Fuji' or 'Big Ben'.",
+    )
+
+
+class Events(synalinks.Entities):
+    entities: List[Event] = synalinks.Field(
+        description="A list exclusively containing event entities, such as 'Olympic Games' or 'Coachella Festival'.",
+    )
+
+
+class IsCapitalOfRelations(synalinks.Relations):
+    relations: List[IsCapitalOf] = synalinks.Field(
+        description="A list of relations specifically describing capital-city relationships between city and country entities.",
+    )
+
+
+class IsCityOfRelations(synalinks.Relations):
+    relations: List[IsCityOf] = synalinks.Field(
+        description="A list of relations specifically describing the association of cities as part of countries.",
+    )
+
+
+class IsLocatedInRelations(synalinks.Relations):
+    relations: List[IsLocatedIn] = synalinks.Field(
+        description="A list of relations specifically describing the geographical containment of places within cities or countries.",
+    )
+
+
+class TookPlaceInRelations(synalinks.Relations):
+    relations: List[TookPlaceIn] = synalinks.Field(
+        description="A list of relations specifically describing the occurrence of events within cities or countries.",
+    )
+
+
+async def main():
+    language_model = synalinks.LanguageModel(
+        model="ollama/mistral",
+    )
+
+    embedding_model = synalinks.EmbeddingModel(
+        model="ollama/mxbai-embed-large",
+    )
+
+    knowledge_base = synalinks.KnowledgeBase(
+        index_name="neo4j://localhost:7687",
+        entity_models=[City, Country, Place, Event],
+        relation_models=[IsCapitalOf, IsLocatedIn, IsCityOf, TookPlaceIn],
+        embedding_model=embedding_model,
+        metric="cosine",
+        wipe_on_start=True,
+    )
+
     inputs = synalinks.Input(data_model=Document)
-    entities = await synalinks.Generator(
-        data_model=KnowledgeEntities,
+    cities = await synalinks.Generator(
+        data_model=Cities,
         language_model=language_model,
     )(inputs)
-    notes = await synalinks.Generator(
-        data_model=Notes,
+    countries = await synalinks.Generator(
+        data_model=Countries,
+        language_model=language_model,
+    )(inputs)
+    places = await synalinks.Generator(
+        data_model=Places,
+        language_model=language_model,
+    )(inputs)
+    events = await synalinks.Generator(
+        data_model=Events,
         language_model=language_model,
     )(inputs)
 
-    # inputs_with_entities = inputs AND entities (See Control Flow tutorial)
-    inputs_with_entities = inputs & entities
-    relations = await synalinks.Generator(
-        data_model=KnowledgeRelations,
+    is_capital_of_relations = await synalinks.Generator(
+        data_model=IsCapitalOfRelations,
         language_model=language_model,
-    )(inputs_with_entities)
+    )(inputs)
+    is_located_in_relations = await synalinks.Generator(
+        data_model=IsLocatedInRelations,
+        language_model=language_model,
+    )(inputs)
+    is_city_of_relations = await synalinks.Generator(
+        data_model=IsCityOfRelations,
+        language_model=language_model,
+    )(inputs)
+    took_place_in_relations = await synalinks.Generator(
+        data_model=TookPlaceInRelations,
+        language_model=language_model,
+    )(inputs)
 
-    # knowledge_graph = inputs AND entities (See Control Flow tutorial)
+    entities = await synalinks.And()([cities, countries, places, events])
+
+    entities = entities.factorize()
+
+    relations = await synalinks.And()(
+        [
+            is_capital_of_relations,
+            is_located_in_relations,
+            is_city_of_relations,
+            took_place_in_relations,
+        ]
+    )
+    relations = relations.factorize()
+
     knowledge_graph = entities & relations
 
     embedded_knowledge_graph = await synalinks.Embedding(
@@ -183,20 +277,11 @@ async def multi_stage_program(
         in_mask=["name"],
     )(knowledge_graph)
 
-    embedded_notes = await synalinks.Embedding(
-        embedding_model=embedding_model,
-        in_mask=["description"],
-    )(notes)
-
     updated_knowledge_graph = await synalinks.UpdateKnowledge(
         knowledge_base=knowledge_base,
     )(embedded_knowledge_graph)
-    
-    updated_notes = await synalinks.UpdateKnowledge(
-        knowledge_base=knowledge_base,
-    )(embedded_notes)
 
-    outputs = [updated_knowledge_graph, updated_notes]
+    outputs = updated_knowledge_graph
 
     program = synalinks.Program(
         inputs=inputs,
@@ -207,18 +292,64 @@ async def multi_stage_program(
 
     synalinks.utils.plot_program(
         program,
-        to_folder="examples/knowledge_extraction",
+        to_folder="examples/knowledge/extraction",
         show_trainable=True,
     )
 
-    return program
+    dataset = load_data()
+
+    print("Starting KG extraction...")
+    await program.predict(dataset, batch_size=1)
+    print("Done.")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ![multi_stage_extraction](../../assets/multi_stage_extraction.png)
 
+### Dealing with Orphan Nodes
+
+In some cases, specially if you want to use the `KnowledgeRetriever` you will have to extract nodes that are connected to each other. If intelligence is connecting the dot between your data, then orphan nodes are problematic.
+
+To avoid them in SynaLinks, you only need to infer the relations, as they contains not only the id of subject and object entity, but the entities themselves. This approach make sure that each entity extracted will be connected at least to another.
+
 ```python
+import synalinks
+import asyncio
+from typing import List
+
+from knowledge_graph_schema import City, Country, Place, Event
+from knowledge_graph_schema import IsCapitalOf, IsLocatedIn, IsCityOf, TookPlaceIn
+from knowledge_dataset import Document, load_data
+
+
+class IsCapitalOfRelations(synalinks.Relations):
+    relations: List[IsCapitalOf] = synalinks.Field(
+        description="A list of relations specifically describing capital-city relationships between city and country entities.",
+    )
+
+
+class IsCityOfRelations(synalinks.Relations):
+    relations: List[IsCityOf] = synalinks.Field(
+        description="A list of relations specifically describing the association of cities as part of countries.",
+    )
+
+
+class IsLocatedInRelations(synalinks.Relations):
+    relations: List[IsLocatedIn] = synalinks.Field(
+        description="A list of relations specifically describing the geographical containment of places within cities or countries.",
+    )
+
+
+class TookPlaceInRelations(synalinks.Relations):
+    relations: List[TookPlaceIn] = synalinks.Field(
+        description="A list of relations specifically describing the occurrence of events within cities or countries.",
+    )
+
+
 async def main():
-    
     language_model = synalinks.LanguageModel(
         model="ollama/mistral",
     )
@@ -226,34 +357,87 @@ async def main():
     embedding_model = synalinks.EmbeddingModel(
         model="ollama/mxbai-embed-large",
     )
-    
+
     knowledge_base = synalinks.KnowledgeBase(
         index_name="neo4j://localhost:7687",
-        entity_models=[City, Country, Place, Event, Notes],
+        entity_models=[City, Country, Place, Event],
         relation_models=[IsCapitalOf, IsLocatedIn, IsCityOf, TookPlaceIn],
         embedding_model=embedding_model,
         metric="cosine",
-        wipe_on_start=False,
+        wipe_on_start=True,
     )
-    
-    program = await one_stage_program(
+
+    inputs = synalinks.Input(data_model=Document)
+
+    is_capital_of_relations = await synalinks.Generator(
+        data_model=IsCapitalOfRelations,
         language_model=language_model,
-        embedding_model=embedding_model,
-        knowledge_base=knowledge_base,
-    )
-    
-    program_1 = await two_stage_program(
+    )(inputs)
+    is_located_in_relations = await synalinks.Generator(
+        data_model=IsLocatedInRelations,
         language_model=language_model,
-        embedding_model=embedding_model,
-        knowledge_base=knowledge_base,
-    )
-    
-    program_2 = await multi_stage_program(
+    )(inputs)
+    is_city_of_relations = await synalinks.Generator(
+        data_model=IsCityOfRelations,
         language_model=language_model,
-        embedding_model=embedding_model,
-        knowledge_base=knowledge_base,
+    )(inputs)
+    took_place_in_relations = await synalinks.Generator(
+        data_model=TookPlaceInRelations,
+        language_model=language_model,
+    )(inputs)
+
+    relations = await synalinks.And()(
+        [
+            is_capital_of_relations,
+            is_located_in_relations,
+            is_city_of_relations,
+            took_place_in_relations,
+        ]
     )
+    relations = relations.factorize()
+
+    embedded_relations = await synalinks.Embedding(
+        embedding_model=embedding_model,
+        in_mask=["name"],
+    )(relations)
+
+    updated_relations = await synalinks.UpdateKnowledge(
+        knowledge_base=knowledge_base,
+    )(embedded_relations)
+
+    outputs = updated_relations
+
+    program = synalinks.Program(
+        inputs=inputs,
+        outputs=outputs,
+        name="relations_only_multi_stage_extraction",
+        description="A multi stage KG extraction pipeline that only extract the relations",
+    )
+
+    synalinks.utils.plot_program(
+        program,
+        to_folder=FOLDER,
+        show_trainable=True,
+    )
+
+    synalinks.utils.plot_program(
+        program,
+        to_folder="examples/knowledge/extraction",
+        show_trainable=True,
+    )
+
+    dataset = load_data()
+
+    print("Starting KG extraction...")
+    await program.predict(dataset, batch_size=1)
+    print("Done.")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
+
+![relations_only_multi_stage_extraction](../../assets/relations_only_multi_stage_extraction.png)
 
 ## Conclusion
 
@@ -277,3 +461,9 @@ In an era where structured data is the new oil, Synalinks provides the refinery 
 - **Multi-Stage for Sophistication**: Deploy multi-stage architectures for complex scenarios requiring diverse extraction types, specialized models for different tasks, and sophisticated reasoning capabilities. This approach maximizes flexibility and performance optimization opportunities.
 - **Resource Optimization**: Different stages can utilize different models optimized for their specific tasks, leading to better resource utilization and cost efficiency. Lightweight models handle simple tasks while powerful models focus on complex reasoning.
 - **Error Isolation**: Failures in one stage don't necessarily compromise the entire pipeline depending on the logical operators used. This resilience is crucial for production systems processing large volumes of heterogeneous data.
+
+### How to go further ?
+
+Synalinks KG data models are compatible with other modules, allowing you to easily enhance pipelines to make the extracted data more robust, depending on the data you want to extract. Ultimately, it is about deeply understanding the limitations of your language models (LMs) and having the ability, thanks to our modular approach, to address them. Keep also in mind, that you can train your generators to enhance their accuracy.
+
+One might argue that this is a case-by-case, highly domain-specific development and not as straightforward as a one-size-fits-all solution. However, the reality is that companies want systems tailored to their specific business cases and optimized for them. You don't build defensible intellectual property with an average one-size-fits-all solution.

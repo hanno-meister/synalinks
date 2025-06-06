@@ -18,6 +18,8 @@
 
 <div align="center">
 
+⭐ Help us reach more AI/ML engineers and grow the Synalinks community. Star this repo ⭐
+
 ![Beta](https://img.shields.io/badge/Release-Beta-blue.svg)
 ![Coverage Badge](https://raw.githubusercontent.com/SynaLinks/synalinks/refs/heads/main/coverage-badge.svg)
 [![Downloads](https://static.pepy.tech/badge/synalinks)](https://pepy.tech/project/synalinks)
