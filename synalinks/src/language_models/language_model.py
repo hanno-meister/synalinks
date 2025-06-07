@@ -8,11 +8,10 @@ import litellm
 
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.backend import ChatRole
+from synalinks.src.backend.config import capture_exception
+from synalinks.src.backend.config import maybe_initialize_telemetry
 from synalinks.src.saving import serialization_lib
 from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
-
-from synalinks.src.backend.config import maybe_initialize_telemetry
-from synalinks.src.backend.config import capture_exception
 
 
 @synalinks_export(
@@ -132,8 +131,9 @@ class LanguageModel(SynalinksSaveable):
     )
     ```
 
-    **Note**: Obviously, use an `.env` file and `.gitignore` to avoid putting your API keys
-    in the code or a config file that can lead to leackage when pushing it into repositories.
+    **Note**: Obviously, use an `.env` file and `.gitignore` to avoid
+    putting your API keys in the code or a config file that can lead to
+    leackage when pushing it into repositories.
 
     Args:
         model (str): The model to use.
@@ -182,7 +182,7 @@ class LanguageModel(SynalinksSaveable):
             (dict): The generated structured response.
         """
         maybe_initialize_telemetry()
-        
+
         formatted_messages = messages.get_json().get("messages", [])
         json_instance = {}
         input_kwargs = copy.deepcopy(kwargs)

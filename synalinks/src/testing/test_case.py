@@ -11,6 +11,7 @@ from absl.testing import parameterized
 from synalinks.src.backend.common.global_state import clear_session
 from synalinks.src.backend.config import disable_telemetry
 
+
 class TestCase(
     unittest.IsolatedAsyncioTestCase, parameterized.TestCase, unittest.TestCase
 ):

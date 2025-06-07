@@ -15,14 +15,13 @@ from synalinks.src import utils
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.backend.common import global_state
 from synalinks.src.backend.common.name_scope import current_path
+from synalinks.src.backend.config import capture_exception
+from synalinks.src.backend.config import maybe_initialize_telemetry
 from synalinks.src.metrics import Metric
 from synalinks.src.ops.operation import Operation
 from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
 from synalinks.src.utils import python_utils
 from synalinks.src.utils import tracking
-
-from synalinks.src.backend.config import maybe_initialize_telemetry
-from synalinks.src.backend.config import capture_exception
 
 if backend.backend() == "pydantic":
     from synalinks.src.backend.pydantic.module import PydanticModule as BackendModule
@@ -498,7 +497,7 @@ class Module(BackendModule, Operation, SynalinksSaveable):
 
     async def __call__(self, *args, **kwargs):
         maybe_initialize_telemetry()
-        
+
         self._check_super_called()
         self._called = True
 

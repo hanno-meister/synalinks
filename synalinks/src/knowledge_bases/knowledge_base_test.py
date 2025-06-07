@@ -1,9 +1,9 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
+from typing import Literal
 from unittest.mock import patch
 
 import numpy as np
-from typing import Literal
 
 from synalinks.src import testing
 from synalinks.src.backend import Entity
@@ -33,7 +33,7 @@ class KnowledgeBaseTest(testing.TestCase):
     async def test_knowledge_base(self, mock_embedding):
         expected_value = np.random.rand(1024)
         mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
-        
+
         embedding_model = EmbeddingModel(
             model="ollama/mxbai-embed-large",
         )
@@ -53,7 +53,7 @@ class KnowledgeBaseTest(testing.TestCase):
     def test_knowledge_base_serialization(self, mock_embedding):
         expected_value = np.random.rand(1024)
         mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
-        
+
         embedding_model = EmbeddingModel(
             model="ollama/mxbai-embed-large",
         )

@@ -2,11 +2,10 @@
 
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.backend import is_symbolic_data_model
+from synalinks.src.backend.config import maybe_initialize_telemetry
 from synalinks.src.knowledge_bases import database_adapters
 from synalinks.src.saving import serialization_lib
 from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
-
-from synalinks.src.backend.config import maybe_initialize_telemetry
 
 
 @synalinks_export("synalinks.KnowledgeBase")
@@ -46,9 +45,10 @@ class KnowledgeBase(SynalinksSaveable):
         wipe_on_start=False,
     )
     ```
-    
-    **Note**: Obviously, use an `.env` file and `.gitignore` to avoid putting your username and password
-    in the code or a config file that can lead to leackage when pushing it into repositories.
+
+    **Note**: Obviously, use an `.env` file and `.gitignore` to avoid putting
+    your username and password in the code or a config file that can lead to
+    leackage when pushing it into repositories.
 
     Args:
         index_name (str): The index name/url of the database.

@@ -5,10 +5,10 @@ import warnings
 import litellm
 
 from synalinks.src.api_export import synalinks_export
-from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
-
-from synalinks.src.backend.config import maybe_initialize_telemetry
 from synalinks.src.backend.config import capture_exception
+from synalinks.src.backend.config import maybe_initialize_telemetry
+from synalinks.src.saving import serialization_lib
+from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
 
 
 @synalinks_export(
@@ -77,9 +77,10 @@ class EmbeddingModel(SynalinksSaveable):
         model="ollama/mxbai-embed-large",
     )
     ```
-    
-    **Note**: Obviously, use an `.env` file and `.gitignore` to avoid putting your API keys
-    in the code or a config file that can lead to leackage when pushing it into repositories.
+
+    **Note**: Obviously, use an `.env` file and `.gitignore` to avoid
+    putting your API keys in the code or a config file that can lead to
+    leackage when pushing it into repositories.
 
     Args:
         model (str): The model to use.
@@ -119,7 +120,7 @@ class EmbeddingModel(SynalinksSaveable):
             (list): The list of corresponding vectors.
         """
         maybe_initialize_telemetry()
-        
+
         for i in range(self.retry):
             try:
                 if self.api_base:
@@ -178,7 +179,7 @@ class EmbeddingModel(SynalinksSaveable):
             return cls(fallback=fallback, **config)
         else:
             return cls(**config)
-        
+
     def __repr__(self):
         api_base = f" api_base={self.api_base}" if self.api_base else ""
         return f"<EmbeddingModel model={self.model}{api_base}>"

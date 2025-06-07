@@ -1,9 +1,8 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
-from unittest.mock import patch
-
 from typing import Literal
 from typing import Union
+from unittest.mock import patch
 
 import numpy as np
 
@@ -11,7 +10,6 @@ from synalinks.src import testing
 from synalinks.src.backend import Entity
 from synalinks.src.backend import Relation
 from synalinks.src.backend import SimilaritySearch
-from synalinks.src.backend import TripletSearch
 from synalinks.src.embedding_models import EmbeddingModel
 from synalinks.src.knowledge_bases.database_adapters.neo4j_adapter import Neo4JAdapter
 from synalinks.src.modules import Embedding
@@ -40,7 +38,7 @@ class Neo4JAdapterTest(testing.TestCase):
     async def test_adapter(self, mock_embedding):
         expected_value = np.random.rand(1024)
         mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
-        
+
         embedding_model = EmbeddingModel(
             model="ollama/mxbai-embed-large",
         )
@@ -59,7 +57,7 @@ class Neo4JAdapterTest(testing.TestCase):
     async def test_adapter_update_entity(self, mock_embedding):
         expected_value = np.random.rand(1024)
         mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
-        
+
         embedding_model = EmbeddingModel(model="ollama/mxbai-embed-large")
 
         adapter = Neo4JAdapter(
@@ -81,7 +79,7 @@ class Neo4JAdapterTest(testing.TestCase):
     async def test_adapter_update_relation(self, mock_embedding):
         expected_value = np.random.rand(1024)
         mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
-        
+
         embedding_model = EmbeddingModel(
             model="ollama/mxbai-embed-large",
         )
@@ -115,7 +113,7 @@ class Neo4JAdapterTest(testing.TestCase):
     async def test_adapter_similarity_search(self, mock_embedding):
         expected_value = np.random.rand(1024)
         mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
-        
+
         embedding_model = EmbeddingModel(model="ollama/mxbai-embed-large")
 
         adapter = Neo4JAdapter(
@@ -170,5 +168,3 @@ class Neo4JAdapterTest(testing.TestCase):
     async def test_adapter_triplet_search(self, mock_embedding):
         expected_value = np.random.rand(1024)
         mock_embedding.return_value = {"data": [{"embedding": expected_value}]}
-        
-        

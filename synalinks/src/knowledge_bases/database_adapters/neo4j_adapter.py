@@ -2,7 +2,6 @@
 
 import asyncio
 import os
-import re
 import warnings
 from typing import Any
 from typing import Dict
@@ -81,7 +80,7 @@ class Neo4JAdapter(DatabaseAdapter):
             index_name = to_snake_case(node_label)
             query = "\n".join(
                 [
-                    f"CREATE VECTOR INDEX $indexName IF NOT EXISTS",
+                    "CREATE VECTOR INDEX $indexName IF NOT EXISTS",
                     f"FOR (n:{node_label}) ON n.embedding",
                     "OPTIONS {indexConfig : {"
                     " `vector.dimensions`: $dimension,"

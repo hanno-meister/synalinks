@@ -4,6 +4,7 @@
 
 import json
 import os
+
 import nest_asyncio
 import sentry_sdk
 
@@ -52,7 +53,7 @@ else:
 )
 def is_telemetry_enabled():
     """Return wether of not the telemetry is enabled
-    
+
     Returns:
         (bool): True if the telemetry is enabled False otherwise.
     """
@@ -67,7 +68,7 @@ def is_telemetry_enabled():
 )
 def disable_telemetry():
     """Disable the telemetry
-    
+
     Returns:
         (bool): True if the telemetry is enabled False otherwise.
     """
@@ -79,7 +80,7 @@ def maybe_initialize_telemetry():
     global _telemetry_initialized
     if not _telemetry_initialized and _synalinks_telemetry_enabled:
         sentry_sdk.init(
-            dsn="https://b53fc10adc81c3c865734c9b5115082a@o4509456897933312.ingest.de.sentry.io/4509456899637328", # noqa 501
+            dsn="https://b53fc10adc81c3c865734c9b5115082a@o4509456897933312.ingest.de.sentry.io/4509456899637328",  # noqa 501
             max_breadcrumbs=50,
             debug=False,
             # we do NOT collect private/personal information
@@ -309,7 +310,6 @@ def set_backend(backend):
         )
     global _BACKEND
     _BACKEND = backend
-
 
 
 # Attemp to get the API key from env variables
