@@ -6,6 +6,8 @@ from synalinks.src.knowledge_bases import database_adapters
 from synalinks.src.saving import serialization_lib
 from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
 
+from synalinks.src.backend.config import maybe_initialize_telemetry
+
 
 @synalinks_export("synalinks.KnowledgeBase")
 class KnowledgeBase(SynalinksSaveable):
@@ -45,7 +47,7 @@ class KnowledgeBase(SynalinksSaveable):
     )
     ```
     
-    Note: Obviously, use an `.env` file and `.gitignore` to avoid putting your username and password
+    **Note**: Obviously, use an `.env` file and `.gitignore` to avoid putting your username and password
     in the code or a config file that can lead to leackage when pushing it into repositories.
 
     Args:
@@ -102,6 +104,7 @@ class KnowledgeBase(SynalinksSaveable):
                 Entities with similarity above this threshold will be merged.
                 Should be between 0.0 and 1.0 (Defaults to 0.8).
         """
+        maybe_initialize_telemetry()
         return await self.adapter.update(data_model)
 
     async def query(self, query: str):
@@ -114,6 +117,7 @@ class KnowledgeBase(SynalinksSaveable):
         Returns:
             (GenericResult): the query results
         """
+        maybe_initialize_telemetry()
         return await self.adapter.query(query)
 
     async def similarity_search(
@@ -135,6 +139,7 @@ class KnowledgeBase(SynalinksSaveable):
                 Entities with similarity below this threshold are excluded.
                 Should be between 0.0 and 1.0 (Defaults to 0.8).
         """
+        maybe_initialize_telemetry()
         return await self.adapter.similarity_search(
             similarity_search,
             k=k,
@@ -160,6 +165,7 @@ class KnowledgeBase(SynalinksSaveable):
                 Triplets with similarity below this threshold are excluded.
                 Should be between 0.0 and 1.0. (Defaults to 0.8).
         """
+        maybe_initialize_telemetry()
         return await self.adapter.triplet_search(
             triplet_search,
             k=k,

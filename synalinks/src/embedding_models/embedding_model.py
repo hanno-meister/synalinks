@@ -7,6 +7,9 @@ import litellm
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
 
+from synalinks.src.backend.config import maybe_initialize_telemetry
+from synalinks.src.backend.config import capture_exception
+
 
 @synalinks_export(
     ["synalinks.EmbeddingModel", "synalinks.embedding_models.EmbeddingModel"]
@@ -82,9 +85,17 @@ class EmbeddingModel(SynalinksSaveable):
         model (str): The model to use.
         api_base (str): Optional. The endpoint to use.
         retry (int): Optional. The number of retry.
+        fallback (EmbeddingModel): Optional. The embedding model to fallback
+            if anything is wrong.
     """
 
-    def __init__(self, model=None, api_base=None, retry=5):
+    def __init__(
+        self,
+        model=None,
+        api_base=None,
+        retry=5,
+        fallback=None,
+    ):
         if model is None:
             raise ValueError(
                 "You need to set the `model` argument for any EmbeddingModel"
@@ -95,6 +106,7 @@ class EmbeddingModel(SynalinksSaveable):
         else:
             self.api_base = api_base
         self.retry = retry
+        self.fallback = fallback
 
     async def __call__(self, texts, **kwargs):
         """
@@ -106,6 +118,8 @@ class EmbeddingModel(SynalinksSaveable):
         Returns:
             (list): The list of corresponding vectors.
         """
+        maybe_initialize_telemetry()
+        
         for i in range(self.retry):
             try:
                 if self.api_base:
@@ -127,24 +141,44 @@ class EmbeddingModel(SynalinksSaveable):
                 return {"embeddings": vectors}
             except Exception as e:
                 warnings.warn(f"Error occured while trying to call {self}: " + str(e))
-        raise RuntimeError(
-            f"Failed to retrieve embeddings with {self} after {self.retry} attempts."
-        )
+                capture_exception(e)
+        if self.fallback:
+            return self.fallback(
+                texts,
+                **kwargs,
+            )
+        else:
+            return None
 
     def _obj_type(self):
         return "EmbeddingModel"
 
     def get_config(self):
-        return {
+        config = {
             "model": self.model,
             "api_base": self.api_base,
             "retry": self.retry,
         }
+        if self.fallback:
+            fallback_config = {
+                "fallback": serialization_lib.serialize_synalinks_object(
+                    self.fallback,
+                )
+            }
+            return {**fallback_config, **config}
+        else:
+            return config
 
     @classmethod
     def from_config(cls, config):
-        return cls(**config)
-
+        if "fallback" in config:
+            fallback = serialization_lib.deserialize_synalinks_object(
+                config.pop("fallback")
+            )
+            return cls(fallback=fallback, **config)
+        else:
+            return cls(**config)
+        
     def __repr__(self):
         api_base = f" api_base={self.api_base}" if self.api_base else ""
         return f"<EmbeddingModel model={self.model}{api_base}>"

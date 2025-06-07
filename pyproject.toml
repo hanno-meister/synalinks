@@ -37,7 +37,8 @@ dependencies = [
     "graphviz",
     "click",
     "inquirer",
-    "neo4j>=5.28.1",
+    "neo4j",
+    "sentry-sdk",
 ]
 
 [project.urls]

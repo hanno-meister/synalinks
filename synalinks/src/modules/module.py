@@ -21,6 +21,9 @@ from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
 from synalinks.src.utils import python_utils
 from synalinks.src.utils import tracking
 
+from synalinks.src.backend.config import maybe_initialize_telemetry
+from synalinks.src.backend.config import capture_exception
+
 if backend.backend() == "pydantic":
     from synalinks.src.backend.pydantic.module import PydanticModule as BackendModule
 else:
@@ -494,6 +497,8 @@ class Module(BackendModule, Operation, SynalinksSaveable):
         )
 
     async def __call__(self, *args, **kwargs):
+        maybe_initialize_telemetry()
+        
         self._check_super_called()
         self._called = True
 
@@ -572,6 +577,9 @@ class Module(BackendModule, Operation, SynalinksSaveable):
 
             if not self.built:
                 self.built = True
+        except Exception as e:
+            capture_exception(e)
+            raise e
         finally:
             # Destroy call context if we created it
             self._maybe_reset_call_context()

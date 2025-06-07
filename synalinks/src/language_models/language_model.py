@@ -11,6 +11,9 @@ from synalinks.src.backend import ChatRole
 from synalinks.src.saving import serialization_lib
 from synalinks.src.saving.synalinks_saveable import SynalinksSaveable
 
+from synalinks.src.backend.config import maybe_initialize_telemetry
+from synalinks.src.backend.config import capture_exception
+
 
 @synalinks_export(
     [
@@ -145,7 +148,6 @@ class LanguageModel(SynalinksSaveable):
         model=None,
         api_base=None,
         retry=5,
-        timeout=30,
         fallback=None,
     ):
         if model is None:
@@ -162,7 +164,6 @@ class LanguageModel(SynalinksSaveable):
         else:
             self.api_base = api_base
         self.retry = retry
-        self.timeout = timeout
 
     async def __call__(self, messages, schema=None, streaming=False, **kwargs):
         """
@@ -180,6 +181,8 @@ class LanguageModel(SynalinksSaveable):
         Returns:
             (dict): The generated structured response.
         """
+        maybe_initialize_telemetry()
+        
         formatted_messages = messages.get_json().get("messages", [])
         json_instance = {}
         input_kwargs = copy.deepcopy(kwargs)
@@ -293,7 +296,8 @@ class LanguageModel(SynalinksSaveable):
                     json_instance = {"role": ChatRole.ASSISTANT, "content": response_str}
                 return json_instance
             except Exception as e:
-                warnings.warn(str(e))
+                warnings.warn(f"Error occured while trying to call {self}: " + str(e))
+                capture_exception(e)
         if self.fallback:
             return self.fallback(
                 messages,
