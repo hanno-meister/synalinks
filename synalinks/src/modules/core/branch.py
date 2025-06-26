@@ -2,9 +2,10 @@
 
 from synalinks.src import ops
 from synalinks.src.api_export import synalinks_export
-from synalinks.src.modules.core.decision import Decision
+from synalinks.src.modules.core.decision import MultiDecision
 from synalinks.src.modules.module import Module
 from synalinks.src.saving import serialization_lib
+import asyncio
 
 
 @synalinks_export(["synalinks.modules.Branch", "synalinks.Branch"])
@@ -102,7 +103,7 @@ class Branch(Module):
         instructions=None,
         use_inputs_schema=False,
         use_outputs_schema=False,
-        decision_type=Decision,
+        decision_type=MultiDecision,
         name=None,
         description=None,
         trainable=True,
@@ -158,7 +159,12 @@ class Branch(Module):
                 decision,
                 name=self.name + "_inputs_with_decision",
             )
-        for label, module in self.branches.items():
+
+        # Step 1: Collect selected modules and their indice    # Step 1: Collect selected modules and their indices
+        selected_modules = []
+        selected_indices = []
+        
+        for i, (label, module) in enumerate(self.branches.items()):
             selected = False
             if isinstance(choice, str):
                 if label == choice:
@@ -166,30 +172,35 @@ class Branch(Module):
             elif isinstance(choice, (list, set)):
                 if label in choice:
                     selected = True
-            if selected:
-                if module:
-                    if self.return_decision:
-                        outputs.append(
-                            await ops.logical_and(
-                                decision,
-                                await module(
-                                    inputs,
-                                    training=training,
-                                ),
-                                name=self.name + "_with_decision",
-                            )
-                        )
-                    else:
-                        outputs.append(
-                            await module(
-                                inputs,
-                                training=training,
-                            )
-                        )
-                else:
-                    outputs.append(None)
+            
+            if selected and module:
+                selected_modules.append(module)
+                selected_indices.append(i)
+        
+        # Step 2: Execute selected modules in parallel
+        if selected_modules:
+            parallel_results = await asyncio.gather(*[
+                module(inputs, training=training) 
+                for module in selected_modules
+            ])
+        else:
+            parallel_results = []
+        
+        # Step 3: Build outputs array with proper positioning
+        outputs = [None] * len(self.branches)
+        
+        for i, result in enumerate(parallel_results):
+            original_index = selected_indices[i]
+            
+            if self.return_decision:
+                outputs[original_index] = await ops.logical_and(
+                    decision,
+                    result,
+                    name=self.name + "_with_decision",
+                )
             else:
-                outputs.append(None)
+                outputs[original_index] = result
+        
         return tuple(outputs)
 
     async def compute_output_spec(self, inputs, training=False):
