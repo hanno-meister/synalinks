@@ -160,7 +160,7 @@ class Branch(Module):
                 name=self.name + "_inputs_with_decision",
             )
 
-        # Step 1: Collect selected modules and their indice    # Step 1: Collect selected modules and their indices
+        # Step 1: Collect selected modules and their indice
         selected_modules = []
         selected_indices = []
         
@@ -183,23 +183,26 @@ class Branch(Module):
                 module(inputs, training=training) 
                 for module in selected_modules
             ])
+
+            if self.return_decision:
+                parallel_results = await asyncio.gather(*[
+                        ops.logical_and(
+                            decision, result, name=self.name + "_with_decision",                        
+                    )
+                    for result in parallel_results
+                ])
+
         else:
             parallel_results = []
+
         
         # Step 3: Build outputs array with proper positioning
         outputs = [None] * len(self.branches)
         
         for i, result in enumerate(parallel_results):
             original_index = selected_indices[i]
-            
-            if self.return_decision:
-                outputs[original_index] = await ops.logical_and(
-                    decision,
-                    result,
-                    name=self.name + "_with_decision",
-                )
-            else:
-                outputs[original_index] = result
+                
+            outputs[original_index] = result
         
         return tuple(outputs)
 
