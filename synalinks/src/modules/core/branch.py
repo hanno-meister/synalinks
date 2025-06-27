@@ -1,11 +1,12 @@
 # License Apache 2.0: (c) 2025 Yoan Sallami (Synalinks Team)
 
+import asyncio
+
 from synalinks.src import ops
 from synalinks.src.api_export import synalinks_export
 from synalinks.src.modules.core.decision import Decision
 from synalinks.src.modules.module import Module
 from synalinks.src.saving import serialization_lib
-import asyncio
 
 
 @synalinks_export(["synalinks.modules.Branch", "synalinks.Branch"])
