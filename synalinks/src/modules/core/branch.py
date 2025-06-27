@@ -143,16 +143,20 @@ class Branch(Module):
         )
 
     async def call(self, inputs, training=False):
+        outputs = [None] * len(self.branches)
+
         if not inputs:
-            return tuple([None] * len(self.branches))
+            return tuple(outputs)
+
         decision = await self.decision(
             inputs,
             training=training,
         )
-        choice = decision.get("choice")
+        choice = decision.get("choice", decision.get("choices"))
+
         if not choice:
-            choice = decision.get("choices")
-        outputs = []
+            return tuple(outputs)
+
         if self.inject_decision:
             inputs = await ops.concat(
                 inputs,
@@ -160,12 +164,13 @@ class Branch(Module):
                 name=self.name + "_inputs_with_decision",
             )
 
-        # Step 1: Collect selected modules and their indice
+        # step 1: collect selected modules
+        selected_mapping = []
         selected_modules = []
-        selected_indices = []
         
         for i, (label, module) in enumerate(self.branches.items()):
             selected = False
+
             if isinstance(choice, str):
                 if label == choice:
                     selected = True
@@ -174,36 +179,27 @@ class Branch(Module):
                     selected = True
             
             if selected and module:
+                selected_mapping.append(i)
                 selected_modules.append(module)
-                selected_indices.append(i)
         
-        # Step 2: Execute selected modules in parallel
+        # step 2: execute selected modules in parallel
         if selected_modules:
-            parallel_results = await asyncio.gather(*[
+            responses = await asyncio.gather(*[
                 module(inputs, training=training) 
                 for module in selected_modules
             ])
 
             if self.return_decision:
-                parallel_results = await asyncio.gather(*[
-                        ops.logical_and(
-                            decision, result, name=self.name + "_with_decision",                        
-                    )
-                    for result in parallel_results
+                responses = await asyncio.gather(*[
+                    ops.logical_and(response, result, name=self.name + "_with_decision") for response in responses
                 ])
-
         else:
-            parallel_results = []
+            responses = []
+        
+        for i, response in enumerate(parallel_results):
+            j = selected_mapping[i]
+            outputs[j] = response
 
-        
-        # Step 3: Build outputs array with proper positioning
-        outputs = [None] * len(self.branches)
-        
-        for i, result in enumerate(parallel_results):
-            original_index = selected_indices[i]
-                
-            outputs[original_index] = result
-        
         return tuple(outputs)
 
     async def compute_output_spec(self, inputs, training=False):
