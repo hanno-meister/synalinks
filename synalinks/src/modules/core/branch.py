@@ -2,7 +2,7 @@
 
 from synalinks.src import ops
 from synalinks.src.api_export import synalinks_export
-from synalinks.src.modules.core.decision import MultiDecision
+from synalinks.src.modules.core.decision import Decision
 from synalinks.src.modules.module import Module
 from synalinks.src.saving import serialization_lib
 import asyncio
@@ -103,7 +103,7 @@ class Branch(Module):
         instructions=None,
         use_inputs_schema=False,
         use_outputs_schema=False,
-        decision_type=MultiDecision,
+        decision_type=Decision,
         name=None,
         description=None,
         trainable=True,
