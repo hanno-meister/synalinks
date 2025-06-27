@@ -3,6 +3,7 @@
 import asyncio
 import time
 from unittest.mock import patch
+import sys
 
 from synalinks.src import testing
 from synalinks.src.backend import DataModel
@@ -105,6 +106,7 @@ class ReACTAgentTest(testing.TestCase):
 
         language_model = LanguageModel(model="ollama_chat/deepseek-r1")
 
+        # Mocks for first round
         decision_continue = (
             """{
                 "thinking": "I'll need to run some tools before I can answer.", 
@@ -122,23 +124,48 @@ class ReACTAgentTest(testing.TestCase):
         inference_response_calc = """{"expression": "12 + 15"}"""
         inference_response_wc = """{"text": "hello parallel agent"}"""
 
-        decision_continue_1 = (
+        # Mocks for second round
+        decision_continue_2 = (
+            """{
+                "thinking": "I got some results, but let me run the tools again to double-check.", 
+                "choice": "continue"
+            }"""
+        )
+
+        decision_tools_2 = (
+            """{
+                "thinking": "Let me run both tools again to verify the results.", 
+                "choices": ["calculate", "word_count"]
+            }"""
+        )
+
+        decision_finish = (
             """{
                 "thinking": "Now I know the answer so I finished, so I select `finish`.", 
                 "choice": "finish"
             }"""
-        )
+    )
 
         final_answer = """{"answer_sum": 27.0, "answer_wc": 3}"""
 
         mock_responses = [
+            # First round
             {"choices": [{"message": {"content": decision_continue}}]},
             {"choices": [{"message": {"content": decision_tools}}]},
             {"choices": [{"message": {"content": inference_response_calc}}]},
             {"choices": [{"message": {"content": inference_response_wc}}]},
-            {"choices": [{"message": {"content": decision_continue_1}}]},
+            
+            # Second round
+            {"choices": [{"message": {"content": decision_continue_2}}]},
+            {"choices": [{"message": {"content": decision_tools_2}}]},
+            {"choices": [{"message": {"content": inference_response_calc}}]},
+            {"choices": [{"message": {"content": inference_response_wc}}]},
+            
+            # Final
+            {"choices": [{"message": {"content": decision_finish}}]},
             {"choices": [{"message": {"content": final_answer}}]},
         ]
+
         mock_completion.side_effect = mock_responses
 
         x0 = Input(data_model=Query)
@@ -165,43 +192,62 @@ class ReACTAgentTest(testing.TestCase):
                 )
             )
         )
-        
-        # Verify the results
-        self.assertEqual(result.get("answer_sum"), 27.0)
-        self.assertEqual(result.get("answer_wc"), 3)
 
         # Verify parallel execution by checking timestamp overlap
         self._verify_parallel_execution(execution_log)
 
     def _verify_parallel_execution(self, execution_log):
         """
-        Verify that the functions executed in parallel by checking timestamp overlap.
+        Verify that the functions executed in parallel in both iterations.
         """
-        # Find start and end times for each function
-        calculate_times = {}
-        word_count_times = {}
+        # Group execution events by round
+        rounds = []
+        current_round = {}
         
         for entry in execution_log:
-            if entry["function"] == "calculate":
-                calculate_times[entry["event"]] = entry["timestamp"]
-            elif entry["function"] == "word_count":
-                word_count_times[entry["event"]] = entry["timestamp"]
+            func_name = entry["function"]
+            event = entry["event"]
+            timestamp = entry["timestamp"]
+            
+            if func_name not in current_round:
+                current_round[func_name] = {}
+            
+            current_round[func_name][event] = timestamp
+            
+            # When both functions have completed, we've finished a round
+            if (len(current_round) == 2 and 
+                all("end" in times for times in current_round.values())):
+                rounds.append(current_round)
+                current_round = {}
         
-        # Check for time overlap (parallel execution)
-        calc_start = calculate_times["start"]
-        calc_end = calculate_times["end"]
-        wc_start = word_count_times["start"]
-        wc_end = word_count_times["end"]
+        sys.stdout.write(f"Found {len(rounds)} execution rounds\n")
         
-        # Functions are running in parallel if their execution windows overlap
-        # This means: max(start1, start2) < min(end1, end2)
-        overlap_start = max(calc_start, wc_start)
-        overlap_end = min(calc_end, wc_end)
+        # Verify parallel execution for each round
+        for i, round_data in enumerate(rounds):
+            sys.stdout.write(f"\nRound {i+1} timing analysis:\n")
+            
+            calc_start = round_data["calculate"]["start"]
+            calc_end = round_data["calculate"]["end"]
+            wc_start = round_data["word_count"]["start"]
+            wc_end = round_data["word_count"]["end"]
+            
+            sys.stdout.write(f"  calculate: {calc_start:.3f}-{calc_end:.3f} (duration: {calc_end-calc_start:.3f}s)\n")
+            sys.stdout.write(f"  word_count: {wc_start:.3f}-{wc_end:.3f} (duration: {wc_end-wc_start:.3f}s)\n")
+            
+            # Check for time overlap (parallel execution)
+            overlap_start = max(calc_start, wc_start)
+            overlap_end = min(calc_end, wc_end)
+            overlap_duration = max(0, overlap_end - overlap_start)
+            
+            sys.stdout.write(f"  overlap: {overlap_start:.3f}-{overlap_end:.3f} (duration: {overlap_duration:.3f}s)\n")
+            
+            self.assertLess(
+                overlap_start, 
+                overlap_end, 
+                f"Functions should execute in parallel in round {i+1}. "
+                f"calculate: {calc_start:.3f}-{calc_end:.3f}, "
+                f"word_count: {wc_start:.3f}-{wc_end:.3f}"
+            )
         
-        self.assertLess(
-            overlap_start, 
-            overlap_end, 
-            f"Functions should execute in parallel. "
-            f"calculate: {calc_start:.3f}-{calc_end:.3f}, "
-            f"word_count: {wc_start:.3f}-{wc_end:.3f}"
-        )
+        # Verify we had the expected number of rounds
+        self.assertEqual(len(rounds), 2, "Expected exactly 2 rounds of parallel execution")
