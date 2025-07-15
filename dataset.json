@@ -1,0 +1,140 @@
+{
+  "train": [
+    {
+      "input": {"query": "What is the server status and calculate the sum of 45 and 67?"},
+      "output": {"answer": "Server is running and the sum of 45 and 67 is 112"}
+    },
+    {
+      "input": {"query": "Calculate the average of 24 and 36, then multiply that result by 8"},
+      "output": {"answer": "The average of 24 and 36 is 30, and 30 multiplied by 8 equals 240"}
+    },
+    {
+      "input": {"query": "If the server has been running for its current uptime, and I add 125 to 289, what's the multiplication of that sum by 3?"},
+      "output": {"answer": "Server uptime is 24h 30m 15s. The sum of 125 and 289 is 414, and 414 multiplied by 3 equals 1242"}
+    },
+    {
+      "input": {"query": "Check server status, then calculate: (15 + 25) * 4, and find the average of that result with 200"},
+      "output": {"answer": "Server is running. First: 15 + 25 = 40, then 40 * 4 = 160, and the average of 160 and 200 is 180"}
+    },
+    {
+      "input": {"query": "What's the server uptime and calculate the average of 88 and 92, then add 50 to that average?"},
+      "output": {"answer": "Server uptime is 24h 30m 15s. The average of 88 and 92 is 90, and 90 plus 50 equals 140"}
+    },
+    {
+      "input": {"query": "Multiply 12 by 15, then find the average of that result with 300, and check if the server is running"},
+      "output": {"answer": "12 multiplied by 15 equals 180, the average of 180 and 300 is 240, and the server is running"}
+    },
+    {
+      "input": {"query": "Calculate three operations: add 45 to 55, multiply 8 by 12, then find the average of both results"},
+      "output": {"answer": "45 + 55 = 100, 8 * 12 = 96, and the average of 100 and 96 is 98"}
+    },
+    {
+      "input": {"query": "Get server status, add 234 to 456, multiply the result by 2, then average it with 1000"},
+      "output": {"answer": "Server is running. 234 + 456 = 690, 690 * 2 = 1380, and the average of 1380 and 1000 is 1190"}
+    },
+    {
+      "input": {"query": "What's the uptime? Calculate (33 + 67) * 5, then find the average of that with 750"},
+      "output": {"answer": "Server uptime is 24h 30m 15s. 33 + 67 = 100, 100 * 5 = 500, and the average of 500 and 750 is 625"}
+    },
+    {
+      "input": {"query": "Find the average of 150 and 250, multiply by 3, add 100, then check server status"},
+      "output": {"answer": "Average of 150 and 250 is 200, 200 * 3 = 600, 600 + 100 = 700, and the server is running"}
+    }
+  ],
+  "validation": [
+    {
+      "input": {"query": "Get server status and calculate the average of 72 and 88, then multiply by 5"},
+      "output": {"answer": "Server is running. Average of 72 and 88 is 80, and 80 multiplied by 5 equals 400"}
+    },
+    {
+      "input": {"query": "Calculate: add 145 to 255, multiply by 2, find average with 600, and get uptime"},
+      "output": {"answer": "145 + 255 = 400, 400 * 2 = 800, average of 800 and 600 is 700, and server uptime is 24h 30m 15s"}
+    },
+    {
+      "input": {"query": "What's the server uptime? Calculate (22 + 48) * 7, then average with 350"},
+      "output": {"answer": "Server uptime is 24h 30m 15s. 22 + 48 = 70, 70 * 7 = 490, and average of 490 and 350 is 420"}
+    },
+    {
+      "input": {"query": "Check server status, multiply 19 by 11, add 75, then average with 284"},
+      "output": {"answer": "Server is running. 19 * 11 = 209, 209 + 75 = 284, and average of 284 and 284 is 284"}
+    },
+    {
+      "input": {"query": "Calculate average of 44 and 76, multiply by 8, add 160, and get server uptime"},
+      "output": {"answer": "Average of 44 and 76 is 60, 60 * 8 = 480, 480 + 160 = 640, and server uptime is 24h 30m 15s"}
+    },
+    {
+      "input": {"query": "Add 278 to 322, multiply by 3, average with 900, and check server status"},
+      "output": {"answer": "278 + 322 = 600, 600 * 3 = 1800, average of 1800 and 900 is 1350, and server is running"}
+    },
+    {
+      "input": {"query": "Get uptime, calculate: (35 + 65) * 4, then find average with 550"},
+      "output": {"answer": "Server uptime is 24h 30m 15s. 35 + 65 = 100, 100 * 4 = 400, and average of 400 and 550 is 475"}
+    },
+    {
+      "input": {"query": "Calculate the sum of 789 and 123, then multiply by 2, find average with 500, and get server uptime"},
+      "output": {"answer": "789 + 123 = 912, 912 * 2 = 1824, average of 1824 and 500 is 1162, and server uptime is 24h 30m 15s"}
+    },
+    {
+      "input": {"query": "Check server status and calculate: average of 40 and 60, multiply by 7, then add 35"},
+      "output": {"answer": "Server is running. Average of 40 and 60 is 50, 50 * 7 = 350, and 350 + 35 = 385"}
+    },
+    {
+      "input": {"query": "Multiply 25 by 8, add 175, find average with 400, and what's the server uptime?"},
+      "output": {"answer": "25 * 8 = 200, 200 + 175 = 375, average of 375 and 400 is 387, and server uptime is 24h 30m 15s"}
+    },
+    {
+      "input": {"query": "Calculate: (18 + 32) * 6, then average with 450, add 50, and check server status"},
+      "output": {"answer": "18 + 32 = 50, 50 * 6 = 300, average of 300 and 450 is 375, 375 + 50 = 425, and server is running"}
+    },
+    {
+      "input": {"query": "Get uptime, calculate average of 77 and 123, multiply by 4, then add 88"},
+      "output": {"answer": "Server uptime is 24h 30m 15s. Average of 77 and 123 is 100, 100 * 4 = 400, and 400 + 88 = 488"}
+    },
+    {
+      "input": {"query": "Add 156 to 244, multiply by 3, average with 800, and check server status"},
+      "output": {"answer": "156 + 244 = 400, 400 * 3 = 1200, average of 1200 and 800 is 1000, and server is running"}
+    },
+    {
+      "input": {"query": "Calculate sum of 99 and 101, find average with 300, multiply by 2, and get server uptime"},
+      "output": {"answer": "99 + 101 = 200, average of 200 and 300 is 250, 250 * 2 = 500, and server uptime is 24h 30m 15s"}
+    },
+    {
+      "input": {"query": "Check server status, then: multiply 15 by 12, add 80, average with 260"},
+      "output": {"answer": "Server is running. 15 * 12 = 180, 180 + 80 = 260, and average of 260 and 260 is 260"}
+    },
+    {
+      "input": {"query": "What's the server uptime and calculate: average of 55 and 85, multiply by 6, add 120"},
+      "output": {"answer": "Server uptime is 24h 30m 15s. Average of 55 and 85 is 70, 70 * 6 = 420, and 420 + 120 = 540"}
+    },
+    {
+      "input": {"query": "Calculate: 67 + 133, multiply by 4, average with 1200, and check server status"},
+      "output": {"answer": "67 + 133 = 200, 200 * 4 = 800, average of 800 and 1200 is 1000, and server is running"}
+    }
+  ],
+  "test": [
+    {
+      "input": {"query": "Check server status, calculate sum of 56 and 84, multiply by 3, then average with 450"},
+      "output": {"answer": "Server is running. 56 + 84 = 140, 140 * 3 = 420, and average of 420 and 450 is 435"}
+    },
+    {
+      "input": {"query": "What's the server uptime and calculate: average of 91 and 109, multiply by 6, add 200"},
+      "output": {"answer": "Server uptime is 24h 30m 15s. Average of 91 and 109 is 100, 100 * 6 = 600, and 600 + 200 = 800"}
+    },
+    {
+      "input": {"query": "Calculate: 167 + 233, multiply by 2, average with 1000, and get server status"},
+      "output": {"answer": "167 + 233 = 400, 400 * 2 = 800, average of 800 and 1000 is 900, and server is running"}
+    },
+    {
+      "input": {"query": "Get uptime, multiply 27 by 13, add 149, then find average with 500"},
+      "output": {"answer": "Server uptime is 24h 30m 15s. 27 * 13 = 351, 351 + 149 = 500, and average of 500 and 500 is 500"}
+    },
+    {
+      "input": {"query": "Check server status, calculate average of 63 and 97, multiply by 9, then add 180"},
+      "output": {"answer": "Server is running. Average of 63 and 97 is 80, 80 * 9 = 720, and 720 + 180 = 900"}
+    },
+    {
+      "input": {"query": "Add 345 to 455, multiply by 4, find average with 1600, and what's the uptime?"},
+      "output": {"answer": "345 + 455 = 800, 800 * 4 = 3200, average of 3200 and 1600 is 2400, and server uptime is 24h 30m 15s"}
+    }
+  ]
+}
