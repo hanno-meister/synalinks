@@ -74,7 +74,7 @@ class MCPMathAgent:
         @self.math_server.tool()
         def avg_numbers(a: int, b: int) -> int:
             """Average of two numbers"""
-            return a + b // 2
+            return (a + b) // 2
             
         logger.info("MCP servers configured successfully")
     
