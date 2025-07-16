@@ -141,7 +141,7 @@ class MCPMathAgent:
             x1 = await Agent(
                 data_model=FinalAnswer,
                 language_model=language_model,
-                toolkit=[tool._func for tool in all_tools],
+                toolkit=all_tools,
                 max_iterations=10,
             )(x0)
             
