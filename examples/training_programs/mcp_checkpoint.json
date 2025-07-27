@@ -1,0 +1,3560 @@
+{
+  "epoch": 1,
+  "logs": {
+    "reward": 0.977013885974884,
+    "val_reward": 0.9742208123207092
+  },
+  "best_metric": 0.9742208123207092,
+  "monitor": "val_reward",
+  "program_variables": {
+    "trainable_variables": {
+      "function_calling_agent_tool_calls_generator_0_generator": {
+        "function_calling_agent_tool_calls_generator_0_generator_state": {
+          "prompt_template": "\n<system>\n{% if static_system_prompt %}{{ static_system_prompt }}{% endif %}\n{% if inputs_schema %}You will be given an input JSON object with the following schema. \nInput JSON Schema:\n{{ inputs_schema }}\n{% endif %}\n{% if outputs_schema %}\nYour task is to answer with a JSON object following this output JSON schema.\nOutput JSON Schema:\n{{ outputs_schema }}\n{% endif %}\n{% if examples %}\n### Examples\n{% for example in examples %}\nInput:\n{{ example[0] }}\nOutput:\n{{ example[1] }}\n{% endfor %}\n{% endif %}\n{% if instructions %}\n### Instructions:\n{% for instruction in instructions %}\n - {{ instruction }}\n{% endfor %}\n{% endif %}\n</system>\n{% if inputs %}\n<user>\nInput:\n{{ inputs }}\nOutput:\n</user>\n{% endif %}",
+          "static_system_prompt": "You are a helpful assistant",
+          "examples": [
+            {
+              "inputs": {
+                "query": "What's the server uptime and calculate the average of 88 and 92, then add 50 to that average?",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to find the current server uptime. Then, I will calculate the average of 88 and 92. Afterward, I will add 50 to that average. I will start by calling the status_get_uptime tool to get the server uptime.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Get server status, add 234 to 456, multiply the result by 2, then average it with 1000",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I will check the server status to ensure it is operational. Next, I will calculate the sum of 234 and 456. After that, I will multiply that sum by 2. Finally, I will find the average of this result with 1000. I will call the appropriate tools for each step.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_status"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "234 + 456"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 690,
+                    "b": 2
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 1380,
+                    "b": 1000
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "What's the uptime? Calculate (33 + 67) * 5, then find the average of that with 750",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to find the current server uptime. Then, I will evaluate the expression (33 + 67) * 5, which involves adding 33 and 67, and then multiplying the result by 5. Finally, I will find the average of this value with 750. I will call the appropriate tools for each step.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            }
+          ],
+          "predictions": [
+            {
+              "inputs": {
+                "query": "If the server has been running for its current uptime, and I add 125 to 289, what's the multiplication of that sum by 3?",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to find the current server uptime. Then, I will calculate the sum of 125 and 289. Afterward, I will multiply that sum by 3. I will start by calling the status_get_uptime tool to get the server uptime.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Calculate the average of 24 and 36, then multiply that result by 8",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to find the average of 24 and 36. Then, I will multiply that result by 8. I will use the math_avg_numbers tool to calculate the average, and once I have the average, I will use the math_multiply_numbers tool to multiply it by 8.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 24,
+                    "b": 36
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "What is the server status and calculate the sum of 45 and 67?",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I will request the server status to get the current information about the server. Then, I will calculate the sum of 45 and 67. I will prepare two tool calls: one for fetching the server status and another for adding the two numbers.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_status"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "45 + 67"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Multiply 12 by 15, then find the average of that result with 300, and check if the server is running",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I will multiply 12 by 15 to get the product. Then, I will calculate the average of that product and 300. Lastly, I will check if the server is running to complete the query.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 12,
+                    "b": 15
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 180,
+                    "b": 300
+                  },
+                  {
+                    "tool_name": "status_get_status"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Calculate three operations: add 45 to 55, multiply 8 by 12, then find the average of both results",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to perform the addition of 45 and 55. Next, I will multiply 8 by 12. Finally, I will find the average of these two results.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "45 + 55"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 8,
+                    "b": 12
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 100,
+                    "b": 96
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "What's the server uptime and calculate the average of 88 and 92, then add 50 to that average?",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to get the server uptime. Then, I will calculate the average of 88 and 92, which involves adding these two numbers together and dividing by 2. After obtaining the average, I will add 50 to that value. I will perform these calculations step-by-step to ensure accuracy.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 88,
+                    "b": 92
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Get server status, add 234 to 456, multiply the result by 2, then average it with 1000",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I will get the server status to gather any necessary information about the server. Then, I will perform the mathematical calculations as instructed: add 234 to 456, multiply the result by 2, and finally average that with 1000. I will organize these tasks step by step.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_status"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "234 + 456"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 690,
+                    "b": 2
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 1380,
+                    "b": 1000
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "What's the uptime? Calculate (33 + 67) * 5, then find the average of that with 750",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I will find the server uptime. Then, I will calculate (33 + 67) * 5. After obtaining that result, I will compute the average of this result with 750.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "33 + 67"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 100,
+                    "b": 5
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 500,
+                    "b": 750
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Find the average of 150 and 250, multiply by 3, add 100, then check server status",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to find the average of 150 and 250. Then, I will multiply the result by 3, and add 100 to that. After completing these calculations, I will check the server status.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 150,
+                    "b": 250
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 200,
+                    "b": 3
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "700 + 100"
+                  },
+                  {
+                    "tool_name": "status_get_status"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Check server status, then calculate: (15 + 25) * 4, and find the average of that result with 200",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to check the server status to ensure it is operational before performing calculations. Then, I will evaluate the expression (15 + 25) * 4, which involves adding 15 and 25, and multiplying the result by 4. Finally, I will find the average of this value with 200. I will call the appropriate tools for each step.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_status"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "15 + 25"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 40,
+                    "b": 4
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 120,
+                    "b": 200
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "What's the server uptime and calculate the average of 88 and 92, then add 50 to that average?",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to find the current server uptime. Then, I will calculate the average of 88 and 92. Afterward, I will add 50 to that average. I will start by calling the status_get_uptime tool to get the server uptime.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "If the server has been running for its current uptime, and I add 125 to 289, what's the multiplication of that sum by 3?",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to find the current server uptime. Then, I will calculate the sum of 125 and 289. Afterward, I will multiply that sum by 3. I will start by calling the status_get_uptime tool to get the server uptime.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "What's the uptime? Calculate (33 + 67) * 5, then find the average of that with 750",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to find the current server uptime. Then, I will evaluate the expression (33 + 67) * 5, which involves adding 33 and 67, and then multiplying the result by 5. Finally, I will find the average of this value with 750. I will call the appropriate tools for each step.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Calculate the average of 24 and 36, then multiply that result by 8",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to find the average of 24 and 36. Then, I will multiply that result by 8. I will use the math_avg_numbers tool to calculate the average, and once I have the average, I will use the math_multiply_numbers tool to multiply it by 8.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 24,
+                    "b": 36
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Find the average of 150 and 250, multiply by 3, add 100, then check server status",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I will calculate the average of 150 and 250. Next, I will multiply that result by 3. Afterward, I will add 100 to that value. Finally, I will check the server status to fulfill the complete request.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 150,
+                    "b": 250
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 200,
+                    "b": 3
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "600 + 100"
+                  },
+                  {
+                    "tool_name": "status_get_status"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Multiply 12 by 15, then find the average of that result with 300, and check if the server is running",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I will multiply 12 by 15 to get the first result. Then, I will find the average of this result with 300. Finally, I will check if the server is running to ensure it is operational. I will call the relevant tools for each step.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 12,
+                    "b": 15
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 180,
+                    "b": 300
+                  },
+                  {
+                    "tool_name": "status_get_status"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "What is the server status and calculate the sum of 45 and 67?",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to check the server status to determine if it is operational. Then, I will calculate the sum of 45 and 67. I will call the status_get_status tool to get the server status, and after that, I will proceed with adding the numbers 45 and 67 using the math_add_numbers tool.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_status"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "45 + 67"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Calculate three operations: add 45 to 55, multiply 8 by 12, then find the average of both results",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I will add 45 to 55. Next, I will multiply 8 by 12. Finally, I will calculate the average of these two results. I will use the math_add_numbers tool for the addition, math_multiply_numbers for the multiplication, and math_avg_numbers for the average.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "45 + 55"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 8,
+                    "b": 12
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 100,
+                    "b": 96
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Get server status, add 234 to 456, multiply the result by 2, then average it with 1000",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I will check the server status to ensure it is operational. Next, I will calculate the sum of 234 and 456. After that, I will multiply that sum by 2. Finally, I will find the average of this result with 1000. I will call the appropriate tools for each step.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_status"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "234 + 456"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 690,
+                    "b": 2
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 1380,
+                    "b": 1000
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Check server status, then calculate: (15 + 25) * 4, and find the average of that result with 200",
+                "messages": []
+              },
+              "outputs": {
+                "thinking": "First, I need to check the server status to ensure it is operational before performing calculations. Then, I will evaluate the expression (15 + 25) * 4, which involves adding 15 and 25, and multiplying the result by 4. Finally, I will find the average of this value with 200. I will call the appropriate tools for each step.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_status"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "15 + 25"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 40,
+                    "b": 4
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 120,
+                    "b": 200
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            }
+          ],
+          "instructions": {
+            "label": "Instructions",
+            "instructions": [
+              "Think step by step: Use the thinking field to elaborate what you observe and what do you need to accomplish next",
+              "Reflect on prior steps: Review your previous actions and their outcomes to avoid unnecessary repetition.",
+              "Avoid unnecessary actions: If you already have enough information to complete the user task, return an empty tool calls array."
+            ],
+            "reward": null
+          },
+          "instructions_candidates": []
+        }
+      },
+      "function_calling_agent_tool_calls_generator_1_generator": {
+        "function_calling_agent_tool_calls_generator_1_generator_state": {
+          "prompt_template": "\n<system>\n{% if static_system_prompt %}{{ static_system_prompt }}{% endif %}\n{% if inputs_schema %}You will be given an input JSON object with the following schema. \nInput JSON Schema:\n{{ inputs_schema }}\n{% endif %}\n{% if outputs_schema %}\nYour task is to answer with a JSON object following this output JSON schema.\nOutput JSON Schema:\n{{ outputs_schema }}\n{% endif %}\n{% if examples %}\n### Examples\n{% for example in examples %}\nInput:\n{{ example[0] }}\nOutput:\n{{ example[1] }}\n{% endfor %}\n{% endif %}\n{% if instructions %}\n### Instructions:\n{% for instruction in instructions %}\n - {{ instruction }}\n{% endfor %}\n{% endif %}\n</system>\n{% if inputs %}\n<user>\nInput:\n{{ inputs }}\nOutput:\n</user>\n{% endif %}",
+          "static_system_prompt": "You are a helpful assistant",
+          "examples": [
+            {
+              "inputs": {
+                "query": "Calculate three operations: add 45 to 55, multiply 8 by 12, then find the average of both results",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will add 45 to 55. Next, I will multiply 8 by 12. Finally, I will calculate the average of these two results. I will use the math_add_numbers tool for the addition, math_multiply_numbers for the multiplication, and math_avg_numbers for the average.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "5e011f42-6c96-40b9-848a-3eece736bb92",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "45 + 55"
+                        }
+                      },
+                      {
+                        "id": "1227417d-42e2-44d4-aea3-4a9ec0b5d48f",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 8,
+                          "b": 12
+                        }
+                      },
+                      {
+                        "id": "900b0ca1-0edb-4037-80c9-41bdb8786b3b",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 100,
+                          "b": 96
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":100.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "5e011f42-6c96-40b9-848a-3eece736bb92",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":96,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "1227417d-42e2-44d4-aea3-4a9ec0b5d48f",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":98,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "900b0ca1-0edb-4037-80c9-41bdb8786b3b",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "First, I calculated the sum of 45 and 55, which is 100. Then, I multiplied 8 by 12, resulting in 96. Finally, I found the average of 100 and 96, which is (100 + 96) / 2 = 98.0. All operations have been completed successfully.",
+                "tool_calls": []
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Get server status, add 234 to 456, multiply the result by 2, then average it with 1000",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will check the server status to ensure it is operational. Next, I will calculate the sum of 234 and 456. After that, I will multiply that sum by 2. Finally, I will find the average of this result with 1000. I will call the appropriate tools for each step.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "88c4e5d5-0fb1-4449-b060-a9859424c090",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "d83bae6e-887a-4d6a-83c6-75d41cc8df3c",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "234 + 456"
+                        }
+                      },
+                      {
+                        "id": "9b37ec72-6ae3-4132-bc93-e4c159dbacb4",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 690,
+                          "b": 2
+                        }
+                      },
+                      {
+                        "id": "5407acbf-d294-4b78-bcd0-c31283da490c",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 1380,
+                          "b": 1000
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "88c4e5d5-0fb1-4449-b060-a9859424c090",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":690.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "d83bae6e-887a-4d6a-83c6-75d41cc8df3c",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":1380,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "9b37ec72-6ae3-4132-bc93-e4c159dbacb4",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":1190,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "5407acbf-d294-4b78-bcd0-c31283da490c",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I checked the server status, which indicates the server is running. Then, I summed 234 and 456, which gives 690. I multiplied this sum by 2, resulting in 1380. Finally, I calculated the average of 1380 and 1000, which equals 1190.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_status"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "234 + 456"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 690,
+                    "b": 2
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 1380,
+                    "b": 1000
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Find the average of 150 and 250, multiply by 3, add 100, then check server status",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will calculate the average of 150 and 250. Next, I will multiply that result by 3. Afterward, I will add 100 to that value. Finally, I will check the server status to fulfill the complete request.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "0b06fe53-d9ea-404f-bf99-70109d21fb95",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 150,
+                          "b": 250
+                        }
+                      },
+                      {
+                        "id": "dcc573dc-ec7c-4d15-a39a-cc8a22bdbc9f",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 200,
+                          "b": 3
+                        }
+                      },
+                      {
+                        "id": "b4f1d1e9-27d3-484e-b29e-b7bfbdbac13e",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "600 + 100"
+                        }
+                      },
+                      {
+                        "id": "63af7e81-6ed3-41d3-b144-265f75be155f",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":200,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "0b06fe53-d9ea-404f-bf99-70109d21fb95",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":600,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "dcc573dc-ec7c-4d15-a39a-cc8a22bdbc9f",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":700.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "b4f1d1e9-27d3-484e-b29e-b7bfbdbac13e",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "63af7e81-6ed3-41d3-b144-265f75be155f",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I calculated the average of 150 and 250 as 200. Then, I multiplied that by 3 to get 600. After adding 100, the total is 700. Lastly, I checked the server status.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_status"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            }
+          ],
+          "predictions": [
+            {
+              "inputs": {
+                "query": "What is the server status and calculate the sum of 45 and 67?",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will request the server status to get the current information about the server. Then, I will calculate the sum of 45 and 67. I will prepare two tool calls: one for fetching the server status and another for adding the two numbers.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "b2c8e96c-bb09-4ca0-a9e5-a8f55e6d7698",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "9f40b8fd-4186-4b2c-878d-c9be2dcc4da5",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "45 + 67"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "b2c8e96c-bb09-4ca0-a9e5-a8f55e6d7698",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":112.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "9f40b8fd-4186-4b2c-878d-c9be2dcc4da5",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I will now compile my final response by including the server status and the result of the addition of 45 and 67.",
+                "tool_calls": []
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "If the server has been running for its current uptime, and I add 125 to 289, what's the multiplication of that sum by 3?",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the current server uptime. Then, I will calculate the sum of 125 and 289. Afterward, I will multiply that sum by 3. I will start by calling the status_get_uptime tool to get the server uptime.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "2ba638f3-e987-49b9-9c73-f33c4f70d237",
+                        "name": "status_get_uptime",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"24h 30m 15s\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "2ba638f3-e987-49b9-9c73-f33c4f70d237",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I have obtained the server uptime, which is 24 hours, 30 minutes, and 15 seconds. Next, I need to calculate the sum of 125 and 289. Then I will multiply that sum by 3 to find the final result.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "125 + 289"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Multiply 12 by 15, then find the average of that result with 300, and check if the server is running",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will multiply 12 by 15 to get the product. Then, I will calculate the average of that product and 300. Lastly, I will check if the server is running to complete the query.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "c0889c41-e8ee-41ed-9119-2204f805df21",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 12,
+                          "b": 15
+                        }
+                      },
+                      {
+                        "id": "10ede90d-4d6e-4efb-8833-7593b1a4b18e",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 180,
+                          "b": 300
+                        }
+                      },
+                      {
+                        "id": "73ed1eb9-1ead-4eb5-8e64-35bc5dfc9b7d",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":180,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "c0889c41-e8ee-41ed-9119-2204f805df21",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":240,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "10ede90d-4d6e-4efb-8833-7593b1a4b18e",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "73ed1eb9-1ead-4eb5-8e64-35bc5dfc9b7d",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "The calculations have been completed successfully. First, 12 was multiplied by 15, resulting in 180. Then, the average of 180 and 300 was calculated, which is 240. Finally, I checked the server status. All tasks are completed correctly.",
+                "tool_calls": []
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Calculate the average of 24 and 36, then multiply that result by 8",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the average of 24 and 36. Then, I will multiply that result by 8. I will use the math_avg_numbers tool to calculate the average, and once I have the average, I will use the math_multiply_numbers tool to multiply it by 8.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "70a1cddf-3f25-47a3-b354-ce307f2b392b",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 24,
+                          "b": 36
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":30,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "70a1cddf-3f25-47a3-b354-ce307f2b392b",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "The average of 24 and 36 has already been calculated as 30. Now, I need to multiply 30 by 8 to get the final result. I will use the math_multiply_numbers tool with the arguments 'a' as 30 and 'b' as 8.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 30,
+                    "b": 8
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Calculate three operations: add 45 to 55, multiply 8 by 12, then find the average of both results",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to perform the addition of 45 and 55. Next, I will multiply 8 by 12. Finally, I will find the average of these two results.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "24e46aee-55bb-44e0-943f-42967acbc431",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "45 + 55"
+                        }
+                      },
+                      {
+                        "id": "c0e95990-f687-43f8-afc6-8bc6c1eae332",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 8,
+                          "b": 12
+                        }
+                      },
+                      {
+                        "id": "12065f01-ba80-4c91-b304-901997dce558",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 100,
+                          "b": 96
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":100.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "24e46aee-55bb-44e0-943f-42967acbc431",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":96,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "c0e95990-f687-43f8-afc6-8bc6c1eae332",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":98,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "12065f01-ba80-4c91-b304-901997dce558",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "The first operation was to add 45 and 55, resulting in 100. The second operation was to multiply 8 by 12, resulting in 96. The final step was to find the average of these two results: (100 + 96) / 2, which equals 98. I will now prepare the output to show the final answer.",
+                "tool_calls": []
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Get server status, add 234 to 456, multiply the result by 2, then average it with 1000",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will get the server status to gather any necessary information about the server. Then, I will perform the mathematical calculations as instructed: add 234 to 456, multiply the result by 2, and finally average that with 1000. I will organize these tasks step by step.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "31a0a240-a934-4695-ad07-301919c74886",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "114c47e7-5901-4d9e-977e-5baf07b4a8f3",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "234 + 456"
+                        }
+                      },
+                      {
+                        "id": "cc2975be-5e17-4d65-9add-1c18ccd0a9f2",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 690,
+                          "b": 2
+                        }
+                      },
+                      {
+                        "id": "8df1e0aa-ef44-4e0c-bc5d-37518c3fa418",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 1380,
+                          "b": 1000
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "31a0a240-a934-4695-ad07-301919c74886",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":690.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "114c47e7-5901-4d9e-977e-5baf07b4a8f3",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":1380,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "cc2975be-5e17-4d65-9add-1c18ccd0a9f2",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":1190,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "8df1e0aa-ef44-4e0c-bc5d-37518c3fa418",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "First, I will get the server status to confirm the server is operational. This will ensure that any subsequent operations are based on current server conditions. Then, I will perform the mathematical operations step by step: adding 234 and 456, multiplying that result by 2, and finally calculating the average of this result with 1000.",
+                "tool_calls": []
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "What's the server uptime and calculate the average of 88 and 92, then add 50 to that average?",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to get the server uptime. Then, I will calculate the average of 88 and 92, which involves adding these two numbers together and dividing by 2. After obtaining the average, I will add 50 to that value. I will perform these calculations step-by-step to ensure accuracy.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "e2209852-6d25-4ae7-847c-94895a3b3fd6",
+                        "name": "status_get_uptime",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "edfcdde0-9e91-4efb-bb29-718f31d346be",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 88,
+                          "b": 92
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"24h 30m 15s\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "e2209852-6d25-4ae7-847c-94895a3b3fd6",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":90,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "edfcdde0-9e91-4efb-bb29-718f31d346be",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "The server uptime has been retrieved successfully as '24h 30m 15s'. The average of 88 and 92 has been calculated, resulting in 90. Now, I will add 50 to this average to find the final result.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "90 + 50"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Check server status, then calculate: (15 + 25) * 4, and find the average of that result with 200",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to check the server status to ensure it is operational before performing calculations. Then, I will evaluate the expression (15 + 25) * 4, which involves adding 15 and 25, and multiplying the result by 4. Finally, I will find the average of this value with 200. I will call the appropriate tools for each step.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "06a8d904-e1a1-4843-9898-685d59a16cb4",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "2f1f5269-9504-4c96-a036-855c14063d1f",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "15 + 25"
+                        }
+                      },
+                      {
+                        "id": "77a8da4e-119c-460c-af7f-cddf7d17429f",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 40,
+                          "b": 4
+                        }
+                      },
+                      {
+                        "id": "ad11b8c4-de58-42f7-981d-6ad3547ae4a6",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 120,
+                          "b": 200
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "06a8d904-e1a1-4843-9898-685d59a16cb4",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":40.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "2f1f5269-9504-4c96-a036-855c14063d1f",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":160,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "77a8da4e-119c-460c-af7f-cddf7d17429f",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":160,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "ad11b8c4-de58-42f7-981d-6ad3547ae4a6",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I will now compile the steps to complete the task. First, I've checked that the server is running successfully. Then, I calculated the sum of 15 and 25, which is 40. Next, I multiplied this result by 4 to get 160. Finally, I calculated the average of 160 and 200, which is 160.",
+                "tool_calls": []
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Find the average of 150 and 250, multiply by 3, add 100, then check server status",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the average of 150 and 250. Then, I will multiply the result by 3, and add 100 to that. After completing these calculations, I will check the server status.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "d7ccad60-7282-4ce0-8e09-92b57017f421",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 150,
+                          "b": 250
+                        }
+                      },
+                      {
+                        "id": "ab78a3ee-c750-4516-8b90-aa80f542cc17",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 200,
+                          "b": 3
+                        }
+                      },
+                      {
+                        "id": "f61e6def-3732-4122-a3cb-49d59f332527",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "700 + 100"
+                        }
+                      },
+                      {
+                        "id": "9c356292-c3e9-4e89-858f-ab7f513f4dd5",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":200,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "d7ccad60-7282-4ce0-8e09-92b57017f421",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":600,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "ab78a3ee-c750-4516-8b90-aa80f542cc17",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":800.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "f61e6def-3732-4122-a3cb-49d59f332527",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "9c356292-c3e9-4e89-858f-ab7f513f4dd5",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "First, I calculated the average of 150 and 250, which is (150 + 250) / 2 = 200. Then, I multiplied the result by 3, so 200 * 3 = 600. Afterwards, I added 100 to that, resulting in 600 + 100 = 700. Finally, I checked the server status.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 150,
+                    "b": 250
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 200,
+                    "b": 3
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "700 + 100"
+                  },
+                  {
+                    "tool_name": "status_get_status"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "What's the uptime? Calculate (33 + 67) * 5, then find the average of that with 750",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will find the server uptime. Then, I will calculate (33 + 67) * 5. After obtaining that result, I will compute the average of this result with 750.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "df994ac3-d23e-48b1-9d69-2cb7ce4fc25f",
+                        "name": "status_get_uptime",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "d4ccfb01-2c32-4ebd-9c84-b986ed5639e1",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "33 + 67"
+                        }
+                      },
+                      {
+                        "id": "257e9bfe-7fbd-4963-b6d8-b231c20a9155",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 100,
+                          "b": 5
+                        }
+                      },
+                      {
+                        "id": "71d33ccd-efb1-47a7-aae8-43eb7807743b",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 500,
+                          "b": 750
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"24h 30m 15s\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "df994ac3-d23e-48b1-9d69-2cb7ce4fc25f",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":100.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "d4ccfb01-2c32-4ebd-9c84-b986ed5639e1",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":500,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "257e9bfe-7fbd-4963-b6d8-b231c20a9155",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":625,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "71d33ccd-efb1-47a7-aae8-43eb7807743b",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "First, I will request the server's uptime based on the initial plan. The uptime has been retrieved successfully as '24h 30m 15s'. Next, I will perform the calculation (33 + 67) * 5. The sum of 33 and 67 is 100, and multiplying this by 5 results in 500. Then, I will calculate the average of 500 and 750. Since the average of these two numbers is 625, I now have all the necessary information. I will prepare the final output.",
+                "tool_calls": []
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Calculate the average of 24 and 36, then multiply that result by 8",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the average of 24 and 36. Then, I will multiply that result by 8. I will use the math_avg_numbers tool to calculate the average, and once I have the average, I will use the math_multiply_numbers tool to multiply it by 8.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "b6e3b822-7466-470e-bb4a-d092ce4273d4",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 24,
+                          "b": 36
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":30,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "b6e3b822-7466-470e-bb4a-d092ce4273d4",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I have calculated the average of 24 and 36, which is (24 + 36) / 2 = 30. Next, I will multiply this result by 8.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 30,
+                    "b": 8
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "If the server has been running for its current uptime, and I add 125 to 289, what's the multiplication of that sum by 3?",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the current server uptime. Then, I will calculate the sum of 125 and 289. Afterward, I will multiply that sum by 3. I will start by calling the status_get_uptime tool to get the server uptime.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "7ae47bba-45cf-4a0f-8fe7-6bae14db6f80",
+                        "name": "status_get_uptime",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"24h 30m 15s\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "7ae47bba-45cf-4a0f-8fe7-6bae14db6f80",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I have obtained the server uptime, which is 24 hours, 30 minutes, and 15 seconds. Next, I need to calculate the sum of 125 and 289. Then I will multiply that sum by 3 to find the final result.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "125 + 289"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "What's the server uptime and calculate the average of 88 and 92, then add 50 to that average?",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the current server uptime. Then, I will calculate the average of 88 and 92. Afterward, I will add 50 to that average. I will start by calling the status_get_uptime tool to get the server uptime.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "96abafe4-8b27-483a-8211-647f41155d23",
+                        "name": "status_get_uptime",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"24h 30m 15s\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "96abafe4-8b27-483a-8211-647f41155d23",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I have obtained the server uptime, which is 24 hours, 30 minutes, and 15 seconds. Next, I need to calculate the average of 88 and 92, which is (88 + 92) / 2 = 90. Then, I will add 50 to that average.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 88,
+                    "b": 92
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "What is the server status and calculate the sum of 45 and 67?",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to check the server status to determine if it is operational. Then, I will calculate the sum of 45 and 67. I will call the status_get_status tool to get the server status, and after that, I will proceed with adding the numbers 45 and 67 using the math_add_numbers tool.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "7693fc59-a4b7-4e00-b3fb-7fd2166b504b",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "60aeebbb-e93e-4a66-aa85-8b510fcba906",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "45 + 67"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "7693fc59-a4b7-4e00-b3fb-7fd2166b504b",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":112.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "60aeebbb-e93e-4a66-aa85-8b510fcba906",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "First, I checked the server status, which confirmed that the server is running. Then, I calculated the sum of 45 and 67, which is 112.",
+                "tool_calls": []
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Find the average of 150 and 250, multiply by 3, add 100, then check server status",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will calculate the average of 150 and 250. Next, I will multiply that result by 3. Afterward, I will add 100 to that value. Finally, I will check the server status to fulfill the complete request.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "0b06fe53-d9ea-404f-bf99-70109d21fb95",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 150,
+                          "b": 250
+                        }
+                      },
+                      {
+                        "id": "dcc573dc-ec7c-4d15-a39a-cc8a22bdbc9f",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 200,
+                          "b": 3
+                        }
+                      },
+                      {
+                        "id": "b4f1d1e9-27d3-484e-b29e-b7bfbdbac13e",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "600 + 100"
+                        }
+                      },
+                      {
+                        "id": "63af7e81-6ed3-41d3-b144-265f75be155f",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":200,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "0b06fe53-d9ea-404f-bf99-70109d21fb95",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":600,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "dcc573dc-ec7c-4d15-a39a-cc8a22bdbc9f",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":700.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "b4f1d1e9-27d3-484e-b29e-b7bfbdbac13e",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "63af7e81-6ed3-41d3-b144-265f75be155f",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I calculated the average of 150 and 250 as 200. Then, I multiplied that by 3 to get 600. After adding 100, the total is 700. Lastly, I checked the server status.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_status"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "What's the uptime? Calculate (33 + 67) * 5, then find the average of that with 750",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the current server uptime. Then, I will evaluate the expression (33 + 67) * 5, which involves adding 33 and 67, and then multiplying the result by 5. Finally, I will find the average of this value with 750. I will call the appropriate tools for each step.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "705f467d-7100-424c-a550-dab1c9302265",
+                        "name": "status_get_uptime",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"24h 30m 15s\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "705f467d-7100-424c-a550-dab1c9302265",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I have obtained the server uptime, which is 24 hours, 30 minutes, and 15 seconds. Next, I need to evaluate the expression (33 + 67) * 5, which involves adding 33 and 67, then multiplying the result by 5. After calculating this, I will find the average of that result with 750.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "33 + 67"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 100,
+                    "b": 5
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 600,
+                    "b": 750
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Calculate three operations: add 45 to 55, multiply 8 by 12, then find the average of both results",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will add 45 to 55. Next, I will multiply 8 by 12. Finally, I will calculate the average of these two results. I will use the math_add_numbers tool for the addition, math_multiply_numbers for the multiplication, and math_avg_numbers for the average.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "5e011f42-6c96-40b9-848a-3eece736bb92",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "45 + 55"
+                        }
+                      },
+                      {
+                        "id": "1227417d-42e2-44d4-aea3-4a9ec0b5d48f",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 8,
+                          "b": 12
+                        }
+                      },
+                      {
+                        "id": "900b0ca1-0edb-4037-80c9-41bdb8786b3b",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 100,
+                          "b": 96
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":100.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "5e011f42-6c96-40b9-848a-3eece736bb92",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":96,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "1227417d-42e2-44d4-aea3-4a9ec0b5d48f",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":98,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "900b0ca1-0edb-4037-80c9-41bdb8786b3b",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "First, I calculated the sum of 45 and 55, which is 100. Then, I multiplied 8 by 12, resulting in 96. Finally, I found the average of 100 and 96, which is (100 + 96) / 2 = 98.0. All operations have been completed successfully.",
+                "tool_calls": []
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Multiply 12 by 15, then find the average of that result with 300, and check if the server is running",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will multiply 12 by 15 to get the first result. Then, I will find the average of this result with 300. Finally, I will check if the server is running to ensure it is operational. I will call the relevant tools for each step.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "a926ba17-3e6b-4a1d-b515-f24901aa04d7",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 12,
+                          "b": 15
+                        }
+                      },
+                      {
+                        "id": "0d3de8c7-e6f6-4f52-93d3-d4fb9074280e",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 180,
+                          "b": 300
+                        }
+                      },
+                      {
+                        "id": "159a61c9-0ac2-4da3-ae9f-44a50c9cca93",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":180,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "a926ba17-3e6b-4a1d-b515-f24901aa04d7",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":240,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "0d3de8c7-e6f6-4f52-93d3-d4fb9074280e",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "159a61c9-0ac2-4da3-ae9f-44a50c9cca93",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I first multiplied 12 by 15 to get 180. Then, I calculated the average of 180 and 300, which is (180 + 300) / 2 = 240. Finally, I checked if the server is running to confirm its operational status.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 12,
+                    "b": 15
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 180,
+                    "b": 300
+                  },
+                  {
+                    "tool_name": "status_get_status"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Check server status, then calculate: (15 + 25) * 4, and find the average of that result with 200",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to check the server status to ensure it is operational before performing calculations. Then, I will evaluate the expression (15 + 25) * 4, which involves adding 15 and 25, and multiplying the result by 4. Finally, I will find the average of this value with 200. I will call the appropriate tools for each step.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "5d167f23-d21d-4a1a-8703-f4c893e9170e",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "7d775f5e-759d-4fe7-9d44-44c462dc0145",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "15 + 25"
+                        }
+                      },
+                      {
+                        "id": "9d9a55df-9e9b-4f6a-8849-a874930ccf0c",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 40,
+                          "b": 4
+                        }
+                      },
+                      {
+                        "id": "79b028ef-b64d-4f1d-b48a-cfead3918177",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 120,
+                          "b": 200
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "5d167f23-d21d-4a1a-8703-f4c893e9170e",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":40.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "7d775f5e-759d-4fe7-9d44-44c462dc0145",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":160,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "9d9a55df-9e9b-4f6a-8849-a874930ccf0c",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":160,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "79b028ef-b64d-4f1d-b48a-cfead3918177",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I checked the server status to ensure it is operational. Then, I calculated the sum of 15 and 25, which is 40. Multiplying this sum by 4 gives 160. Next, I found the average of 160 and 200, resulting in (160 + 200) / 2 = 180.",
+                "tool_calls": []
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Get server status, add 234 to 456, multiply the result by 2, then average it with 1000",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will check the server status to ensure it is operational. Next, I will calculate the sum of 234 and 456. After that, I will multiply that sum by 2. Finally, I will find the average of this result with 1000. I will call the appropriate tools for each step.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "88c4e5d5-0fb1-4449-b060-a9859424c090",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "d83bae6e-887a-4d6a-83c6-75d41cc8df3c",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "234 + 456"
+                        }
+                      },
+                      {
+                        "id": "9b37ec72-6ae3-4132-bc93-e4c159dbacb4",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 690,
+                          "b": 2
+                        }
+                      },
+                      {
+                        "id": "5407acbf-d294-4b78-bcd0-c31283da490c",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 1380,
+                          "b": 1000
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "88c4e5d5-0fb1-4449-b060-a9859424c090",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":690.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "d83bae6e-887a-4d6a-83c6-75d41cc8df3c",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":1380,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "9b37ec72-6ae3-4132-bc93-e4c159dbacb4",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":1190,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "5407acbf-d294-4b78-bcd0-c31283da490c",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I checked the server status, which indicates the server is running. Then, I summed 234 and 456, which gives 690. I multiplied this sum by 2, resulting in 1380. Finally, I calculated the average of 1380 and 1000, which equals 1190.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_status"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "234 + 456"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 690,
+                    "b": 2
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 1380,
+                    "b": 1000
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            }
+          ],
+          "instructions": {
+            "label": "Instructions",
+            "instructions": [
+              "Think step by step: Use the thinking field to elaborate what you observe and what do you need to accomplish next",
+              "Reflect on prior steps: Review your previous actions and their outcomes to avoid unnecessary repetition.",
+              "Avoid unnecessary actions: If you already have enough information to complete the user task, return an empty tool calls array."
+            ],
+            "reward": null
+          },
+          "instructions_candidates": []
+        }
+      },
+      "function_calling_agent_tool_calls_generator_2_generator": {
+        "function_calling_agent_tool_calls_generator_2_generator_state": {
+          "prompt_template": "\n<system>\n{% if static_system_prompt %}{{ static_system_prompt }}{% endif %}\n{% if inputs_schema %}You will be given an input JSON object with the following schema. \nInput JSON Schema:\n{{ inputs_schema }}\n{% endif %}\n{% if outputs_schema %}\nYour task is to answer with a JSON object following this output JSON schema.\nOutput JSON Schema:\n{{ outputs_schema }}\n{% endif %}\n{% if examples %}\n### Examples\n{% for example in examples %}\nInput:\n{{ example[0] }}\nOutput:\n{{ example[1] }}\n{% endfor %}\n{% endif %}\n{% if instructions %}\n### Instructions:\n{% for instruction in instructions %}\n - {{ instruction }}\n{% endfor %}\n{% endif %}\n</system>\n{% if inputs %}\n<user>\nInput:\n{{ inputs }}\nOutput:\n</user>\n{% endif %}",
+          "static_system_prompt": "You are a helpful assistant",
+          "examples": [
+            {
+              "inputs": {
+                "query": "Find the average of 150 and 250, multiply by 3, add 100, then check server status",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will calculate the average of 150 and 250. Next, I will multiply that result by 3. Afterward, I will add 100 to that value. Finally, I will check the server status to fulfill the complete request.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "0b06fe53-d9ea-404f-bf99-70109d21fb95",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 150,
+                          "b": 250
+                        }
+                      },
+                      {
+                        "id": "dcc573dc-ec7c-4d15-a39a-cc8a22bdbc9f",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 200,
+                          "b": 3
+                        }
+                      },
+                      {
+                        "id": "b4f1d1e9-27d3-484e-b29e-b7bfbdbac13e",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "600 + 100"
+                        }
+                      },
+                      {
+                        "id": "63af7e81-6ed3-41d3-b144-265f75be155f",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":200,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "0b06fe53-d9ea-404f-bf99-70109d21fb95",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":600,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "dcc573dc-ec7c-4d15-a39a-cc8a22bdbc9f",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":700.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "b4f1d1e9-27d3-484e-b29e-b7bfbdbac13e",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "63af7e81-6ed3-41d3-b144-265f75be155f",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I calculated the average of 150 and 250 as 200. Then, I multiplied that by 3 to get 600. After adding 100, the total is 700. Lastly, I checked the server status.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "c6db30a7-61ab-43a0-bf17-277b63842828",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "c6db30a7-61ab-43a0-bf17-277b63842828",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I started by calculating the average of 150 and 250, which is 200. Next, I multiplied this result by 3 to get 600. Then, I added 100 to this value, resulting in 700. Finally, I checked the server status to provide a complete answer.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 150,
+                    "b": 250
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 200,
+                    "b": 3
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "600 + 100"
+                  },
+                  {
+                    "tool_name": "status_get_status"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "If the server has been running for its current uptime, and I add 125 to 289, what's the multiplication of that sum by 3?",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the current server uptime. Then, I will calculate the sum of 125 and 289. Afterward, I will multiply that sum by 3. I will start by calling the status_get_uptime tool to get the server uptime.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "2ba638f3-e987-49b9-9c73-f33c4f70d237",
+                        "name": "status_get_uptime",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"24h 30m 15s\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "2ba638f3-e987-49b9-9c73-f33c4f70d237",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I have obtained the server uptime, which is 24 hours, 30 minutes, and 15 seconds. Next, I need to calculate the sum of 125 and 289. Then I will multiply that sum by 3 to find the final result.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "6c9c7495-916e-4b4b-a984-827a95fab49b",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "125 + 289"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":414.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "6c9c7495-916e-4b4b-a984-827a95fab49b",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I started by retrieving the current server uptime to understand how long it has been running. Then, I calculated the sum of 125 and 289, which resulted in 414. Next, I will multiply this sum by 3 to get the final result.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "125 + 289"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 414,
+                    "b": 3
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "What's the uptime? Calculate (33 + 67) * 5, then find the average of that with 750",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the current server uptime. Then, I will evaluate the expression (33 + 67) * 5, which involves adding 33 and 67, and then multiplying the result by 5. Finally, I will find the average of this value with 750. I will call the appropriate tools for each step.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "705f467d-7100-424c-a550-dab1c9302265",
+                        "name": "status_get_uptime",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"24h 30m 15s\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "705f467d-7100-424c-a550-dab1c9302265",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I have obtained the server uptime, which is 24 hours, 30 minutes, and 15 seconds. Next, I need to evaluate the expression (33 + 67) * 5, which involves adding 33 and 67, then multiplying the result by 5. After calculating this, I will find the average of that result with 750.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "8e9dbb11-975c-4e6f-b55e-347bb30244df",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "33 + 67"
+                        }
+                      },
+                      {
+                        "id": "ac5e9615-263d-4c83-8f36-3a5ce5f6626d",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 100,
+                          "b": 5
+                        }
+                      },
+                      {
+                        "id": "4dedcebf-99d1-406b-a925-2b26dab6d1e7",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 600,
+                          "b": 750
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":100.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "8e9dbb11-975c-4e6f-b55e-347bb30244df",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":500,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "ac5e9615-263d-4c83-8f36-3a5ce5f6626d",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":675,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "4dedcebf-99d1-406b-a925-2b26dab6d1e7",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I started by retrieving the server uptime, which is 24 hours, 30 minutes, and 15 seconds. Then, I calculated the sum of 33 and 67, resulting in 100. Multiplying 100 by 5 gives 500. Finally, I will find the average of 500 and 750, which equals 675.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "33 + 67"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 100,
+                    "b": 5
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 500,
+                    "b": 750
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            }
+          ],
+          "predictions": [
+            {
+              "inputs": {
+                "query": "Calculate the average of 24 and 36, then multiply that result by 8",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the average of 24 and 36. Then, I will multiply that result by 8. I will use the math_avg_numbers tool to calculate the average, and once I have the average, I will use the math_multiply_numbers tool to multiply it by 8.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "70a1cddf-3f25-47a3-b354-ce307f2b392b",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 24,
+                          "b": 36
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":30,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "70a1cddf-3f25-47a3-b354-ce307f2b392b",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "The average of 24 and 36 has already been calculated as 30. Now, I need to multiply 30 by 8 to get the final result. I will use the math_multiply_numbers tool with the arguments 'a' as 30 and 'b' as 8.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "416450c5-3b09-4a80-9c20-6d054e58228f",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 30,
+                          "b": 8
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":240,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "416450c5-3b09-4a80-9c20-6d054e58228f",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "The average of 24 and 36 has been calculated as 30. Now, I will multiply this result by 8 to find the final answer. I will call the math_multiply_numbers tool with 'a' as 30 and 'b' as 8.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 30,
+                    "b": 8
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "If the server has been running for its current uptime, and I add 125 to 289, what's the multiplication of that sum by 3?",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the current server uptime. Then, I will calculate the sum of 125 and 289. Afterward, I will multiply that sum by 3. I will start by calling the status_get_uptime tool to get the server uptime.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "2ba638f3-e987-49b9-9c73-f33c4f70d237",
+                        "name": "status_get_uptime",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"24h 30m 15s\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "2ba638f3-e987-49b9-9c73-f33c4f70d237",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I have obtained the server uptime, which is 24 hours, 30 minutes, and 15 seconds. Next, I need to calculate the sum of 125 and 289. Then I will multiply that sum by 3 to find the final result.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "6c9c7495-916e-4b4b-a984-827a95fab49b",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "125 + 289"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":414.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "6c9c7495-916e-4b4b-a984-827a95fab49b",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I started by retrieving the current server uptime to understand how long it has been running. Then, I calculated the sum of 125 and 289, which resulted in 414. Next, I will multiply this sum by 3 to get the final result.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "125 + 289"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 414,
+                    "b": 3
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Calculate the average of 24 and 36, then multiply that result by 8",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the average of 24 and 36. Then, I will multiply that result by 8. I will use the math_avg_numbers tool to calculate the average, and once I have the average, I will use the math_multiply_numbers tool to multiply it by 8.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "b6e3b822-7466-470e-bb4a-d092ce4273d4",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 24,
+                          "b": 36
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":30,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "b6e3b822-7466-470e-bb4a-d092ce4273d4",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I have calculated the average of 24 and 36, which is (24 + 36) / 2 = 30. Next, I will multiply this result by 8.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "7edf1fe6-a484-4b4d-bc8c-70e7bb6b9b20",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 30,
+                          "b": 8
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":240,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "7edf1fe6-a484-4b4d-bc8c-70e7bb6b9b20",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "First, I calculated the average of 24 and 36, which is 30. Now, I need to multiply this average by 8 to get the final result. I will call the math_multiply_numbers tool with 'a' as 30 and 'b' as 8.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 30,
+                    "b": 8
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "If the server has been running for its current uptime, and I add 125 to 289, what's the multiplication of that sum by 3?",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the current server uptime. Then, I will calculate the sum of 125 and 289. Afterward, I will multiply that sum by 3. I will start by calling the status_get_uptime tool to get the server uptime.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "7ae47bba-45cf-4a0f-8fe7-6bae14db6f80",
+                        "name": "status_get_uptime",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"24h 30m 15s\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "7ae47bba-45cf-4a0f-8fe7-6bae14db6f80",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I have obtained the server uptime, which is 24 hours, 30 minutes, and 15 seconds. Next, I need to calculate the sum of 125 and 289. Then I will multiply that sum by 3 to find the final result.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "9165b9a1-f4b2-492e-839d-1536d03a25b8",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "125 + 289"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":414.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "9165b9a1-f4b2-492e-839d-1536d03a25b8",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I started by retrieving the current server uptime to understand how long it has been running. Then, I calculated the sum of 125 and 289, which resulted in 414. Next, I will multiply this sum by 3 to get the final result.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 414,
+                    "b": 3
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "What's the server uptime and calculate the average of 88 and 92, then add 50 to that average?",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the current server uptime. Then, I will calculate the average of 88 and 92. Afterward, I will add 50 to that average. I will start by calling the status_get_uptime tool to get the server uptime.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "96abafe4-8b27-483a-8211-647f41155d23",
+                        "name": "status_get_uptime",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"24h 30m 15s\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "96abafe4-8b27-483a-8211-647f41155d23",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I have obtained the server uptime, which is 24 hours, 30 minutes, and 15 seconds. Next, I need to calculate the average of 88 and 92, which is (88 + 92) / 2 = 90. Then, I will add 50 to that average.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "964167a1-e5d5-46a6-b3c4-3de9c0e0d7f0",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 88,
+                          "b": 92
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":90,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "964167a1-e5d5-46a6-b3c4-3de9c0e0d7f0",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I started by retrieving the server uptime, which was successfully obtained as 24 hours, 30 minutes, and 15 seconds. Then, I calculated the average of 88 and 92, resulting in 90. Next, I need to add 50 to this average to complete the user request.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 88,
+                    "b": 92
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "90 + 50"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Find the average of 150 and 250, multiply by 3, add 100, then check server status",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will calculate the average of 150 and 250. Next, I will multiply that result by 3. Afterward, I will add 100 to that value. Finally, I will check the server status to fulfill the complete request.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "0b06fe53-d9ea-404f-bf99-70109d21fb95",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 150,
+                          "b": 250
+                        }
+                      },
+                      {
+                        "id": "dcc573dc-ec7c-4d15-a39a-cc8a22bdbc9f",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 200,
+                          "b": 3
+                        }
+                      },
+                      {
+                        "id": "b4f1d1e9-27d3-484e-b29e-b7bfbdbac13e",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "600 + 100"
+                        }
+                      },
+                      {
+                        "id": "63af7e81-6ed3-41d3-b144-265f75be155f",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":200,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "0b06fe53-d9ea-404f-bf99-70109d21fb95",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":600,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "dcc573dc-ec7c-4d15-a39a-cc8a22bdbc9f",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":700.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "b4f1d1e9-27d3-484e-b29e-b7bfbdbac13e",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "63af7e81-6ed3-41d3-b144-265f75be155f",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I calculated the average of 150 and 250 as 200. Then, I multiplied that by 3 to get 600. After adding 100, the total is 700. Lastly, I checked the server status.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "c6db30a7-61ab-43a0-bf17-277b63842828",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "c6db30a7-61ab-43a0-bf17-277b63842828",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I started by calculating the average of 150 and 250, which is 200. Next, I multiplied this result by 3 to get 600. Then, I added 100 to this value, resulting in 700. Finally, I checked the server status to provide a complete answer.",
+                "tool_calls": [
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 150,
+                    "b": 250
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 200,
+                    "b": 3
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "600 + 100"
+                  },
+                  {
+                    "tool_name": "status_get_status"
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "What's the uptime? Calculate (33 + 67) * 5, then find the average of that with 750",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to find the current server uptime. Then, I will evaluate the expression (33 + 67) * 5, which involves adding 33 and 67, and then multiplying the result by 5. Finally, I will find the average of this value with 750. I will call the appropriate tools for each step.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "705f467d-7100-424c-a550-dab1c9302265",
+                        "name": "status_get_uptime",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"24h 30m 15s\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "705f467d-7100-424c-a550-dab1c9302265",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I have obtained the server uptime, which is 24 hours, 30 minutes, and 15 seconds. Next, I need to evaluate the expression (33 + 67) * 5, which involves adding 33 and 67, then multiplying the result by 5. After calculating this, I will find the average of that result with 750.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "8e9dbb11-975c-4e6f-b55e-347bb30244df",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "33 + 67"
+                        }
+                      },
+                      {
+                        "id": "ac5e9615-263d-4c83-8f36-3a5ce5f6626d",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 100,
+                          "b": 5
+                        }
+                      },
+                      {
+                        "id": "4dedcebf-99d1-406b-a925-2b26dab6d1e7",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 600,
+                          "b": 750
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":100.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "8e9dbb11-975c-4e6f-b55e-347bb30244df",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":500,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "ac5e9615-263d-4c83-8f36-3a5ce5f6626d",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":675,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "4dedcebf-99d1-406b-a925-2b26dab6d1e7",
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "thinking": "I started by retrieving the server uptime, which is 24 hours, 30 minutes, and 15 seconds. Then, I calculated the sum of 33 and 67, resulting in 100. Multiplying 100 by 5 gives 500. Finally, I will find the average of 500 and 750, which equals 675.",
+                "tool_calls": [
+                  {
+                    "tool_name": "status_get_uptime"
+                  },
+                  {
+                    "tool_name": "math_add_numbers",
+                    "expression": "33 + 67"
+                  },
+                  {
+                    "tool_name": "math_multiply_numbers",
+                    "a": 100,
+                    "b": 5
+                  },
+                  {
+                    "tool_name": "math_avg_numbers",
+                    "a": 500,
+                    "b": 750
+                  }
+                ]
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            }
+          ],
+          "instructions": {
+            "label": "Instructions",
+            "instructions": [
+              "Think step by step: Use the thinking field to elaborate what you observe and what do you need to accomplish next",
+              "Reflect on prior steps: Review your previous actions and their outcomes to avoid unnecessary repetition.",
+              "Avoid unnecessary actions: If you already have enough information to complete the user task, return an empty tool calls array."
+            ],
+            "reward": null
+          },
+          "instructions_candidates": []
+        }
+      },
+      "function_calling_agent_final_generator": {
+        "function_calling_agent_final_generator_state": {
+          "prompt_template": "\n<system>\n{% if static_system_prompt %}{{ static_system_prompt }}{% endif %}\n{% if inputs_schema %}You will be given an input JSON object with the following schema. \nInput JSON Schema:\n{{ inputs_schema }}\n{% endif %}\n{% if outputs_schema %}\nYour task is to answer with a JSON object following this output JSON schema.\nOutput JSON Schema:\n{{ outputs_schema }}\n{% endif %}\n{% if examples %}\n### Examples\n{% for example in examples %}\nInput:\n{{ example[0] }}\nOutput:\n{{ example[1] }}\n{% endfor %}\n{% endif %}\n{% if instructions %}\n### Instructions:\n{% for instruction in instructions %}\n - {{ instruction }}\n{% endfor %}\n{% endif %}\n</system>\n{% if inputs %}\n<user>\nInput:\n{{ inputs }}\nOutput:\n</user>\n{% endif %}",
+          "static_system_prompt": "You are a helpful assistant",
+          "examples": [
+            {
+              "inputs": {
+                "query": "What is the server status and calculate the sum of 45 and 67?",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will request the server status to get the current information about the server. Then, I will calculate the sum of 45 and 67. I will prepare two tool calls: one for fetching the server status and another for adding the two numbers.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "b2c8e96c-bb09-4ca0-a9e5-a8f55e6d7698",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "9f40b8fd-4186-4b2c-878d-c9be2dcc4da5",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "45 + 67"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "b2c8e96c-bb09-4ca0-a9e5-a8f55e6d7698",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":112.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "9f40b8fd-4186-4b2c-878d-c9be2dcc4da5",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I will now compile my final response by including the server status and the result of the addition of 45 and 67.",
+                    "tool_call_id": null,
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "answer": "The server is running. The sum of 45 and 67 is 112."
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Calculate three operations: add 45 to 55, multiply 8 by 12, then find the average of both results",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will add 45 to 55. Next, I will multiply 8 by 12. Finally, I will calculate the average of these two results. I will use the math_add_numbers tool for the addition, math_multiply_numbers for the multiplication, and math_avg_numbers for the average.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "5e011f42-6c96-40b9-848a-3eece736bb92",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "45 + 55"
+                        }
+                      },
+                      {
+                        "id": "1227417d-42e2-44d4-aea3-4a9ec0b5d48f",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 8,
+                          "b": 12
+                        }
+                      },
+                      {
+                        "id": "900b0ca1-0edb-4037-80c9-41bdb8786b3b",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 100,
+                          "b": 96
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":100.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "5e011f42-6c96-40b9-848a-3eece736bb92",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":96,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "1227417d-42e2-44d4-aea3-4a9ec0b5d48f",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":98,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "900b0ca1-0edb-4037-80c9-41bdb8786b3b",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "First, I calculated the sum of 45 and 55, which is 100. Then, I multiplied 8 by 12, resulting in 96. Finally, I found the average of 100 and 96, which is (100 + 96) / 2 = 98.0. All operations have been completed successfully.",
+                    "tool_call_id": null,
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "answer": "The sum of 45 and 55 is 100. The product of 8 and 12 is 96. The average of these two results is 98."
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Check server status, then calculate: (15 + 25) * 4, and find the average of that result with 200",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to check the server status to ensure it is operational before performing calculations. Then, I will evaluate the expression (15 + 25) * 4, which involves adding 15 and 25, and multiplying the result by 4. Finally, I will find the average of this value with 200. I will call the appropriate tools for each step.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "5d167f23-d21d-4a1a-8703-f4c893e9170e",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "7d775f5e-759d-4fe7-9d44-44c462dc0145",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "15 + 25"
+                        }
+                      },
+                      {
+                        "id": "9d9a55df-9e9b-4f6a-8849-a874930ccf0c",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 40,
+                          "b": 4
+                        }
+                      },
+                      {
+                        "id": "79b028ef-b64d-4f1d-b48a-cfead3918177",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 120,
+                          "b": 200
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "5d167f23-d21d-4a1a-8703-f4c893e9170e",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":40.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "7d775f5e-759d-4fe7-9d44-44c462dc0145",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":160,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "9d9a55df-9e9b-4f6a-8849-a874930ccf0c",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":160,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "79b028ef-b64d-4f1d-b48a-cfead3918177",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I checked the server status to ensure it is operational. Then, I calculated the sum of 15 and 25, which is 40. Multiplying this sum by 4 gives 160. Next, I found the average of 160 and 200, resulting in (160 + 200) / 2 = 180.",
+                    "tool_call_id": null,
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "answer": "The server is running. The result of the calculation (15 + 25) * 4 is 160. The average of 160 and 200 is 180."
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            }
+          ],
+          "predictions": [
+            {
+              "inputs": {
+                "query": "What is the server status and calculate the sum of 45 and 67?",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will request the server status to get the current information about the server. Then, I will calculate the sum of 45 and 67. I will prepare two tool calls: one for fetching the server status and another for adding the two numbers.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "b2c8e96c-bb09-4ca0-a9e5-a8f55e6d7698",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "9f40b8fd-4186-4b2c-878d-c9be2dcc4da5",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "45 + 67"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "b2c8e96c-bb09-4ca0-a9e5-a8f55e6d7698",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":112.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "9f40b8fd-4186-4b2c-878d-c9be2dcc4da5",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I will now compile my final response by including the server status and the result of the addition of 45 and 67.",
+                    "tool_call_id": null,
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "answer": "The server is running. The sum of 45 and 67 is 112."
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "Multiply 12 by 15, then find the average of that result with 300, and check if the server is running",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will multiply 12 by 15 to get the product. Then, I will calculate the average of that product and 300. Lastly, I will check if the server is running to complete the query.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "c0889c41-e8ee-41ed-9119-2204f805df21",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 12,
+                          "b": 15
+                        }
+                      },
+                      {
+                        "id": "10ede90d-4d6e-4efb-8833-7593b1a4b18e",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 180,
+                          "b": 300
+                        }
+                      },
+                      {
+                        "id": "73ed1eb9-1ead-4eb5-8e64-35bc5dfc9b7d",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":180,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "c0889c41-e8ee-41ed-9119-2204f805df21",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":240,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "10ede90d-4d6e-4efb-8833-7593b1a4b18e",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "73ed1eb9-1ead-4eb5-8e64-35bc5dfc9b7d",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "The calculations have been completed successfully. First, 12 was multiplied by 15, resulting in 180. Then, the average of 180 and 300 was calculated, which is 240. Finally, I checked the server status. All tasks are completed correctly.",
+                    "tool_call_id": null,
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "answer": "The final results are as follows: 12 multiplied by 15 equals 180. The average of 180 and 300 is 240. The server is running."
+              },
+              "label": "Prediction",
+              "reward": 0.9583490490913391
+            },
+            {
+              "inputs": {
+                "query": "What is the server status and calculate the sum of 45 and 67?",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to check the server status to determine if it is operational. Then, I will calculate the sum of 45 and 67. I will call the status_get_status tool to get the server status, and after that, I will proceed with adding the numbers 45 and 67 using the math_add_numbers tool.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "7693fc59-a4b7-4e00-b3fb-7fd2166b504b",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "60aeebbb-e93e-4a66-aa85-8b510fcba906",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "45 + 67"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "7693fc59-a4b7-4e00-b3fb-7fd2166b504b",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":112.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "60aeebbb-e93e-4a66-aa85-8b510fcba906",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "First, I checked the server status, which confirmed that the server is running. Then, I calculated the sum of 45 and 67, which is 112.",
+                    "tool_call_id": null,
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "answer": "The server is running. The sum of 45 and 67 is 112."
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Calculate three operations: add 45 to 55, multiply 8 by 12, then find the average of both results",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I will add 45 to 55. Next, I will multiply 8 by 12. Finally, I will calculate the average of these two results. I will use the math_add_numbers tool for the addition, math_multiply_numbers for the multiplication, and math_avg_numbers for the average.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "5e011f42-6c96-40b9-848a-3eece736bb92",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "45 + 55"
+                        }
+                      },
+                      {
+                        "id": "1227417d-42e2-44d4-aea3-4a9ec0b5d48f",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 8,
+                          "b": 12
+                        }
+                      },
+                      {
+                        "id": "900b0ca1-0edb-4037-80c9-41bdb8786b3b",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 100,
+                          "b": 96
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":100.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "5e011f42-6c96-40b9-848a-3eece736bb92",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":96,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "1227417d-42e2-44d4-aea3-4a9ec0b5d48f",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":98,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "900b0ca1-0edb-4037-80c9-41bdb8786b3b",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "First, I calculated the sum of 45 and 55, which is 100. Then, I multiplied 8 by 12, resulting in 96. Finally, I found the average of 100 and 96, which is (100 + 96) / 2 = 98.0. All operations have been completed successfully.",
+                    "tool_call_id": null,
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "answer": "The sum of 45 and 55 is 100. The product of 8 and 12 is 96. The average of these two results is 98."
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            },
+            {
+              "inputs": {
+                "query": "Check server status, then calculate: (15 + 25) * 4, and find the average of that result with 200",
+                "messages": [
+                  {
+                    "role": "assistant",
+                    "content": "First, I need to check the server status to ensure it is operational before performing calculations. Then, I will evaluate the expression (15 + 25) * 4, which involves adding 15 and 25, and multiplying the result by 4. Finally, I will find the average of this value with 200. I will call the appropriate tools for each step.",
+                    "tool_call_id": null,
+                    "tool_calls": [
+                      {
+                        "id": "5d167f23-d21d-4a1a-8703-f4c893e9170e",
+                        "name": "status_get_status",
+                        "arguments": {}
+                      },
+                      {
+                        "id": "7d775f5e-759d-4fe7-9d44-44c462dc0145",
+                        "name": "math_add_numbers",
+                        "arguments": {
+                          "expression": "15 + 25"
+                        }
+                      },
+                      {
+                        "id": "9d9a55df-9e9b-4f6a-8849-a874930ccf0c",
+                        "name": "math_multiply_numbers",
+                        "arguments": {
+                          "a": 40,
+                          "b": 4
+                        }
+                      },
+                      {
+                        "id": "79b028ef-b64d-4f1d-b48a-cfead3918177",
+                        "name": "math_avg_numbers",
+                        "arguments": {
+                          "a": 120,
+                          "b": 200
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":\"The server is runnning.\",\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "5d167f23-d21d-4a1a-8703-f4c893e9170e",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":40.0,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "7d775f5e-759d-4fe7-9d44-44c462dc0145",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":160,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "9d9a55df-9e9b-4f6a-8849-a874930ccf0c",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "tool",
+                    "content": {
+                      "response": "{\"result\":160,\"log\":\"Successfully executed\"}"
+                    },
+                    "tool_call_id": "79b028ef-b64d-4f1d-b48a-cfead3918177",
+                    "tool_calls": []
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I checked the server status to ensure it is operational. Then, I calculated the sum of 15 and 25, which is 40. Multiplying this sum by 4 gives 160. Next, I found the average of 160 and 200, resulting in (160 + 200) / 2 = 180.",
+                    "tool_call_id": null,
+                    "tool_calls": []
+                  }
+                ]
+              },
+              "outputs": {
+                "answer": "The server is running. The result of the calculation (15 + 25) * 4 is 160. The average of 160 and 200 is 180."
+              },
+              "label": "Prediction",
+              "reward": 0.977013885974884
+            }
+          ],
+          "instructions": {
+            "label": "Instructions",
+            "instructions": [
+              "Think step by step: Use the thinking field to elaborate what you observe and what do you need to accomplish next",
+              "Reflect on prior steps: Review your previous actions and their outcomes to avoid unnecessary repetition.",
+              "Avoid unnecessary actions: If you already have enough information to complete the user task, return an empty tool calls array."
+            ],
+            "reward": null
+          },
+          "instructions_candidates": []
+        }
+      }
+    },
+    "non_trainable_variables": {},
+    "optimizer_variables": {
+      "random_few_shot": {
+        "iteration": {
+          "iteration": 2
+        }
+      }
+    },
+    "metrics_variables": {
+      "reward": {
+        "total_with_count": {
+          "total": 0.9742208123207092,
+          "count": 1
+        }
+      }
+    }
+  }
+}
